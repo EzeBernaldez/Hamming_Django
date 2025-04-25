@@ -94,7 +94,6 @@ def corregir_error(p, error):
 
 def codificar_archivo(file_name_read, file_name_write):
     try:
-        print('Entra')
         with open(file_name_read, "rb") as f:
             contenido = f.read().decode('utf-8')
             print(contenido)

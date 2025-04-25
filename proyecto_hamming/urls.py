@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hamming/', include('hamming_app.urls') )
+    path('', lambda request: redirect('/hamming/')),
+    path('hamming/', include('hamming_app.urls') ),
 ]
