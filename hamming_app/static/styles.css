@@ -1,4 +1,53 @@
-h1 {
+h1,h2,h4,h3,p,label {
+    color: #fff !important;
+    font-family: sans-serif;
+}
+
+.contenedor{
+    background: radial-gradient(#26397e 10%,#17204B 60%,#0c1231) !important;
+} 
+
+.form-select ,.form-control{
+    background-color: transparent;
     color: #fff;
-    font-family: 'Courier New', Courier, monospace;
+    border: none;
+    box-shadow: 0 0 3px #dddf;
+}
+
+.form-select:hover ,.form-control:hover{
+    box-shadow: 0 0 10px #dddf;
+    transition: .5s;
+}
+
+option{
+    color: #0c1231;
+}
+
+.buttom_procesar{
+    background-color: transparent;
+    padding: 5px 15px;
+    border-radius: 7px;
+    border:none;
+    box-shadow: 0 0 3px #dddf;
+    color: #fff;
+    transition: 0.4s;
+    text-decoration: none;
+}
+
+.buttom_procesar:hover{
+    background-color: #dddf;
+    color: #0c1231;
+    transition: 0.4s;
+    box-shadow: 0 0 10px #dddf;
+}
+
+.descargar{
+    text-decoration: none;
+    color:aliceblue;
+}
+
+pre{
+    color:#fff;
+    border:none;
+    box-shadow: 0 0 5px 1px #fffd;
 }

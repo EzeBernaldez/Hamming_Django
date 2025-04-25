@@ -5,7 +5,6 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render
 
-
 def index(request):
     return render(request,'index.html')
 
@@ -34,7 +33,7 @@ def response(request):
 
             if algoritmo == 'ha1':
                 codificacion_path = os.path.join(ruta, 'codificacion.HA1')
-                decodificacion_path = os.path.join(ruta,'decodificacion.HA1')
+                decodificacion_path = os.path.join(ruta,'decodificacion.txt')
                 hamming_8.codificar_archivo(texto_path,codificacion_path)
                 hamming_8.decodificar_archivo(codificacion_path,decodificacion_path,0)
 
@@ -47,24 +46,40 @@ def response(request):
                     context['texto_decodificado'] = bloque
 
                 if error == '1':
-                    codificacion_error_path = os.path.join(ruta,'codificacion_error.HA1')
-                    decodificacion_error_path = os.path.join(ruta,'decodificacion_error.HA1')
-                    hamming_8.ingresar_error(codificacion_path,codificacion_error_path)
-                    hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
+                    context['errores'] = "HE1"
+                    if fix_module==1:
+                        context['fix'] = "DC1"
+                        
+                        codificacion_error_path = os.path.join(ruta,'codificacion_error.HE1')
+                        decodificacion_error_path = os.path.join(ruta,'decodificacion_sin_error.DC1')
+                        hamming_8.ingresar_error(codificacion_path,codificacion_error_path)
+                        hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
 
-                    with open(codificacion_error_path,'rb') as f:
-                        bloque = f.read().decode('latin-1')
-                        context['texto_codificado_error'] = bloque
-                
-                    with open(decodificacion_error_path,'rb') as f:
-                        bloque = f.read().decode('latin-1')
-                        context['texto_decodificado_error'] = bloque
+                        with open(codificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_codificado_error'] = bloque
+                    
+                        with open(decodificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_decodificado_sin_error'] = bloque
+                    else:
+                        context['fix'] = "DE1"
+                        codificacion_error_path = os.path.join(ruta,'codificacion_error.HE1')
+                        decodificacion_error_path = os.path.join(ruta,'decodificacion_con_error.DE1')
+                        hamming_8.ingresar_error(codificacion_path,codificacion_error_path)
+                        hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
 
-
-
+                        with open(codificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_codificado_error'] = bloque
+                    
+                        with open(decodificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_decodificado_con_error'] = bloque
+            
             elif algoritmo == 'ha2':
                 codificacion_path = os.path.join(ruta, 'codificacion.HA2')
-                decodificacion_path = os.path.join(ruta,'decodificacion.HA2')
+                decodificacion_path = os.path.join(ruta,'decodificacion.txt')
                 hamming_256.codificar_archivo_256(texto_path,codificacion_path)
                 hamming_256.decodificar_archivo_256(codificacion_path,decodificacion_path,0)
 
@@ -77,23 +92,39 @@ def response(request):
                     context['texto_decodificado'] = bloque
 
                 if error == '1':
-                    codificacion_error_path = os.path.join(ruta,'codificacion_error.HA2')
-                    decodificacion_error_path = os.path.join(ruta,'decodificacion_error.HA2')
-                    hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path)
-                    hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
+                    context['errores'] = "HE2"
+                    if fix_module==1:
+                        context['fix'] = "DC2"
+                        codificacion_error_path = os.path.join(ruta,'codificacion_error.HE2')
+                        decodificacion_error_path = os.path.join(ruta,'decodificacion_sin_error.DC2')
+                        hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path)
+                        hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
 
-                    with open(codificacion_error_path,'rb') as f:
-                        bloque = f.read().decode('latin-1')
-                        context['texto_codificado_error'] = bloque
-                
-                    with open(decodificacion_error_path,'rb') as f:
-                        bloque = f.read().decode('latin-1')
-                        context['texto_decodificado_error'] = bloque
+                        with open(codificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_codificado_error'] = bloque
+                    
+                        with open(decodificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_decodificado_sin_error'] = bloque
+                    else:
+                        context['fix'] = "DE2"
+                        codificacion_error_path = os.path.join(ruta,'codificacion_error.HE2')
+                        decodificacion_error_path = os.path.join(ruta,'decodificacion_con_error.DE2')
+                        hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path)
+                        hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
 
+                        with open(codificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_codificado_error'] = bloque
+                    
+                        with open(decodificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_decodificado_con_error'] = bloque
 
             else:
                 codificacion_path = os.path.join(ruta, 'codificacion.HA3')
-                decodificacion_path = os.path.join(ruta,'decodificacion.HA3')
+                decodificacion_path = os.path.join(ruta,'decodificacion.txt')
                 hamming_4096.codificar_archivo_4096(texto_path,codificacion_path)
                 hamming_4096.decodificar_archivo_4096(codificacion_path,decodificacion_path,0)
         
@@ -106,19 +137,39 @@ def response(request):
                     context['texto_decodificado'] = bloque
 
                 if error == '1':
-                    codificacion_error_path = os.path.join(ruta,'codificacion_error.HA3')
-                    decodificacion_error_path = os.path.join(ruta,'decodificacion_error.HA3')
-                    hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path)
-                    hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
+                    context['errores'] = "HE3"
+                    if fix_module==1:
+                        context['fix'] = "DC3"
+                        codificacion_error_path = os.path.join(ruta,'codificacion_error.HE3')
+                        decodificacion_error_path = os.path.join(ruta,'decodificacion_sin_error.DC3')
+                        hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path)
+                        hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
 
-                    with open(codificacion_error_path,'rb') as f:
-                        bloque = f.read().decode('latin-1')
-                        context['texto_codificado_error'] = bloque
-                
-                    with open(decodificacion_error_path,'rb') as f:
-                        bloque = f.read().decode('latin-1')
-                        context['texto_decodificado_error'] = bloque
+                        with open(codificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_codificado_error'] = bloque
+                    
+                        with open(decodificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_decodificado_sin_error'] = bloque
+                    else:
+                        context['fix'] = "DE3"
+                        codificacion_error_path = os.path.join(ruta,'codificacion_error.HE3')
+                        decodificacion_error_path = os.path.join(ruta,'decodificacion_con_error.DE3')
+                        hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path)
+                        hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
 
+                        with open(codificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_codificado_error'] = bloque
+                    
+                        with open(decodificacion_error_path,'rb') as f:
+                            bloque = f.read().decode('latin-1')
+                            context['texto_decodificado_con_error'] = bloque
+
+
+        context['MEDIA_URL'] = settings.MEDIA_URL
+        context['algoritmo'] = algoritmo
         return render(request,'response.html',context)
 
     return HttpResponse("Error: No se ha enviado un archivo o algoritmo no válido.")
