@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamming</title>
+</head>
+<body>
+    <div class="principal">
+        <h1>Hamming</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="archivo">Ingrese el archivo a hamminizar</label>
+            <input id="archivo" name="archivo" type="file" accept=".txt">
+            <label for="Hamming">Ingrese el hamming que desee</label>
+            <select name="Hamming" id="Hamming">
+                <option value="ha1">Hamming-8</option>
+                <option value="ha2">Hamming-256</option>
+                <option value="ha3">Hamming-4096</option>
+            </select>
+            <label for="fix_module">Desea arreglar el archivo?</label>
+            <select name="fix_module" id="fix_module">
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+            <button><input type="submit">Subir</button>
+        </form>
+    </div>
+</body>
+</html>
