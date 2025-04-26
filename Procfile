@@ -1,1 +1,1 @@
-web: gunicorn nombre_proyecto.wsgi
+web: gunicorn proyecto_hamming.wsgi:application --bind 0.0.0.0:$PORT
