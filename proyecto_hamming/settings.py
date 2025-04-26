@@ -20,6 +20,7 @@ MEDIA_URL = '/hamming_app/media/'
 
 MEDIA_ROOT = BASE_DIR / 'hamming_app' / 'media'
 
+ALLOWED_HOSTS = ['.onrender.com']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -132,3 +133,13 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Render recomienda usar WhiteNoise
+MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # ...otros middlewares
+]
