@@ -20,7 +20,7 @@ MEDIA_URL = '/hamming_app/media/'
 
 MEDIA_ROOT = BASE_DIR / 'hamming_app' / 'media'
 
-ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['hamming_Bernaldez_Nodar.onrender.com']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
