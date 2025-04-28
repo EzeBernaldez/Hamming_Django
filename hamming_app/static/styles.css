@@ -1,21 +1,21 @@
 h1,h2,h4,h3,p,label {
-    color: #fff !important;
+    color: #0c1231 !important;
     font-family: sans-serif;
 }
 
 .contenedor{
-    background: radial-gradient(#26397e 10%,#17204B 60%,#0c1231) !important;
+    background: radial-gradient(#C4DAFA 10%,#adc0dd 60%,#9eb0ca) !important;
 } 
 
 .form-select ,.form-control{
     background-color: transparent;
-    color: #fff;
+    color: #0c1231;
     border: none;
-    box-shadow: 0 0 3px #dddf;
+    box-shadow: 0 0 3px #253794;
 }
 
 .form-select:hover ,.form-control:hover{
-    box-shadow: 0 0 10px #dddf;
+    box-shadow: 0 0 10px #253794;
     transition: .5s;
 }
 
@@ -28,29 +28,29 @@ option{
     padding: 5px 15px;
     border-radius: 7px;
     border:none;
-    box-shadow: 0 0 3px #dddf;
-    color: #fff;
+    box-shadow: 0 0 3px #253794;
+    color: #0c1231;
     transition: 0.4s;
     text-decoration: none;
 }
 
 .buttom_procesar:hover{
-    background-color: #dddf;
+    background-color: #253794;
     color: #0c1231;
     transition: 0.4s;
-    box-shadow: 0 0 10px #dddf;
+    box-shadow: 0 0 10px #253794;
 }
 
 .descargar{
     text-decoration: none;
-    color:aliceblue;
+    color: #0c1231;
 }
 
 textarea{
-    color:#fff;
+    color:#0c1231;
     background-color: transparent;
     border:none;
-    box-shadow: 0 0 5px 1px #fffd;
+    box-shadow: 0 0 5px 1px #253794;
     width: 100%;
     min-height: 120px;
 }
@@ -70,6 +70,6 @@ textarea{
 
 ::-webkit-scrollbar-thumb {
     background-color: transparent;
-    box-shadow: 0 0 1px 1px #fffd;
+    box-shadow: 0 0 1px 1px #253794;
     border-radius: 3px;
   }
