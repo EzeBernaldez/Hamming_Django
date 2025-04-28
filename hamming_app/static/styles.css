@@ -46,8 +46,30 @@ option{
     color:aliceblue;
 }
 
-pre{
+textarea{
     color:#fff;
+    background-color: transparent;
     border:none;
     box-shadow: 0 0 5px 1px #fffd;
+    width: 100%;
+    min-height: 120px;
 }
+
+.deco{
+    min-height: 352px;
+}
+
+
+::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    box-shadow: 0 0 1px 1px #fffd;
+    border-radius: 3px;
+  }

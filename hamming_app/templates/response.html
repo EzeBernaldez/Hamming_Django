@@ -19,63 +19,65 @@
                         {% if texto_plano %}
                         <div class="mb-4">
                             <h4>Texto original:</h4>
-                            <pre class="p-3 rounded">{{ texto_plano }}</pre>
+                            <textarea class="p-3 rounded">{{ texto_plano }}</textarea>
                         </div>
                         {% endif %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        {% if texto_codificado %}
-                        <div class="mb-4 mt-3">
-                            <h4>Texto codificado:</h4>
-                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion.{{ algoritmo|upper }}" download="codificacion.{{ algoritmo|upper }}" class="descargar">Descargar archivo codificado</a>
-                            <pre class="p-3 rounded mt-3">{{ texto_codificado }}</pre>
-                        </div>
-                        {% endif %}
+                        <div class="container-fluid mt-0">
+                            <div class="row">
+                                <div class="col mt-3">
+                                    {% if texto_codificado %}
+                                    <div class="mb-4">
+                                        <h4>Texto codificado:</h4>
+                                        <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion.{{ algoritmo|upper }}" download="codificacion.{{ algoritmo|upper }}" class="descargar">Descargar archivo codificado</a>
+                                        <textarea class="p-3 rounded mt-2" style="height: auto;">{{ texto_codificado }}</textarea>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mt-3">
+                                    {% if texto_codificado_error %}
+                                    <div class="mb-4">
+                                        <h4>Texto codificado con error:</h4>
+                                        <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion_error.{{ errores|upper }}" download="codificacion_error.{{ errores|upper }}" class="descargar">Descargar archivo codificado con errores</a>
+                                        <textarea class="p-3 rounded mt-2" style="height: auto;">{{ texto_codificado_error }}</textarea>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            </div>
                     </div>
-                    <div class="col-6 mt-3">
-                        {% if texto_decodificado %}
-                        <div class="mb-4">
-                            <h4>Texto decodificado:</h4>
-                            <pre class="p-3 rounded mt-3">{{ texto_decodificado }}</pre>
-                        </div>
-                        {% endif %}
+                    <div class="col-6 h-100">
+                            {% if texto_decodificado_con_error %}
+                            <div class="mb-4 mt-3">
+                                <h4>Texto decodificado con errores:</h4>
+                                <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_con_error.{{ fix|upper }}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar">Descargar archivo decodificado con errores</a>
+                                <textarea class="p-3 border rounded mt-2 deco">{{ texto_decodificado_con_error }}</textarea>
+                            </div>
+                            {% endif %}
+                            {% if texto_decodificado_sin_error %}
+                            <div class="mb-4 mt-3">
+                                <h4>Texto decodificado sin errores:</h4>
+                                <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_sin_error.{{ fix|upper }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar">Descargar archivo decodificado sin errores</a>
+                                <textarea class="p-3 rounded mt-2 deco">{{ texto_decodificado_sin_error }}</textarea>
+                            </div>
+                            {% endif %}
                     </div>
-                </div>
+                </div>  
                 <div class="row">
-                    <div class="col-6 mt-3">
-                        {% if texto_codificado_error %}
-                        <div class="mb-4">
-                            <h4>Texto codificado con error:</h4>
-                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion_error.{{ errores|upper }}" download="codificacion_error.{{ errores|upper }}" class="descargar">Descargar archivo codificado con errores</a>
-                            <pre class="p-3 rounded mt-3">{{ texto_codificado_error }}</pre>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="col-6 mt-3">
-                        {% if texto_decodificado_con_error %}
-                        <div class="mb-4">
-                            <h4>Texto decodificado con errores:</h4>
-                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_con_error.{{ fix|upper }}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar">Descargar archivo decodificado con errores</a>
-                            <pre class="p-3 border rounded mt-3">{{ texto_decodificado_con_error }}</pre>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="col-6 mt-3">
-                        {% if texto_decodificado_sin_error %}
-                        <div class="mb-4">
-                            <h4>Texto decodificado sin errores:</h4>
-                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_sin_error.{{ fix|upper }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar">Descargar archivo decodificado sin erroes</a>
-                            <pre class="p-3 rounded mt-3">{{ texto_decodificado_sin_error }}</pre>
-                        </div>
-                        {% endif %}
-                    </div>
+                    <div class="pb-5 text-end">
+                        <a href="{% url 'index' %}" class="buttom_procesar">Volver</a>
+                    </div> 
                 </div>
-                <div class="pb-5 text-end">
-                  <a href="{% url 'index' %}" class="buttom_procesar">Volver</a>
-                </div>
+
+            </div>
+
         </div>
+
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
