@@ -1,21 +1,21 @@
 h1,h2,h4,h3,p,label {
-    color: #0c1231 !important;
+    color: #fff !important;
     font-family: sans-serif;
 }
 
 .contenedor{
-    background: radial-gradient(#C4DAFA 10%,#adc0dd 60%,#9eb0ca) !important;
+    background: radial-gradient(#26397e 10%,#17204B 60%,#0c1231) !important;
 } 
 
 .form-select ,.form-control{
     background-color: transparent;
-    color: #0c1231;
+    color: #fff;
     border: none;
-    box-shadow: 0 0 3px #253794;
+    box-shadow: 0 0 3px #dddf;
 }
 
 .form-select:hover ,.form-control:hover{
-    box-shadow: 0 0 10px #253794;
+    box-shadow: 0 0 10px #dddf;
     transition: .5s;
 }
 
@@ -28,29 +28,29 @@ option{
     padding: 5px 15px;
     border-radius: 7px;
     border:none;
-    box-shadow: 0 0 3px #253794;
-    color: #0c1231;
+    box-shadow: 0 0 3px #dddf;
+    color: #fff;
     transition: 0.4s;
     text-decoration: none;
 }
 
 .buttom_procesar:hover{
-    background-color: #253794;
+    background-color: #dddf;
     color: #0c1231;
     transition: 0.4s;
-    box-shadow: 0 0 10px #253794;
+    box-shadow: 0 0 10px #dddf;
 }
 
 .descargar{
     text-decoration: none;
-    color: #0c1231;
+    color:aliceblue;
 }
 
 textarea{
-    color:#0c1231;
+    color:#fff;
     background-color: transparent;
     border:none;
-    box-shadow: 0 0 5px 1px #253794;
+    box-shadow: 0 0 5px 1px #fffd;
     width: 100%;
     min-height: 120px;
 }
@@ -61,15 +61,15 @@ textarea{
 
 
 ::-webkit-scrollbar {
-    width: 7px;
+    width: 7px;               /* width of the entire scrollbar */
   }
 
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: transparent;        /* color of the tracking area */
   }
-
+  
 ::-webkit-scrollbar-thumb {
     background-color: transparent;
-    box-shadow: 0 0 1px 1px #253794;
-    border-radius: 3px;
+    box-shadow: 0 0 1px 1px #fffd;
+    border-radius: 3px;       /* roundness of the scroll thumb */
   }
