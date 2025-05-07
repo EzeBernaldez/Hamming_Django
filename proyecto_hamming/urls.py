@@ -19,10 +19,11 @@ from django.urls import path, include
 from django.shortcuts import redirect
 from django.conf import settings
 from django.conf.urls.static import static
+from hamming_app import views
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', lambda request: redirect('/hamming/')),
-    path('hamming/', include('hamming_app.urls') ),
+    path('', include('hamming_app.urls') ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,15 +1,19 @@
 from django.views.generic import TemplateView
-from .algoritmos import hamming_8,hamming_256,hamming_4096
+from .algoritmos import hamming_8,hamming_256,hamming_4096, huffman
+from .algoritmos.huffman import compactacion_archivo, descompactacion_archivo
 import os
 from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render
 
+
 def index(request):
     return render(request,'index.html')
 
+def hamming(request):
+    return render(request,'hamming.html')
 
-def response(request):
+def hamming_response(request):
 
     if request.method == 'POST':
 
@@ -170,6 +174,44 @@ def response(request):
 
         context['MEDIA_URL'] = settings.MEDIA_URL
         context['algoritmo'] = algoritmo
-        return render(request,'response.html',context)
+        return render(request,'hamming_response.html',context)
 
     return HttpResponse("Error: No se ha enviado un archivo o algoritmo no válido.")
+
+def huffman(request):
+    return render(request,'huffman.html')
+
+
+def huffman_response(request):
+    context = {}
+    
+    if request.method == 'POST':
+        archivo = request.FILES.get('archivo')
+
+        if archivo:
+            ruta = os.path.join(settings.MEDIA_ROOT, 'huff')         
+            texto_path = os.path.join(ruta, 'texto.txt')
+            
+            with open(texto_path, 'wb') as f:
+                bloque = ""
+                for chunk in archivo.chunks():
+                    f.write(chunk)
+                    bloque += chunk.decode('latin-1')
+                context["texto_plano"] = bloque
+
+
+            compresion_path = os.path.join(ruta, 'compresion.huf')
+            descompresion_path = os.path.join(ruta,'descompresion.dhu')
+            compactacion_archivo(texto_path,compresion_path)
+            descompactacion_archivo(compresion_path,descompresion_path)
+
+            with open(compresion_path,'rb') as f:
+                bloque = f.read().decode('latin-1')
+                context['texto_comprimido'] = bloque
+                
+            with open(descompresion_path,'rb') as f:
+                bloque = f.read().decode('latin-1')
+                context['texto_descomprimido'] = bloque
+    
+    context['MEDIA_URL'] = settings.MEDIA_URL
+    return render(request, 'huffman_response.html', context)

@@ -20,7 +20,7 @@ MEDIA_URL = '/hamming_app/media/'
 
 MEDIA_ROOT = BASE_DIR / 'hamming_app' / 'media'
 
-ALLOWED_HOSTS = ['hamming_Bernaldez_Nodar.onrender.com']
+ALLOWED_HOSTS = ['ezequiel_bernaldez_nodar.onrender.com']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -30,8 +30,6 @@ SECRET_KEY = 'django-insecure-ztuw=4dtd)w@43!asr8f7)g7@s)ef01y1v2i)ipia-eh*j#g32
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -137,9 +135,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
-# Render recomienda usar WhiteNoise
-MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    # ...otros middlewares
-]
