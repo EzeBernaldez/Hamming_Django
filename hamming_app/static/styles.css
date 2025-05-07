@@ -61,15 +61,15 @@ textarea{
 
 
 ::-webkit-scrollbar {
-    width: 7px;
+    width: 7px;               /* width of the entire scrollbar */
   }
 
   ::-webkit-scrollbar-track {
-    background: transparent;
+    background: transparent;        /* color of the tracking area */
   }
-
+  
 ::-webkit-scrollbar-thumb {
     background-color: transparent;
     box-shadow: 0 0 1px 1px #fffd;
-    border-radius: 3px;
+    border-radius: 3px;       /* roundness of the scroll thumb */
   }

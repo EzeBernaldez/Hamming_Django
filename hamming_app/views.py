@@ -22,7 +22,7 @@ def hamming_response(request):
         error = request.POST.get('error')
         fix_module = request.POST.get('fix_module')
         fix_module = int(fix_module)
-        context = {}
+        context = {'error':error}
 
         if archivo and algoritmo and error:
             ruta = os.path.join(settings.MEDIA_ROOT, algoritmo)

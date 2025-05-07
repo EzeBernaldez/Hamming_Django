@@ -66,6 +66,12 @@
                                 <textarea class="p-3 rounded mt-2 deco">{{ texto_decodificado_sin_error }}</textarea>
                             </div>
                             {% endif %}
+                            {% if error == '0' %}
+                            <div class="mb-4 mt-3">
+                                <h4>Texto decodificado:</h4>
+                                <textarea class="p-3 border rounded mt-2 deco">{{ texto_decodificado }}</textarea>
+                            </div>
+                            {% endif %}
                     </div>
                 </div>  
                 <div class="row">
