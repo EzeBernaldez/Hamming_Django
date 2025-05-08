@@ -28,11 +28,11 @@ def hamming_response(request):
             ruta = os.path.join(settings.MEDIA_ROOT, algoritmo)
             texto_path = os.path.join(ruta,'texto.txt')
 
-            with open(texto_path, 'wb') as f:
+            with open(texto_path, 'wb', encoding='utf-8') as f:
                 bloque = ""
                 for chunk in archivo.chunks():
                     f.write(chunk)
-                    bloque += chunk.decode('latin-1')
+                    bloque += chunk.decode('utf-8')
                 context["texto_plano"] = bloque
 
             if algoritmo == 'ha1':
@@ -42,11 +42,11 @@ def hamming_response(request):
                 hamming_8.decodificar_archivo(codificacion_path,decodificacion_path,0)
 
                 with open(codificacion_path,'rb') as f:
-                    bloque = f.read().decode('latin-1')
+                    bloque = f.read().decode('utf-8')
                     context['texto_codificado'] = bloque
                 
                 with open(decodificacion_path,'rb') as f:
-                    bloque = f.read().decode('latin-1')
+                    bloque = f.read().decode('utf-8')
                     context['texto_decodificado'] = bloque
 
                 if error == '1':
@@ -60,11 +60,11 @@ def hamming_response(request):
                         hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_codificado_error'] = bloque
                     
                         with open(decodificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_decodificado_sin_error'] = bloque
                     else:
                         context['fix'] = "DE1"
@@ -74,11 +74,11 @@ def hamming_response(request):
                         hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_codificado_error'] = bloque
                     
                         with open(decodificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_decodificado_con_error'] = bloque
             
             elif algoritmo == 'ha2':
@@ -88,11 +88,11 @@ def hamming_response(request):
                 hamming_256.decodificar_archivo_256(codificacion_path,decodificacion_path,0)
 
                 with open(codificacion_path,'rb') as f:
-                    bloque = f.read().decode('latin-1')
+                    bloque = f.read().decode('utf-8')
                     context['texto_codificado'] = bloque
                 
                 with open(decodificacion_path,'rb') as f:
-                    bloque = f.read().decode('latin-1')
+                    bloque = f.read().decode('utf-8')
                     context['texto_decodificado'] = bloque
 
                 if error == '1':
@@ -105,11 +105,11 @@ def hamming_response(request):
                         hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_codificado_error'] = bloque
                     
                         with open(decodificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_decodificado_sin_error'] = bloque
                     else:
                         context['fix'] = "DE2"
@@ -119,11 +119,11 @@ def hamming_response(request):
                         hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_codificado_error'] = bloque
                     
                         with open(decodificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_decodificado_con_error'] = bloque
 
             else:
@@ -133,11 +133,11 @@ def hamming_response(request):
                 hamming_4096.decodificar_archivo_4096(codificacion_path,decodificacion_path,0)
         
                 with open(codificacion_path,'rb') as f:
-                    bloque = f.read().decode('latin-1')
+                    bloque = f.read().decode('utf-8')
                     context['texto_codificado'] = bloque
                 
                 with open(decodificacion_path,'rb') as f:
-                    bloque = f.read().decode('latin-1')
+                    bloque = f.read().decode('utf-8')
                     context['texto_decodificado'] = bloque
 
                 if error == '1':
@@ -150,11 +150,11 @@ def hamming_response(request):
                         hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_codificado_error'] = bloque
                     
                         with open(decodificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_decodificado_sin_error'] = bloque
                     else:
                         context['fix'] = "DE3"
@@ -164,11 +164,11 @@ def hamming_response(request):
                         hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_codificado_error'] = bloque
                     
                         with open(decodificacion_error_path,'rb') as f:
-                            bloque = f.read().decode('latin-1')
+                            bloque = f.read().decode('utf-8')
                             context['texto_decodificado_con_error'] = bloque
 
 
@@ -192,11 +192,11 @@ def huffman_response(request):
             ruta = os.path.join(settings.MEDIA_ROOT, 'huff')         
             texto_path = os.path.join(ruta, 'texto.txt')
             
-            with open(texto_path, 'wb') as f:
+            with open(texto_path, 'wb', encoding='utf-8') as f:
                 bloque = ""
                 for chunk in archivo.chunks():
                     f.write(chunk)
-                    bloque += chunk.decode('latin-1')
+                    bloque += chunk.decode('utf-8')
                 context["texto_plano"] = bloque
 
 
@@ -206,11 +206,11 @@ def huffman_response(request):
             descompactacion_archivo(compresion_path,descompresion_path)
 
             with open(compresion_path,'rb') as f:
-                bloque = f.read().decode('latin-1')
+                bloque = f.read().decode('utf-8')
                 context['texto_comprimido'] = bloque
                 
             with open(descompresion_path,'rb') as f:
-                bloque = f.read().decode('latin-1')
+                bloque = f.read().decode('utf-8')
                 context['texto_descomprimido'] = bloque
     
     context['MEDIA_URL'] = settings.MEDIA_URL
