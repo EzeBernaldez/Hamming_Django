@@ -25,7 +25,7 @@ class Nodo:
 
     def __lt__(self, other):
         if self.frecuencia < other.frecuencia:
-            return self.frecuencia < other.frecuencia 
+            return True 
         elif self.frecuencia == other.frecuencia:
             return self.derivaciones < other.derivaciones 
 
@@ -35,7 +35,7 @@ def compactacion_archivo(file_read,file_write):
     codificacion = {}
 
     try:
-        with open(file_read,'r',encoding="utf-8") as f:
+        with open(file_read,'r') as f:
             content = f.read()
         
             frecuencias_dict = tabla_frecuencia(content)
@@ -59,6 +59,7 @@ def compactacion_archivo(file_read,file_write):
 
 
             #Ahora tenemos que escribir el archivo codificado
+
             with open(file_write,'wb') as wr:
 
                 codificacion_bytes = ''.join(codificacion[caracteres] for caracteres in content)
@@ -68,8 +69,8 @@ def compactacion_archivo(file_read,file_write):
 
                 for key,value in codificacion.items():
                     longitud = len(value)
-                    codificacion_dict += format((ord(key)),'08b') + format(longitud,'08b') + value.zfill(8 * ((longitud + 7) // 8)) #por cada caracter, guardar el número de bits que utiliza la codificacion y la codificación propiamente dicha
-                    longitud_dict += 2 + ((longitud + 7) // 8)
+                    codificacion_dict += format((ord(key)),'08b').zfill(16) + format(longitud,'08b') + value.zfill(8 * ((longitud + 7) // 8)) #por cada caracter, guardar el número de bits que utiliza la codificacion y la codificación propiamente dicha
+                    longitud_dict += 3 + ((longitud + 7) // 8)
 
 
                 cantidad_ceros = (8 - (len(codificacion_bytes) % 8)) % 8
@@ -126,21 +127,21 @@ def descompactacion_archivo(file_read,file_write):
             content_bytes = content_bytes[8:]
 
             for i in range(0,cantidad_caracteres_codificacion):
-                caracter = content_bytes[0:8]
+                caracter = content_bytes[0:16]
                 caracter = chr(int(caracter,2))
 
-                longitud_codificacion = content_bytes[8:16]
+                longitud_codificacion = content_bytes[16:24]
                 longitud_codificacion = int(longitud_codificacion,2)
 
                 longitud = 8 * ((longitud_codificacion + 7 ) // 8)
 
-                codificacion = content_bytes[16: 16 + longitud]
+                codificacion = content_bytes[24: 24 + longitud]
                 codificacion = codificacion[longitud-longitud_codificacion:]
 
 
                 codificacion_dict[caracter] = codificacion
                 
-                content_bytes = content_bytes[16 + longitud:]
+                content_bytes = content_bytes[24 + longitud:]
             
             #Contamos cuantos 0's hay de relleno
 
@@ -161,7 +162,7 @@ def descompactacion_archivo(file_read,file_write):
                     bits_seleccionados = ''
 
 
-            with open(file_write,'w',encoding="utf-8") as wr:
+            with open(file_write,'w') as wr:
                 wr.write(mensaje)
     except Exception as e:
         print(e)
@@ -172,3 +173,4 @@ def descompactacion_archivo(file_read,file_write):
 
 def ver_estadistica(file_original,file_compactado,file_descompactado):
     pass
+
