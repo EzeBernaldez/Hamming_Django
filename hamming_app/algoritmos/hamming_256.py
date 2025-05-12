@@ -138,14 +138,15 @@ def decodificar_archivo_256(file_name_read, file_name_write, arreglar_archivo):
                 if len(bloque) == 0:
                     break
                 num = deshamminizacion_256(bloque_bytes,arreglar_archivo)
+                escritura = bytes()
                 for i in range(30):
-                    shift = 232 - (8 * (i))
-                    letra = (num >> shift) & 0xFF
-                    if(letra != 0):
-                        if(chr(letra) == "\n"):
-                            pass
-                        else:
-                            wr.write(f"{chr(letra)}")
+                    shift = 232 - (8 * i)
+                    byte = (num >> shift) & 0xFF
+                    if byte != 0:
+                        escritura = escritura + int.to_bytes(byte,1,byteorder='big')
+                
+                wr.write(escritura.decode("utf-8"))
+
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
