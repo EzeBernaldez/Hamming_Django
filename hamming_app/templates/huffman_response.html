@@ -19,7 +19,7 @@
                     {% if texto_plano %}
                     <div class="mb-4">
                         <h4>Texto original:</h4>
-                            <textarea class="p-3 rounded">{{ texto_plano }}</textarea>
+                            <textarea class="p-3 rounded" readonly>{{ texto_plano }}</textarea>
                     </div>
                     {% endif %}
                 </div>
@@ -30,7 +30,7 @@
                     <div class="mb-4">
                         <h4>Texto Comprimido</h4>
                         <a href="{{ MEDIA_URL }}huff/compresion.huf" download="compresion.huf" class="descargar">Descargar archivo comprimido</a>
-                            <textarea class="p-3 rounded">{{ texto_comprimido }}</textarea>
+                            <textarea class="p-3 rounded" readonly>{{ texto_comprimido }}</textarea>
                     </div>
                     {% endif %}
                 </div>
@@ -41,7 +41,7 @@
                     <div class="mb-4">
                         <h4>Texto Descomprimido</h4>
                         <a href="{{ MEDIA_URL }}huff/descompresion.dhu" download="descompresion.dhu" class="descargar">Descargar archivo descomprimido</a>
-                            <textarea class="p-3 rounded">{{ texto_descomprimido }}</textarea>
+                            <textarea class="p-3 rounded" readonly>{{ texto_descomprimido }}</textarea>
                     </div>
                     {% endif %}
                 </div>
