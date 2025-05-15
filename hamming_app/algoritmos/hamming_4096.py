@@ -1,4 +1,5 @@
 import random
+import os
 
 def crear_numero_4096(p):
     # p contiene 240 bits de datos
@@ -47,6 +48,9 @@ def calcular_bit_paridad(p):
 def codificar_archivo_4096(file_name_read, file_name_write):
     try:
         with open(file_name_read, "rb") as f, open(file_name_write, "wb") as wr:
+            original_len = os.path.getsize(file_name_read)
+            # Guardamos los primeros 5 bytes con la longitud original
+            wr.write(original_len.to_bytes(5, byteorder='big'))
             while True:
                 bloque = f.read(510)
                 if len(bloque) == 0:
@@ -130,26 +134,34 @@ def decodificacion_hamming_4096(p):
 
 def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
     try:
-        with open(file_name_read, "rb") as f, open(file_name_write, "w",encoding="utf-8") as wr:
+        with open(file_name_read, "rb") as f, open(file_name_write, "w", encoding="utf-8") as wr:
+            # Leer los primeros 5 bytes (tamaño original en bytes)
+            original_len_bytes = f.read(5)
+            if len(original_len_bytes) < 5:
+                raise ValueError("El archivo codificado está corrupto o incompleto.")
+            original_len = int.from_bytes(original_len_bytes, byteorder='big')
+
+            total_decodificado = bytearray()
             while True:
                 bloque = f.read(512)
-                bloque_bytes = int.from_bytes(bloque,byteorder="big")
+                
                 if len(bloque) == 0:
                     break
+                
+                bloque_bytes = int.from_bytes(bloque, byteorder="big")
                 num = deshamminizacion_4096(bloque_bytes,arreglar_archivo)
-                escritura = bytes()
+                
                 for i in range(510):
                     shift = 4072 - (8 * i)
                     byte = (num >> shift) & 0xFF
-                    if byte != 0:
-                        escritura = escritura + int.to_bytes(byte,1,byteorder='big')
+                    total_decodificado.append(byte)
                 
-                wr.write(escritura.decode("utf-8"))
+            texto = total_decodificado[:original_len].decode("utf-8", errors="ignore")
+            wr.write(texto)
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
-        print("Error: ", e)
-
+        print("Error en decoedificar: ", e)
 
 
 '''----------------------------------------------------------------------------------------------------------------'''
@@ -157,6 +169,8 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
 def ingresar_error_4096(file_name_read,file_name_write):
     try:
         with open(file_name_read, 'rb') as f, open(file_name_write, 'wb') as wr:
+            header = f.read(5)
+            wr.write(header)
             while True:
                 bloque = f.read(512)
                 bloque_bytes = int.from_bytes(bloque,byteorder='big')

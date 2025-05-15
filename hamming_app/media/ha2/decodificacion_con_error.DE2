@@ -1,1 +1,7 @@
-a
+ññññEs decir, La racionalidad de un agente deqende de la medida de performance, su 
+conocimIento previo del ambiente, y los sensores y efectores que tenga 
+Esto cond5ce a una definición de un agente$racional: 
+“Para cada secuencia de percepciones posibles, un agente racional debería 
+seleccion`r aquella acción que se espera que maximice su medida de performance, 
+dada la evidencia provista por la secuencia de percepciones y cualquier 
+conocimiento previo qee el agente tenga.” 

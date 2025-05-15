@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Respuesta</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
@@ -16,38 +15,17 @@
             <h3 class="text-center">Resultados del procesamiento</h3>
             <div class="row">
                 <div class="col-12">
-                    {% if texto_plano %}
+                    {% if texto_descomprimido %}
                     <div class="mb-4">
                         <h4>Texto original:</h4>
-                            <textarea class="p-3 rounded" readonly>{{ texto_plano }}</textarea>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    {% if texto_plano %}
-                    <div class="mb-4">
-                        <h4>Texto Comprimido</h4>
-                        <a href="{{ MEDIA_URL }}huff/compresion.huf" download="compresion.huf" class="descargar">Descargar archivo comprimido</a>
-                            <textarea class="p-3 rounded" readonly>{{ texto_comprimido }}</textarea>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    {% if texto_plano %}
-                    <div class="mb-4">
-                        <h4>Texto Descomprimido</h4>
-                        <a href="{{ MEDIA_URL }}huff/descompresion.dhu" download="descompresion.dhu" class="descargar">Descargar archivo descomprimido</a>
+                        <a href="{{ MEDIA_URL }}huff/resultado_descomprimido.dhu" download="resultado_descomprimido.dhu" class="descargar">Descargar archivo descomprimido</a>
                             <textarea class="p-3 rounded" readonly>{{ texto_descomprimido }}</textarea>
                     </div>
                     {% endif %}
                 </div>
             </div>
             <div class="row">
-                <div class="text-end">
+                <div class="pb-5 text-end">
                     <a href="{% url 'huffman' %}" class="buttom_procesar">Volver</a>
                 </div> 
             </div>

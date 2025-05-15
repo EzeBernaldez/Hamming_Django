@@ -73,3 +73,22 @@ textarea{
     box-shadow: 0 0 1px 1px #fffd;
     border-radius: 3px;       /* roundness of the scroll thumb */
   }
+
+fieldset {
+    border: 2px solid rgba(255, 255, 255, 0.195);
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+}
+
+legend {
+    font-family: sans-serif;
+    float: none;
+    width: auto;
+    padding: 0 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    text-align: left;
+    margin-bottom: 0;
+}

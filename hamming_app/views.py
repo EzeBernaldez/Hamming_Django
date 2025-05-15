@@ -184,7 +184,6 @@ def huffman(request):
 
 def huffman_response(request):
     context = {}
-    
     if request.method == 'POST':
         archivo = request.FILES.get('archivo')
 
@@ -215,3 +214,31 @@ def huffman_response(request):
     
     context['MEDIA_URL'] = settings.MEDIA_URL
     return render(request, 'huffman_response.html', context)
+
+
+
+def huffman_response_descomprimir(request):
+    context = {}
+    print("entra")
+    if request.method == 'POST':
+        archivo = request.FILES.get('archivo')
+
+        if archivo:
+            ruta = os.path.join(settings.MEDIA_ROOT, 'huff')
+            compresion_path = os.path.join(ruta, 'descomprimir.huf')
+            with open(compresion_path, 'wb') as f:
+                bloque = ""
+                for chunk in archivo.chunks():
+                    f.write(chunk)
+                    bloque += chunk.decode('latin-1')
+                context["texto_plano"] = bloque
+
+            descompresion_path = os.path.join(ruta, 'resultado_descomprimido.dhu')
+            descompactacion_archivo(compresion_path, descompresion_path)
+            
+            with open(descompresion_path,'rb') as f:
+                bloque = f.read().decode('latin-1')
+                context['texto_descomprimido'] = bloque
+
+    context['MEDIA_URL'] = settings.MEDIA_URL
+    return render(request, 'huffman_response_descomprimir.html', context)
