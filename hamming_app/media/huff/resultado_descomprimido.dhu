@@ -1,26 +1,7 @@
-Es decir, La racionalidad de un agente depende de la medida de performance, su 
-conocimiento previo del ambiente, y los sensores y efectores que tenga 
-Esto conduce a una definici�n de un agente racional: 
-�Para cada secuencia de percepciones posibles, un agente racional deber�a 
-seleccionar aquella acci�n que se espera que maximice su medida de performance, 
-dada la evidencia provista por la secuencia de percepciones y cualquier 
-conocimiento previo que el agente tenga.� 
-Tenemos que tener cuidado de distinguir entre racionalidad y omnisciencia. Un 
-agente omnisciente conoce el resultado real de sus acciones y puede actuar en 
-consecuencia; Pero la omnisciencia es imposible en la realidad, por ejemplo si cruzo 
-la calle cuando percibo que no viene ning�n auto, pero me cae una puerta de un 
-avi�n antes de cruzar. (el ejemplo del profe en la clase) 
-Este ejemplo muestra que la racionalidad no es lo mismo que la perfecci�n. La 
-racionalidad maximiza el rendimiento esperado, mientras que la perfecci�n 
-maximiza el rendimiento real. 
-Nuestra definici�n de racionalidad no requiere, entonces, omnisciencia, porque la 
-elecci�n racional depende s�lo de la secuencia perceptiva hasta la fecha. 
-Tambi�n debemos asegurarnos de que no hemos permitido inadvertidamente que el 
-agente se involucre en actividades decididamente poco inteligentes. Por ejemplo, si 
-un agente no mira a ambos lados antes de cruzar una carretera muy transitada, 
-entonces su secuencia de percepci�n no le dir� que hay un cami�n grande que se 
-acerca a alta velocidad.  
-Realizar acciones con el fin de modificar preceptos futuros, a veces llamado 
-recopilaci�n de informaci�n, es una parte importante de la racionalidad. En en 
-ejemplo anterior no fue racional mirar ambos lados antes de cruzar, ya que era una 
-secuencia de percepciones poco informativa. 
+Propiedades del Ambiente
+Ã±
+Totalmente Observable vs. Parcialmente Observable: Si los sensores de un agente le dan acceso al estado completo del entorno en cada punto en el tiempo, entonces decimos que el entorno de la tarea es totalmente observable. Un entorno de tareas es efectivamente totalmente observable si los sensores detectan todos los aspectos que son relevantes para la elecciÃ³n de la acciÃ³n; la relevancia, a su vez, depende de la medida de rendimiento. Los entornos totalmente observables son convenientes porque el agente no necesita mantener ningÃºn estado interno para realizar un seguimiento del mundo. Un entorno puede ser parcialmente observable debido a sensores ruidosos e imprecisos o porque simplemente faltan partes del estado en los datos del sensor, por ejemplo, un taxi automatizado no puede ver lo que otros conductores estÃ¡n pensando. Si el agente no tiene ningÃºn sensor, entonces el entorno es inobservable. 
+
+Agente Ãºnico vs. Multiagente: La distinciÃ³n entre entornos de agente Ãºnico y multiagente puede parecer bastante simple. Por ejemplo, un agente que resuelve un crucigrama por sÃ­ solo estÃ¡ claramente en un entorno de un solo agente, mientras que un agente que juega al ajedrez estÃ¡ en un entorno de dos agentes. Sin embargo, hay algunos problemas sutiles. En primer lugar, hemos descrito cÃ³mo una entidad puede ser vista como un agente, pero no hemos explicado quÃ© entidades deben ser vistas como agentes. Â¿Un agente A (el taxista, por ejemplo) tiene que tratar a un objeto B (otro vehÃ­culo) como un agente, o puede ser tratado simplemente como un objeto? 
+La distinciÃ³n clave es si el comportamiento de B se describe mejor como la maximizaciÃ³n de una medida de rendimiento cuyo valor depende del comportamiento del agente A.
+Por ejemplo, en el ajedrez, la entidad oponente B estÃ¡ tratando de maximizar su mediciÃ³n de rendimiento, lo que, segÃºn las reglas del ajedrez, minimiza la medida de rendimiento del agente A. Por lo tanto, el ajedrez es un entorno multiagente. Por otro lado, en el entorno de la conducciÃ³n de taxis, la prevenciÃ³n de colisiones maximiza la medida de rendimiento de todos los agentes, por lo que se trata de un entorno multiagente parcialmente cooperativo. 

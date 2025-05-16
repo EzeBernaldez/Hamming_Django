@@ -5,7 +5,7 @@ import os
 from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render
-
+import base64
 
 def index(request):
     return render(request,'index.html')
@@ -192,11 +192,11 @@ def huffman_response(request):
             texto_path = os.path.join(ruta, 'texto.txt')
             
             with open(texto_path, 'wb') as f:
-                bloque = ""
                 for chunk in archivo.chunks():
                     f.write(chunk)
-                    bloque += chunk.decode('utf-8')
-                context["texto_plano"] = bloque
+
+            with open(texto_path, 'r', encoding='utf-8') as f:
+                context["texto_plano"] = f.read()
 
 
             compresion_path = os.path.join(ruta, 'compresion.huf')
@@ -204,12 +204,12 @@ def huffman_response(request):
             compactacion_archivo(texto_path,compresion_path)
             descompactacion_archivo(compresion_path,descompresion_path)
 
-            with open(compresion_path,'rb') as f:
-                bloque = f.read().decode('latin-1')
+            with open(compresion_path, 'rb') as f:
+                bloque = base64.b64encode(f.read()).decode('utf-8')  # ✅ seguro para mostrar
                 context['texto_comprimido'] = bloque
-                
-            with open(descompresion_path,'rb') as f:
-                bloque = f.read().decode('utf-8')
+
+            with open(descompresion_path, 'r', encoding='utf-8') as f:
+                bloque = f.read()
                 context['texto_descomprimido'] = bloque
     
     context['MEDIA_URL'] = settings.MEDIA_URL

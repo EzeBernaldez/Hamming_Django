@@ -1,7 +1,7 @@
-ññññEs decir, La racionalidad de un agente depende de la medida de performance, su 
-conocimiento previo del ambiente, y los sensores y efectores que tenga 
-Esto conduce a una definición de un agente racional: 
-“Para cada secuencia de percepciones posibles, un agente racional debería 
-seleccionar aquella acción que se espera que maximice su medida de performance, 
-dada la evidencia provista por la secuencia de percepciones y cualquier 
-conocimiento previo que el agente tenga.” 
+Propiedades del Ambiente
+
+Totalmente Observable vs. Parcialmente Observable: Si los sensores de un agente le dan acceso al estado completo del!entorno en cada punto en el tiempo, entonces decimos que el entorno de la tarea es totalmente observable. Un entorno de tareas es efectivamente totalmente observable si los sensores detectan todos los aspectos que son relevantes para la elección de la acción; la relevancia, a su vez, depende de la medida de rendimiento. Los entornos totalmente observables son convenientes porque el agente no necesita mantener ningún estado interno para realizar un seguimiento del mundo. Un entorno puede ser parcialmente observable debido a {ensores ruidosos e imprecisos o porque simplemente faltan partes del estado en los datos del sensor, por ejemplo, un taxi automatizado no puede ver lo que otros conductores están pensando. Si el agente no tiene ningún sensor, entonces el entorno es inobservable. 
+
+Agente único vs. Multiagente: La distinción entre entornos de agente único y multiagente puede parecer bastante simple. Por ejemplo, un agente que resuelve un crucigrama por sí solo está claramente en un entorno de un$solo agente, mientras que un agente que juega al ajedrez está en un entorno de dos agentes. Sin embargo, hay algunos problemas sutiles. En primer lugar, hemos descrito cómo una entidad puede ser vista como un agente, pero no hemos explicado qué entidades deben ser vistas como agentes. ¿Un agente A (el taxista, por ejemplo) tiene que tratar a un objeto B (otro vehículo) como un agente, o puede ser tratado simplemente como un objeto? 
+La distinción clave es si el comportamiento de B se describe mejor como la maximización de una medida de rendimiento cuyo valor depende del comportamiento del agente A.
+Por ejemplo, en el ajedrez, la entidad oponente B está tratando de maximizar su medición de rendimiento, lo que, según las reglas del ajedrez, minimiza la medida de rendimiento del agente A. Por lo tanto, el ajedrez es un entorno multiagente. Por otro lado, en el entorno de la conducción de taxis, la prevención de colisiones maximiza la medida de rendimiento de todos los agentes, por lo que se trata de un entorno multiagente parcialmente cooperativo. 

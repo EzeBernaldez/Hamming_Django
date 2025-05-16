@@ -135,7 +135,7 @@ def decodificacion_hamming_256(p):
 
 def decodificar_archivo_256(file_name_read, file_name_write, arreglar_archivo):
     try:
-        with open(file_name_read, "rb") as f, open(file_name_write, "w", encoding="utf-8") as wr:
+        with open(file_name_read, "rb") as f, open(file_name_write, "w", encoding="utf-8", newline='\n') as wr:
             # Leer los primeros 4 bytes (tamaño original en bytes)
             original_len_bytes = f.read(5)
             if len(original_len_bytes) < 5:

@@ -162,7 +162,7 @@ def descompactacion_archivo(file_read,file_write):
                     bits_seleccionados = ''
 
 
-            with open(file_write,'w') as wr:
+            with open(file_write, 'w', encoding='utf-8', newline='\n') as wr:
                 wr.write(mensaje)
     except Exception as e:
         print(e)

@@ -113,7 +113,7 @@ def decodificar_archivo(file_name_read, file_name_write, arreglar_archivo):
             if not contenido:
                 return
             contenido = int.from_bytes(contenido,byteorder='big')
-            with open(file_name_write, 'w') as wr:
+            with open(file_name_write, 'w', encoding="utf-8", newline='\n') as wr:
                 for i in range(1,longitud,2):
                     primer = (contenido >> (8 * (longitud-i))) & 0xFF
                     segundo = (contenido >> (8 * (longitud-(i+1)))) & 0xFF
