@@ -35,7 +35,7 @@ def compactacion_archivo(file_read,file_write):
     codificacion = {}
 
     try:
-        with open(file_read,'r') as f:
+        with open(file_read, 'r', encoding='utf-8') as f:
             content = f.read()
         
             frecuencias_dict = tabla_frecuencia(content)

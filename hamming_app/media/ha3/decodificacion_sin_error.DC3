@@ -1,3 +1,145 @@
+Resúmen de Fundamentos de la Inteligencia Artificial
+
+
+A modo de resúmen, además de los apuntes que tenemos de clases y de los resúmenes que vayamos haciendo, realizaremos los ejercicios teóricos de los prácticos.
+
+
+Teoría 2 - Introducción a los Agentes Inteligentes
+
+Un agente inteligente es un sistema situado en un ambiente al que percibe
+mediante sus sensores y sobre el que actúa mediante sus
+actuadores/efectores [Russell y Norvig]
+
+
+Otra definición un poco más precisa sería:
+Un agente inteligente es un sistema (o entidad) físico o virtual, situado en algún ambiente, que es capaz de actuar de manera autónoma y flexible en este ambiente a los fines de lograr los objetivos que le han sido delegados” [Wooldridge, 2009]
+
+Aspectos de un agente
+
+Ubicación en un ambiente (“situatedness”):
+El comportamiento del agente es afectado fuertemente por el ambiente en el cual está embebido:
+El agente percibe directamente el ambiente mediante sus sensores. 
+El agente actúa mediante sus efectores modificando el ambiente y sus percepciones futuras.
+
+Corporalidad ( embodiment): caso particular de “situatedness” donde el agente tiene un cuerpo físico que restringe su interacción con el ambiente.
+
+El ambiente podría ser todo, ¡el universo entero! En la práctica, es sólo esa parte del universo cuyo estado nos importa al diseñar este agente, la parte que afecta a lo que el agente percibe y que se ve afectada por las acciones del agente.
+
+Autonomía:
+El agente debe ser capaz de actuar sin la intervención directa de humanos (u otros agentes).
+Tiene control sobre su propio estado interno (símil a objetos).
+Tiene control sobre su propias acciones (no existe una relación master/slave).
+Puede, si es necesario, modificar su comportamiento en base a la experiencia (aprender).
+
+Flexibilidad:
+Reactivo: el agente percibe su ambiente y responde en un tiempo adecuado a los cambios que se producen en él.
+Pro-activo: el agente no sólo actúa en respuesta al ambiente sino que puede tomar la iniciativa (comportamiento dirigido por el objetivo).
+Social: capacidad para interactuar, cuando es apropiado, con otros agentes artificiales o humanos.
+
+
+Aspectos de un agente
+
+Podemos pensar a los agentes como funciones, es decir una descripción matemática abstracta:
+Dados
+Un conjunto de estados del ambiente
+S = {s0, s1, s2, . . . , s|S|}.
+Un conjunto de acciones A (capacidades efectoras del agente).
+
+Un agente puede ser considerado en forma abstracta como una función
+Ag : S ∗ → A donde S ∗ es el conjunto de secuencias de estados en S.
+
+
+
+
+
+
+
+Refinando la visión quedaria algo asi:
+
+
+Un conjunto de observaciones (o percepciones) posibles
+
+O = {o0, o1, o2, . . . , o|O|}.
+Una función de percepción P : S → O.
+Una función de acción o comportamiento C : O∗ → A.
+
+
+
+
+
+
+
+En el caso de la aspiradora quedaría de la siguiente manera:
+
+Función de percepción P: El agente percibe en qué casilla está y si existe suciedad en la misma.
+Conjunto de observaciones: O = {[A, Limpio], [A, Sucio], [B, Limpio], [B, Sucio]}
+
+Un comportamiento C muy simple: “si la casilla actual está sucia entonces aspirar, sino moverse a la otra casilla”.
+
+
+
+
+
+
+Estados del ambiente y transición entre estados
+
+El ambiente, de acuerdo a la transición entre estados será considerado:
+
+Determinístico: el siguiente estado del entorno está determinado por el estado actual y la acción ejecutada por el/los agente/s. Es decir que sé con claridad a qué estado voy.
+T : S × A → S
+
+No determinístico: No puedo saber con claridad a qué estado iría desde el estado actual, podría ir a ningún estado o a varios estados a la vez.
+
+T : S × A → 2^S o bien T : S × A → Pr(S)
+
+
+Agente Racional
+
+Lo que es racional en un momento dado depende de cuatro cosas: 
+La medida de rendimiento que define el criterio de éxito.
+El conocimiento previo del entorno por parte del agente.
+Las acciones que puede realizar el agente.
+La secuencia de percepción del agente hasta el momento. 
+
+Es decir, la racionalidad de un agente depende de la medida de performance, su conocimiento previo del ambiente, y los sensores y efectores que tenga.
+
+Esto conduce a una definición de un agente racional:
+“Para cada secuencia de percepciones posibles, un agente racional debería poder seleccionar aquella acción que se espera que maximice su medida de performance, dada la evidencia provista por la secuencia de percepciones y cualquier conocimiento previo que el agente tenga.”
+
+Tenemos que tener cuidado de distinguir entre racionalidad y omnisciencia. Un agente omnisciente conoce el resultado real de sus acciones y puede actuar en consecuencia; Pero la omnisciencia es imposible en la realidad, por ejemplo si cruzo la calle cuando percibo que no viene ningún auto, pero me cae una puerta de un avión antes de cruzar. (el ejemplo del profe en la clase)
+Este ejemplo muestra que la racionalidad no es lo mismo que la perfección. La racionalidad maximiza el rendimiento esperado, mientras que la perfección maximiza el rendimiento real.
+
+Nuestra definición de racionalidad no requiere, entonces, omnisciencia, porque la elección racional depende sólo de la secuencia perceptiva hasta la fecha. También debemos asegurarnos de que no hemos permitido inadvertidamente que el agente se involucre en actividades decididamente poco inteligentes. Por ejemplo, si un agente no mira a ambos lados antes de cruzar una carretera muy transitada, entonces su secuencia de percepción no le dirá que hay un camión grande que se acerca a alta velocidad. 
+
+Realizar acciones con el fin de modificar preceptos futuros, a veces llamado recopilación de información, es una parte importante de la racionalidad. En el ejemplo anterior no fue racional mirar ambos lados antes de cruzar, ya que era una secuencia de percepciones poco informativa.
+
+Nuestra definición requiere que un agente racional no sólo reúna información, sino que también aprenda lo máximo posible de lo que percibe.
+
+Por lo tanto Racional implica recolectar información y aprendizaje.
+
+
+Medida de performance
+
+Evalúa cuán deseable es la secuencia de estados del ambiente generados por la secuencia de acciones del agente. Es una medida cuantificable.
+Si la secuencia es deseable, entonces el agente ha funcionado bien. Esta noción de deseabilidad se captura mediante una medida de rendimiento.
+
+Como regla general, es mejor diseñar medidas de rendimiento de acuerdo con lo que realmente se quiere lograr en el entorno, en lugar de según cómo se cree que debería comportarse el agente.
+
+
+Descripción PAES
+
+El primer paso para diseñar un agente racional es especificar el entorno de trabajo (problema o tarea a resolver), esto son Medida de Performance,el Ambiente, los Efectores, los Sensores.
+
+Ejemplo: Taxi
+
+
+Ejemplo: Compra en internet
+
+
+
+IMPORTANTE: Cuando el agente no es un software, los efectores son las partes o dispositivos del agente, por ejemplo el robot del práctico en donde los efectores eran los brazos por ejemplo, si el agente es de software los efectores serían las acciones, por ejemplo el agente recomendador el efecto sería mostrar una película.
+
+
 Propiedades del Ambiente
 
 Totalmente Observable vs. Parcialmente Observable: Si los sensores de un agente le dan acceso al estado completo del entorno en cada punto en el tiempo, entonces decimos que el entorno de la tarea es totalmente observable. Un entorno de tareas es efectivamente totalmente observable si los sensores detectan todos los aspectos que son relevantes para la elección de la acción; la relevancia, a su vez, depende de la medida de rendimiento. Los entornos totalmente observables son convenientes porque el agente no necesita mantener ningún estado interno para realizar un seguimiento del mundo. Un entorno puede ser parcialmente observable debido a sensores ruidosos e imprecisos o porque simplemente faltan partes del estado en los datos del sensor, por ejemplo, un taxi automatizado no puede ver lo que otros conductores están pensando. Si el agente no tiene ningún sensor, entonces el entorno es inobservable. 
@@ -5,3 +147,1001 @@ Totalmente Observable vs. Parcialmente Observable: Si los sensores de un agente 
 Agente único vs. Multiagente: La distinción entre entornos de agente único y multiagente puede parecer bastante simple. Por ejemplo, un agente que resuelve un crucigrama por sí solo está claramente en un entorno de un solo agente, mientras que un agente que juega al ajedrez está en un entorno de dos agentes. Sin embargo, hay algunos problemas sutiles. En primer lugar, hemos descrito cómo una entidad puede ser vista como un agente, pero no hemos explicado qué entidades deben ser vistas como agentes. ¿Un agente A (el taxista, por ejemplo) tiene que tratar a un objeto B (otro vehículo) como un agente, o puede ser tratado simplemente como un objeto? 
 La distinción clave es si el comportamiento de B se describe mejor como la maximización de una medida de rendimiento cuyo valor depende del comportamiento del agente A.
 Por ejemplo, en el ajedrez, la entidad oponente B está tratando de maximizar su medición de rendimiento, lo que, según las reglas del ajedrez, minimiza la medida de rendimiento del agente A. Por lo tanto, el ajedrez es un entorno multiagente. Por otro lado, en el entorno de la conducción de taxis, la prevención de colisiones maximiza la medida de rendimiento de todos los agentes, por lo que se trata de un entorno multiagente parcialmente cooperativo. 
+
+Determinista vs. No Determinista: Si el siguiente estado del entorno está completamente determinado por el estado actual y la acción ejecutada por el agente o los agentes, entonces decimos que el entorno es determinista; de lo contrario, no es determinista. En principio, un agente no necesita preocuparse por la incertidumbre en un entorno determinista totalmente observable. Sin embargo, si el entorno es parcialmente observable, entonces podría parecer que no es determinista. La mayoría de las situaciones reales son tan complejas que es imposible hacer un seguimiento de todos los aspectos no observados; A efectos prácticos, deben tratarse como no deterministas. La conducción de taxis es claramente no determinista en este sentido, porque nunca se puede predecir con exactitud el comportamiento del tráfico; Además, los neumáticos pueden reventar inesperadamente y el motor puede atascarse sin previo aviso. 
+La palabra estocástico es utilizada por algunos como sinónimo de "no determinista", estocástico, pero hacemos una distinción entre los dos términos; decimos que un modelo del medio ambiente es estocástico si se ocupa explícitamente de las probabilidades.
+
+
+Episódico vs. Secuencial: En un entorno de tareas episódicas, la experiencia del agente se divide en episodios atómicos. En cada episodio, el agente recibe una percepción y luego realiza una sola acción. Crucialmente, el próximo episodio no depende de las acciones tomadas en los episodios anteriores. Muchas tareas de clasificación son episódicas. Por ejemplo, un agente que tiene que detectar piezas defectuosas en una línea de montaje basa cada decisión en la pieza actual, independientemente de las decisiones anteriores; Además, la decisión actual no afecta si la siguiente pieza es defectuosa. En entornos secuenciales, por otro lado, la decisión actual podría afectar a todas las decisiones futuras. El ajedrez y la conducción de taxis son secuenciales: en ambos casos, las acciones a corto plazo pueden tener consecuencias a largo plazo. Los entornos episódicos son mucho más sencillos que los entornos secuenciales porque el agente no necesita pensar en el futuro.
+
+Estático vs. Dinámico: Si el entorno puede cambiar mientras un agente está deliberando, entonces decimos que el entorno es dinámico para ese agente; de lo contrario, es estático. Los entornos estáticos son fáciles de manejar porque el agente no necesita estar mirando el mundo mientras decide una acción, ni necesita preocuparse por el paso del tiempo. Los entornos dinámicos, por otro lado, están continuamente preguntando al agente qué quiere hacer; si aún no se ha decidido, eso cuenta como decidir no hacer nada. Si el entorno en sí no cambia con el paso del tiempo, pero la puntuación de rendimiento del agente sí lo hace, entonces decimos que el entorno es semidinámico. La conducción de taxis es claramente dinámica: los otros coches y el propio taxi siguen moviéndose mientras el algoritmo de conducción vacila sobre qué hacer a continuación. El ajedrez, cuando se juega con un reloj, es semidinámico. Los crucigramas son estáticos.
+
+Discreto vs. Continuo: La distinción discreto/continuo se aplica al estado del entorno, a la forma en que se maneja el tiempo y a las percepciones y acciones del agente. Por ejemplo, el entorno de ajedrez tiene un número finito de estados distintos (excluyendo el reloj). El ajedrez también tiene un conjunto discreto de percepciones y acciones. La conducción de taxis es un problema de estado continuo y tiempo continuo: la velocidad y la ubicación del taxi y de los otros vehículos atraviesan un rango de valores continuos y lo hacen sin problemas a lo largo del tiempo. Las acciones de conducción del taxi también son continuas (ángulos de dirección, etc.). La entrada de las cámaras digitales es discreta, estrictamente hablando, pero normalmente se trata como si representara intensidades y ubicaciones que varían continuamente.
+IMPORTANTE:Si la medida de performance intervienen magnitudes como velocidad, tiempo, peso, etc, es continuo
+
+Conocido vs. Desconocido: Estrictamente hablando, esta distinción no se refiere al entorno en sí, sino al estado de conocimiento de las dinámicas de ese ambiente. En un entorno conocido, se dan los resultados (o las probabilidades de resultados si el entorno no es determinista) para todas las acciones. Obviamente, si el entorno es desconocido, el agente tendrá que aprender cómo funciona para poder tomar buenas decisiones. La distinción entre entornos conocidos y desconocidos no es la misma que entre entornos total y parcialmente observables. Es muy posible que un entorno conocido sea parcialmente observable, por ejemplo, en los juegos de cartas de solitario, conozco las reglas, pero sigo siendo incapaz de ver las cartas que aún no se han volteado. Por el contrario, un entorno desconocido puede ser completamente observable: en un videojuego nuevo, la pantalla puede mostrar todo el estado del juego, pero todavía no sé qué hacen los botones hasta que los pruebo.
+
+Algunos ejemplos
+
+
+
+Estructura de Agente
+
+Hasta ahora hemos hablado de los agentes describiendo el comportamiento, es decir, la acción que se realiza después de una secuencia dada de percepciones. El trabajo de la IA es diseñar un programa de agente que implemente la función del agente: el programa del agente es el mapeo de percepciones a acciones. Suponemos que este programa se ejecutará en algún tipo de dispositivo informático con sensores y actuadores físicos, lo que llamamos la arquitectura del agente:
+Agente = arquitectura + programa. 
+
+Obviamente, el programa que elijamos tiene que ser uno que sea apropiado para la arquitectura. Si el programa va a recomendar acciones como Caminar, es mejor que la arquitectura tenga patas. La arquitectura puede ser una PC ordinaria o un automóvil robótico con varias computadoras integradas, cámaras y otros sensores. 
+
+En general, la arquitectura hace que las percepciones de los sensores estén disponibles para el programa, ejecuta el programa y alimenta las opciones de acción del programa a los actuadores a medida que se generan.
+
+
+Clases generales de programas de agentes
+
+Los cuatro tipos básicos de programas de agentes que incorporan los principios que subyacen a casi todos los sistemas inteligentes son:
+
+Agentes reflejos (o reactivos) simples
+Agentes reflejos basados en modelo
+Agentes basados en objetivos
+Agentes basados en utilidades
+
+Estos tipos de agentes pueden a su vez ser implementados como agentes de aprendizaje.
+
+
+
+Agentes reflejos simples (ARS)
+
+También llamados agentes reactivos puros o agentes tropísticos. Seleccionan una acción en base a la percepción actual, ignorando el resto de la historia perceptual (el pasado). No existe internamente ninguna representación de estado.
+
+Los agentes reflejos simples son la forma de agente más sencilla que basa sus acciones en la percepción actual. Este agente no tiene memoria ni interactúa con otros agentes si le falta información. Estos agentes funcionan con arreglo a un conjunto de los llamados reflejos o reglas, condición-acción (o situación-acción). Esto significa que el agente está preprogramado para realizar acciones que corresponden al cumplimiento de determinadas condiciones.
+Si el agente se encuentra con una situación para la que no está preparado, no puede responder adecuadamente. Los agentes sólo son eficaces en entornos totalmente observables que permitan acceder a toda la información necesaria.
+Ejemplo:
+si auto-adelante-está-frenando entonces comenzar-a-frenar
+
+Su comportamiento es dirigido por el principio de estímulo-respuesta característico de los reflejos de humanos, animales y plantas.
+
+Ventajas
+Simplicidad.
+Tiempo de respuesta mínimo.
+Reglas simples pueden producir comportamientos colectivos complejos.
+Implementación directa en hardware (bueno para robótica).
+
+Limitaciones: Los agentes reflejos simples tienen la admirable propiedad de ser simples, pero son de inteligencia limitada. Sólo funcionará si se puede tomar la decisión correcta sobre la base de la percepción actual, es decir, sólo si el entorno es plenamente observable.
+
+Sólo trabajan bien si la acción correcta puede determinarse en base a la percepción actual. 
+Posibilidad de loops infinitos bajo observabilidad parcial (por ejemplo la aspiradora, que sucede si no tiene el sensor de ubicación).
+Incapacidad de analizar la consecuencia futura de las acciones.
+
+Incluso un poco de inobservabilidad puede causar serios problemas. Por ejemplo, la regla de frenado supone que la condición en la que el coche de delante está frenando se puede determinar a partir de la percepción actual: un solo fotograma de vídeo. Esto funciona si el coche de delante tiene una luz de freno montada en el centro (y, por lo tanto, identificable de forma única). Desafortunadamente, los modelos más antiguos tienen diferentes configuraciones de luces traseras, luces de freno y luces de señal de giro, y no siempre es posible saber a partir de una sola imagen si el automóvil está frenando o simplemente tiene las luces traseras encendidas. Un simple agente de reflejos que condujera detrás de un automóvil de este tipo frenaría continua e innecesariamente o, peor aún, nunca frenaría en absoluto.
+
+El algoritmo genérico sería este:
+
+
+
+
+Agentes reflejos basados en modelos (ARBM)
+
+La forma más eficaz de manejar la observabilidad parcial es que el agente realice un seguimiento de la parte del mundo que no puede ver ahora. Es decir, el agente debe mantener algún tipo de estado interno que dependa de la historia de percepción y, por lo tanto, refleje al menos algunos de los aspectos del estado interno no observados del estado actual. 
+
+Por ejemplo, para el problema de frenado, el estado interno no es demasiado extenso, solo el fotograma anterior de la cámara, lo que permite al agente detectar cuándo dos luces rojas en el borde del vehículo se encienden o apagan simultáneamente. Para otras tareas de conducción, como cambiar de carril, el agente debe realizar un seguimiento de dónde están los otros autos si no puede verlos todos a la vez. 
+
+La actualización de esta información de estado interno, a medida que pasa el tiempo, requiere que dos tipos de conocimientos se codifiquen en el programa del agente de alguna forma.
+
+En primer lugar, necesitamos información sobre cómo cambia el mundo a lo largo del tiempo, que se puede dividir en dos partes: 
+Los efectos de las acciones del agente
+Cómo evoluciona el mundo independientemente del agente. 
+
+Por ejemplo, cuando el agente gira el volante en el sentido de las agujas del reloj, el coche gira a la derecha, y cuando llueve las cámaras del coche pueden mojarse. 
+Este conocimiento acerca de "cómo funciona el mundo", ya sea implementado en circuitos booleanos simples o en teorías científicas completas, se denomina modelo de transición del mundo.
+
+En segundo lugar, necesitamos alguna información sobre cómo se refleja el estado del mundo en las percepciones del agente. Por ejemplo, cuando el coche de delante inicia la frenada, aparecen una o varias regiones rojas ilustradas en la imagen de la cámara orientada hacia delante y, cuando la cámara se moja, aparecen objetos en forma de gota en la imagen que oscurecen parcialmente la carretera. Este tipo de conocimiento se denomina modelo de sensor.
+
+Juntos, el modelo de transición y el modelo de sensor permiten a un agente realizar un seguimiento del estado del mundo, en la medida de lo posible dadas las limitaciones de los sensores del agente. Un agente que utiliza estos modelos se denomina agente basado en modelos.
+
+El estado interno permite solucionar o aliviar los problemas de observabilidad parcial.
+
+Si bien toma en cuenta el pasado no considera el futuro (no planifica).
+
+
+
+
+
+
+Agentes basados en objetivos (ABO)
+
+Saber algo sobre el estado actual del medio ambiente no siempre es suficiente para decidir qué hacer. Por ejemplo, en un cruce de carreteras, el taxi puede girar a la izquierda, girar a la derecha o seguir recto. La decisión correcta depende de dónde intente llegar el taxi. En otras palabras, además de una descripción del estado actual, el agente necesita algún tipo de información de objetivo que describa situaciones que son deseables, por ejemplo, estar en un destino determinado. El programa del agente puede combinar esto con el modelo (la misma información que se utilizó en el agente reflejo basado en modelo) para elegir acciones que logren el objetivo. 
+
+En la selección de acciones se toma en cuenta información sobre los objetivos (estados deseables) a alcanzar. El logro de un objetivo puede requerir analizar las consecuencias futuras de secuencias completas de acciones (planes).
+
+A veces, la selección de acciones basada en objetivos es sencilla, por ejemplo, cuando la selección de objetivos es inmediata de una sola acción. A veces será más complicado, por ejemplo, cuando el agente tiene que considerar largas secuencias de giros y vueltas para encontrar una manera de lograr el objetivo. La búsqueda y la planificación son los subcampos de la IA dedicados a encontrar secuencias de acciones que logren los objetivos del agente.
+
+La toma de decisiones de este tipo es fundamentalmente diferente de las reglas de acción condicional descritas anteriormente, en el sentido de que implica la consideración del futuro. En los diseños de agentes reflejos, esta información no se representa explícitamente, ya que las reglas integradas se asignan directamente de las percepciones a las acciones. El agente reflejo frena cuando ve las luces de freno, punto. No tiene ni idea de por qué. Un agente basado en objetivos frena cuando ve las luces de freno porque esa es la única acción que predice que logrará su objetivo de no golpear a otros autos.
+
+
+Agentes basados en utilidades (ABU)
+
+Los objetivos por sí solos no son suficientes para generar un comportamiento de alta calidad en la mayoría de los entornos. Por ejemplo, muchas secuencias de acciones llevarán al taxi a su destino (logrando así el objetivo), pero algunas son más rápidas, seguras, más fiables o más baratas que otras. Las metas sólo proporcionan una distinción binaria cruda entre estados "felices" e "infelices". Una medida de rendimiento más general debería permitir una comparación de diferentes estados del mundo de acuerdo con exactamente lo feliz que harían al agente. Debido a que "feliz" no suena muy científico, los economistas y los científicos de la computación usan el término utilidad en su lugar. 
+La función de utilidad de un agente es esencialmente una internalización de la medida de rendimiento. Siempre que la función de utilidad interna y la medida de rendimiento externa estén de acuerdo, un agente que elija acciones para maximizar su utilidad será racional de acuerdo con la medida de rendimiento externa. 
+Cuentan con una función de utilidad:
+U : S → R
+que captura las preferencias del agente por los estados del mundo.
+
+Al igual que los agentes basados en objetivos, un agente basado en la utilidad tiene muchas ventajas en términos de flexibilidad y aprendizaje. Además, en dos tipos de casos, los objetivos son inadecuados, pero un agente basado en la utilidad aún puede tomar decisiones racionales. 
+En primer lugar, cuando hay objetivos contradictorios, de los cuales solo se pueden alcanzar algunos (por ejemplo, la velocidad y la seguridad), la función de utilidad especifica la compensación adecuada. 
+En segundo lugar, cuando hay varios objetivos que el agente puede aspirar, ninguno de los cuales se puede lograr con certeza, la utilidad proporciona una forma en la que la probabilidad de éxito se puede calcular con la importancia de los objetivos.
+
+La observabilidad parcial y el no determinismo son omnipresentes en el mundo real, por lo que la toma de decisiones se toma en condiciones de incertidumbre. Técnicamente hablando, un agente racional basado en la utilidad elige la acción que maximiza la utilidad esperada de los resultados de la acción, es decir, la utilidad esperada que el agente espera derivar, en promedio, dadas las probabilidades y utilidades de cada resultado.
+
+Un agente que posee una función de utilidad explícita puede tomar decisiones racionales con un algoritmo de propósito general que no depende de la función de utilidad específica que se está maximizando. De esta manera, la definición "global" de racionalidad, que designa como racionales aquellas funciones de agente que tienen el rendimiento más alto, se convierte en una restricción "local" a los diseños de agentes racionales que pueden expresarse en un programa simple.
+
+Un agente ABU sigue los principios de teoría de decisión para balancear la deseabilidad (utilidad) de los resultados con la probabilidad de que éstos ocurran.
+
+El principio de la utilidad esperada máxima (UEM) especifica que un agente racional debe seleccionar aquella acción que maximice su utilidad esperada.
+
+
+
+
+
+
+Agentes Conversacionales y Tipos de Agentes
+
+
+Teoría 3 - Resolución de problemas y Búsqueda No Informada
+
+
+Agentes de resolución de problemas
+
+En esta unidad se abordará el agente basado en objetivo denominado Agente de resolución de problemas, el cual es un agente que considera acciones futuras y la deseabilidad de sus resultados. Estos encuentran secuencias de acciones que conducen a estados deseables u objetivos para lograr el objetivo, es decir el conjunto de estados del mundo que satisfacen alguna condición de deseabilidad.
+
+Estos agentes establecen un proceso de búsqueda, el cual buscan una secuencia de acciones que conduce a estados de valor conocido y eligen la mejor (trata de encontrar la mejor acción o secuencia de acciones para llegar a un objetivo). El agente sólo tiene un conjunto de acciones inmediatas y, el algoritmo de búsqueda tiene como entrada un problema y como salida la solución o indicación de falla. Una solución (o plan) es una secuencia de acciones que conducen a un estado objetivo desde el estado actual. La fase de ejecución del plan es aquella en que las acciones recomendadas o establecidas en la solución son llevadas a cabo.
+
+Para lograr su objetivo, los agentes siguen los pasos de formular (formular el objetivo y el problema), buscar (generar sucesores de estados ya explorados) y ejecutar la solución.
+
+
+Formulación del problema
+
+Para formular un problema de estado unico se definen formalmente cinco componentes:
+El estado inicial.
+Las acciones posibles en cada estado.
+Una descripción de lo que hacen las acciones (modelo de transición), mediante operadores, y una función sucesor o función Result(s, a) que genera un nuevo nodo hijo o sucesor para cada uno de los estados resultantes.
+El test de objetivo.
+La función de costo del paso (que mide la calidad de una solución para obtener una solución óptima, mientras menor costo de paso mejor).
+
+Por lo general, las acciones posibles y su descripción conforman un solo componente, por lo que se los consideran 4 componentes.
+
+
+Búsqueda de soluciones
+
+El objetivo principal es generar sucesores de estados ya explorados expandiendo estados mediante la aplicación de acciones válidas en dicho estado, luego elegir un estado a explorar, controlar si el estado es un estado objetivo y expandir el estado en base a una estrategia de búsqueda. 
+
+Una estrategia de búsqueda es un criterio que determina cuál es el próximo estado a expandir. Se define especificando el orden de expansión de los nodos (un nodo está compuesto del estado, el nodo padre, la acción y el costo de paso) implementando una frontera (puede ser una cola FIFO, LIFO o prioridades que se ordena de forma tal para expandir el primer nodo de la cola), el cual es la colección de nodos que están esperando para ser expandidos. Las estrategias son evaluadas de acuerdo a las siguientes dimensiones: completitud (siempre encuentra una solución si alguna existe?), complejidad de tiempo (cuanto tarda en encontrar una solución?), complejidad de espacio (¿cuánta memoria se necesita?) y optimalidad (siempre encuentra la mejor solución (la de menor costo)?).
+
+Para la estrategia de búsqueda se consideran estructuras de datos, las cuales son el árbol, que permite estados repetidos, y el grafo, que detecta los estados repetidos y no los incluye dentro de la estructura, manteniendo un conjunto de nodos explorados de manera que los nodos no se repitan, es decir que soluciona el problema de loops dentro del algoritmo (evita problemas exponenciales). El árbol de búsqueda es la estructura resultante de la aplicación del proceso de búsqueda, y cada nodo corresponde a un estado en el espacio de estados y las aristas del nodo corresponden a acciones. La raíz del árbol o grafo es el estado inicial del problema. Es importante aclarar que árbol/grafo es distinto de espacio de estados, el último describe el conjunto de estados del mundo y sus acciones, y el otro describe rutas entre estados hacia un objetivo.
+
+
+
+
+
+Estrategias de búsqueda
+
+La complejidad es medida en términos de: 
+b—factor de ramificación máximo del árbol de búsqueda, es decir, el número máximo de hijos que puede tener un nodo.
+d—profundidad del nodo objetivo menos profundo.
+m—profundidad máxima del espacio de estado (longitud máx. de
+cualquier paso en el espacio de estados).
+El tiempo es medido en términos del número de nodos generados en
+la búsqueda y el espacio en términos del máximo número de nodos
+almacenados en la memoria.
+
+
+Estrategias de búsqueda no informadas
+
+Def. Son estrategias que sólo usan la información disponible en la definición del problema. Estas se clasifican:
+Búsqueda primero en anchura (BPA).
+Búsqueda costo uniforme (BCU).
+Búsqueda primero en profundidad (BPP).
+Búsqueda en profundidad limitada (BPL).
+Búsqueda con profundidad iterativa (BPI).
+
+Búsqueda primero en anchura: Expande el nodo no expandido menos profundo. El test de objetivo es realizado cuando el nodo es generado (antes de colocarlo en la frontera).
+
+La frontera es una cola FIFO: los nuevos sucesores van al final.
+
+Esta búsqueda es completa si el factor de ramificación máximo del árbol de búsqueda es finito. 
+El tiempo es b + b^2 + … + b^d = O(b^d) Exponencial en d.
+El espacio es O(b^d) (mantiene cada nodo en memoria cuando es un grafo; en árbol podría generar menos pasos pero al tener redundancias el tiempo será problema).
+Es óptima con costos de paso idénticos; no en caso general.
+
+El espacio es el gran problema.
+
+Búsqueda de costo uniforme: Es la extensión óptima de la BPA con costos de paso distintos. Trata de expandir el nodo que tiene menos costo de paso g(n) total, desde el nodo raíz al actual. Realiza el test de objetivo cuando el nodo es seleccionado para expansión (cuando lo saca de la frontera). 
+
+La frontera es una cola ordenada por costo de paso (cola por prioridad), el más bajo primero.
+
+Esta búsqueda es completa si y sólo sí el costo de cada paso es mayor igual al costo mínimo entre todos los arcos del árbol/grafo (e). El costo mínimo debe ser mayor a 0, lo cual garantiza que el costo acumulado crece con cada paso, además de que obliga a la estrategia a llegar a los nodos que tienen la solución ya que así evitamos los bucles de bajo o cero costo.
+El tiempo coincide con el de BPA cuando los costos de paso son idénticos. En general es O(b^⌈C∗​/e⌉), donde C* es el costo de la solución óptima y cada acción cuesta >= e.
+En espacio es igual que el BPA.
+Es óptima ya que los nodos son expandidos incrementalmente en g(n).
+
+El tiempo puede ser mucho mayor que el de BPA porque explora grandes árboles con pequeños pasos. En el mejor de los casos es b^(d+1) cuando los costos son iguales.
+
+Búsqueda primero en profundidad: Expande el nodo no expandido más profundo. Realiza el test de objetivo cuando el nodo es seleccionado para expansión (cuando lo saca de la frontera).
+
+La frontera es una cola LIFO, es decir, coloca sucesores al frente.
+
+No es completa ya que falla en espacios de profundidad infinita (espacios con loops). Sí lo es cuando hay espacios finitos en búsqueda en grafo.
+El tiempo es O(b^m). Es malo si m es mucho más grande que d (pero caso con búsqueda en árbol).
+En búsqueda en árbol, la complejidad espacial de DFS es O(bm), porque solo se necesita mantener el camino actual desde la raíz hasta el nodo en expansión.
+En búsqueda en grafo, si se usa una estructura para detectar ciclos (como un conjunto de visitados), la complejidad espacial puede crecer hasta ser igual al tiempo, O(b^m), ya que se deben almacenar todos los nodos generados.
+No es óptima.
+
+Búsqueda en profundidad limitada: Es búsqueda primero en profundidad pero incorpora un límite de profundidad L, es decir, nodos a profundidad L no tienen sucesores.
+
+Es completa si L es mayor o igual a d (profundidad de nodo objetivo menos profundo)
+El tiempo es O(b^L).
+En espacio es O(bL). Si fuese en grafo y se guardan los nodos visitados, podría ser O(b^L).
+No es óptima si el nodo objetivo es más profundo que L.
+
+Búsqueda en profundidad iterativa: Es igual que búsqueda en profundidad limitada con la diferencia que es aplicada iterativamente, incrementando L.
+
+Es completa.
+El tiempo es O(b^d)= (d+1)b^0 + db1 + (d-1)b^2 + … + b^d.
+En espacio, es O(bd).
+Es óptima con costo de paso = 1.
+
+Es la estrategia de búsqueda no informada preferida cuando el espacio de búsqueda es grande y la profundidad de la solución es desconocida.
+
+
+6. ¿Qué es una heurística?
+
+La función heurística es denotada como h(n) que significa coste estimado del camino más barato desde el nodo n hasta el nodo objetivo.
+
+7. ¿Qué diferencia fundamental existe entre la búsqueda no informada y la búsqueda informada?
+
+La diferencia fundamental que existe entre la búsqueda no informada y la búsqueda informada es que la última necesita de datos relacionados con el problema a tratar, es decir que dentro de la estrategia de búsqueda utiliza otras medidas y funciones. Estas funciones se denominan heurísticas, donde estiman costos de los caminos más cortos.
+
+
+8. ¿Bajo qué condiciones se dice que una función heurística h es admisible? ¿Y consistente?
+
+Una heurıstica es admisible cuando nunca sobreestima el costo real de alcanzar
+el objetivo
+A∗ usa una heurística admisible
+es decir, h(n) ≤ h∗(n) donde h∗(n) es el costo verdadero desde n
+(También requiere que h(n) ≥ 0, así h(G) = 0 para cualquier objetivo G)
+
+Una heurística es consistente si para cada nodo n y cada sucesor n′ de n generado
+por la acción a, el costo estimado de llegar al objetivo desde n no es mayor que
+el costo del paso de llegar a n′ más el costo estimado de llegar al objetivo desde
+n′, h(n) ≤ c(n, a, n′) + h(n′)
+
+
+
+
+Tipo de búsqueda
+Completa
+Optima
+BPL
+Profundidad limitada. No informada.
+Si, límite >= profundidad del nodo objetivo menos profundo.
+No.
+BPI
+Profundidad iterativa. No informada.
+Sí.
+Sí, con costo de paso igual a 1.
+BPMV
+Búsqueda primero el mejor voraz. Informada
+No, puede caer en loops. Completa en espacio finito con chequeo de estado repetido
+No, puede repetir pasos.
+BPP
+Búsqueda primero en profundidad. No informada
+No, falla en espacios de profundidad infinita. Completa en espacios finitos.
+No.
+BA*
+Búsqueda A*. Informada.
+Completa, a menos que haya infinitos nodos con f <= f(G)
+Sí, no puede expandir fi+1 hasta que fi haya finalizado.
+BCU
+Búsqueda de costo uniforme. No informada.
+Sí, sólo si el costo de cada paso es >= a ε.
+Sí.
+BPA
+Búsqueda en anchura. No informada.
+Sí, si b es finito.
+Sí, con costo de paso idénticos; no, en el caso general.
+
+
+3) Dado el problema 8-puzzle con estado inicial como se muestra en la Figura 1(a) y el estado objetivo referido en la Figura 1(b), se pide:
+
+
+
+1. En la teoría 4, se presenta al número de fichas fuera de lugar como una heurística admisible para el 8-puzzle.
+
+a) Usando esta heurística, ejecute manualmente el algoritmo PM Voraz basado en Búsqueda- Árbol, considerando los estados inicial y objetivo de las Figuras 1(a) y 1(b), respectivamente. En cada expansión que realice, en el caso de ser aplicables, disponga las acciones en el orden siguiente: derecha, abajo, izquierda, arriba. Indique en cada nodo
+del árbol resultante, el orden en que el mismo fue expandido.
+
+
+
+b) Usando esta heurística, ejecute manualmente el algoritmo A∗ basado en Búsqueda- Árbol, considerando los estados inicial y objetivo de las Figuras 1(a) y 1(b), respectivamente. Recuerde mantener el orden de expansión de las acciones propuesto anteriormente, como así también indicar en cada nodo del árbol resultante, el orden en que el mismo fue expandido. En el caso que en la frontera del árbol, hubieran dos o más nodos, cuyo valor de función de evaluación fuera el mismo, se deberá expandir primero el de más a la izquierda.
+
+
+c) Comente qué diferencias habría en los árboles de búsqueda obtenidos, si en lugar de
+Búsqueda-Árbol se hubiera utilizado Búsqueda-Grafo.
+
+
+Practico 3
+
+
+3) 1)
+Variables={x1,x2,x3,x4}
+Dominio= {1,2,3,4,5,6,7,8,9,0} ó {0-9}
+Restricción= En una misma asignación de valores no se cumple que:
+x1=x2=x3=x4
+
+2) Unarias: no hay.
+Binarias: que dos dígitos no se repitan.
+Ternarias: que no hayan secuencias consecutivas ascendentes o descendentes de tres dígitos.
+
+3) Asignación parcial.
+Solución.
+Completa.
+
+
+
+
+
+
+Teoría 6 - Agentes Lógicos
+
+
+Agentes Lógicos (basados en conocimiento)
+
+Los Agentes Lógicos son agentes que derivan sus acciones mediante el razonamiento lógico.
+
+Tienen como componente principal una base de conocimiento (BC), el cual es un conjunto de sentencias en un lenguaje formal. Cada sentencia se expresa en un lenguaje llamado lenguaje de representación del conocimiento y representa alguna afirmación sobre el mundo. Cuando la sentencia se toma como dada sin derivarse de otras oraciones, la llamamos axioma. Un ingeniero de conocimiento construye la BC en una serie de pasos.
+
+Debe haber una forma de agregar nuevas sentencias a la base de conocimientos y una forma de consultar lo que se sabe. Los nombres estándar para estas operaciones son DECIR y PREGUNTAR, respectivamente. Ambas operaciones pueden implicar inferencia, es decir, derivar nuevas sentencias a partir de las antiguas. La inferencia debe obedecer al requisito de que cuando uno hace una pregunta de la base de conocimiento, la respuesta debe seguirse de lo que se ha dicho a la base de conocimiento previamente, en el sentido de que el proceso de inferencia no debería inventar las cosas a medida que avanza.
+
+
+
+Cada vez que se llama al programa agente, hace tres cosas.
+(DECIR) Le dice a la base de conocimientos lo que percibe.
+(PREGUNTAR) Pregunta a la base de conocimientos qué acción debe realizar. En el proceso de responder a esta pregunta, se puede hacer un razonamiento extenso sobre el estado actual del mundo, sobre los resultados de las posibles secuencias de acción, etc. 
+(DECIR) El programa agente le dice a la base de conocimientos qué acción se eligió y devuelve la acción para que pueda ejecutarse.
+
+CREAR-SENTENCIA-DE-PERCEPCIÓN construye una oración que afirma que el agente percibió la percepción dada en un momento dado. CREAR-CONSULTA-ACCIÓN construye una sentencia que pregunta qué acción se debe realizar en el momento actual. Finalmente, CREAR-SENTENCIA-ACCIÓN construye una sentencia que afirma que la acción elegida fue ejecutada.
+
+Un agente basado en el conocimiento se puede construir simplemente diciéndole lo que necesita saber. Partiendo de una base de conocimientos vacía, el ingeniero de conocimiento de agentes puede DECIR frases una por una hasta que el agente sepa cómo operar en su entorno. A esto se le llama el enfoque declarativo para la construcción de sistemas.
+
+Los agentes pueden ser visualizados a nivel del conocimiento i.e., lo que conocen, independiente de cómo está implementado, o a nivel de la implementación i.e., las estructuras en la BC y los algoritmos que las manipulan.
+
+Ontologías: concepto fundamental en agentes basados en conocimiento. Consisten del vocabulario (predicados, funciones y constantes) resultante al traducir conceptos importantes a nivel de dominio a sus respectivos nombres a nivel lógico.
+
+El agente debe ser capaz de:
+Representar estados, acciones, etc.
+Incorporar nuevas percepciones.
+Actualizar representaciones internas del mundo.
+Deducir propiedades ocultas del mundo: por ejemplo si afuera de una casa está nevando y el agente está adentro, una propiedad oculta es que hace frío afuera, el agente debe ser capaz de deducir esa propiedad.
+Deducir acciones apropiadas.
+
+
+Mundo de Wumpus
+
+El mundo Wumpus es una cueva que consta de habitaciones conectadas por pasadizos. Acechando en algún lugar de la cueva está el terrible wumpus, una bestia que se come a cualquiera que entre en su habitación. El Wumpus puede ser disparado por un agente, pero el agente solo tiene una flecha. Algunas habitaciones contienen pozos sin fondo que atraparán a cualquiera que deambule por estas habitaciones (excepto el wumpus, que es demasiado grande para caer). La única característica redentora de este entorno sombrío es la posibilidad de encontrar un montón de oro. 
+
+Descripción PAES
+Medida de performance: oro 1000, muerte -1000, -1 por paso,-10 por usar la flecha.
+
+Ambiente: Casillas adyacentes al Wumpus son olorosas, casillas adyacentes a un pozo tienen brisas, destello si el oro está en la misma casilla, disparar mata al Wumpus si está enfrente, disparar consume la única flecha, agarrar alza el oro si está en la misma casilla, arrojar deja el oro en la misma casilla. El juego termina cuando el agente muere o cuando el agente sale de la cueva.
+
+Efectores: girar Izquierda, girar Derecha, Adelante, Tomar, Arrojar, Disparar.
+
+Sensores: Brisa, Destello, Olor (también Grito y Golpe).
+
+Las percepciones se entregarán al programa agente en forma de una lista de cinco símbolos; por ejemplo, si hay un hedor y una brisa, pero no hay destello, golpe o grito, el programa del agente obtendrá [Olor,Brisa,Ninguno,Ninguno,Ninguno].
+
+
+Podemos caracterizar el entorno del wumpus a lo largo de las diversas dimensiones Claramente, es determinista, discreto, estático y de un solo agente. (El wumpus no se mueve, afortunadamente.) Es secuencial, porque las recompensas pueden llegar sólo después de que se hayan realizado muchas acciones. Es parcialmente observable, porque algunos aspectos del estado no son directamente perceptibles: la ubicación del agente, el estado de salud del wumpus y la disponibilidad de una flecha. En cuanto a las ubicaciones de los pozos y los wumpus: podríamos tratarlos como partes no observadas del estado.
+
+Para un agente del entorno, el principal reto es su ignorancia inicial de la configuración del entorno; superar esta ignorancia parece requerir un razonamiento lógico. En la mayoría de los casos del mundo wumpus, es posible que el agente recupere el oro de forma segura. De vez en cuando, el agente debe elegir entre volver a casa con las manos vacías o arriesgarse a morir para hacerse con el oro. 
+
+
+
+
+Representación de Conocimiento
+
+Conocimiento inicial sobre cómo “funciona el mundo”, en el caso del Wumpus es:
+Ubicación y situación inicial del agente.
+relación entre brisas y pozos,
+relación entre olores y Wumpus,
+Existencia de un (y solo un) Wumpus,
+Conocimiento sobre las percepciones recibidas.
+Conocimiento sobre cómo trabajan las acciones (modelo de transición).
+
+Una BC en LP para el mundo de Wumpus
+
+Arr, Ab, Der, Iz representan la orientación del agente.
+Sea Pi,j true si hay un pozo en la casilla [i, j].
+Sea Bi,j true si hay una brisa en la casilla [i, j].
+Sea Ui,j true si el agente está ubicado en la casilla [i, j].
+Sea Wi,j true si el Wumpus está en la casilla [i, j].
+Sea Si,j true si hay olor en la casilla [i, j].
+
+Ubicación y situación inicial del agente:
+R1: U1,1 R4: ¬B1,1
+R2: Der R5: ¬W1,1
+R3: ¬P1,1 R6: ¬S1,1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+La sentencia de percepción sería:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LPO = lógica de primer órden
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Inferencia / Implicación Lógica
+
+BC ⊢i α significa que la sentencia α puede ser derivada desde BC mediante el procedimiento i.
+
+Por ejemplo:
+Las consecuencias de BC son un pajar; α es una aguja.
+Implicación lógica = aguja en un pajar;
+Inferencia = encontrarla.
+
+Sensatez (soundness): se dice que i es sensato (o sólido, o consistente o que mantiene la verdad) si siempre que BC ⊢i α, es también verdadero que BC |= α.
+
+Completitud: i es completa si siempre que BC |= α, es también verdadero que BC ⊢i α
+
+Recordando lógica:
+
+BC |= α :se lee "BC satisface α" o "α es consecuencia semántica de BC" significa que α es verdadero en todos los modelos donde BC es verdadero.
+
+BC ⊢ α : (se lee "BC prueba α" o "α es deducible de BC") significa que α puede ser deducido de BC usando un sistema de inferencia (reglas de deducción, como modus ponens, etc.).
+
+De manera más general:
+|= α (se suele decir "α es válidamente verdadero" o "α es una tautología") significa que α es verdadero en todos los modelos posibles, no depende de ningún conjunto de premisas.
+Es una verdad lógica: siempre es cierto, pase lo que pase.
+⊢ α significa que α puede ser probado en un sistema de inferencia sin ninguna premisa.
+Es decir, hay una prueba formal de α usando solo reglas del sistema.
+
+
+Recordando PROLOG
+
+
+
+
+
+
+Cláusula de Horn
+
+Una cláusula de Horn es una disyunción de literales (variables o negaciones de variables) con a lo sumo un literal positivo.
+
+Puede tener ningún literal positivo (todos negados) o
+Puede tener exactamente uno positivo (los demás, si hay, son negaciones).
+
+
+Formalmente, una cláusula de Horn es una fórmula de este tipo:
+(¬A1​∨¬A2​∨⋯∨¬An ​∨ B)
+donde todas las A son negadas y B es opcional y puede ser positiva o negada
+
+La decisión de la implicación con las cláusulas de Horn se puede hacer en un tiempo que es lineal en el tamaño de la base de conocimientos, una agradable sorpresa.
+
+Por lo tanto podemos ver a la BC como una conjunción de cláusulas de Horn. Estas van a ser usadas por los siguientes algoritmos.
+
+
+Encadenamiento hacia atrás
+
+Es un método de razonamiento que parte del objetivo (lo que queremos probar) e intenta demostrarla buscando reglas que lleguen a ese objetivo.
+La idea es trabajar hacia atrás desde la consulta q, para probar q mediante BC:
+Chequear si q ya es conocido, o
+Probar usando la BC todas las premisas de alguna regla que concluye q.
+
+Evitar loops: chequear si un nuevo subobjetivo ya está sobre el stack de objetivos.
+
+Evitar trabajo repetido: chequear si un nuevo subobjetivo
+ya se ha demostrado que es verdadero, o
+ya ha fallado.
+
+El encadenamiento hacia atrás es dirigido por el objetivo (goal-driven), apropiado para resolución de problemas,e.g., ¿Cómo alcanzó un plan de doctorado?
+
+La complejidad del encadenamiento hacia atrás puede ser mucho menor que lineal en el tamaño de la BC.
+
+
+
+
+Resumen del shhhhaaatt:
+Objetivo: probar 𝑄
+Vamos hacia atrás:
+¿Para probar Q, qué necesito?
+P (porque 𝑃⇒𝑄)
+¿Para probar P, qué necesito?
+L ∧ M (porque 𝐿∧𝑀⇒𝑃)
+¿Para probar L y M?
+Vamos uno por uno.
+🔹 Primero L:
+¿Cómo puedo obtener L?
+O bien de 𝐴∧𝑃⇒𝐿
+o de 𝐴∧𝐵⇒𝐿
+Tenemos que ver si alguna podemos activar:
+A ya lo tenemos (hecho ✅).
+B también (hecho ✅).
+Entonces usando 𝐴∧𝐵⇒𝐿 como tenemos A y B, podemos obtener L ✅
+🔹 Ahora M:
+¿Cómo puedo obtener M?
+De 𝐵∧𝐿⇒𝑀
+¿Tenemos B? ✅ (hecho)
+¿Tenemos L? ✅ (recién demostrado).
+Entonces, aplicando 𝐵∧𝐿⇒𝑀 podemos obtener M ✅
+
+Ahora tenemos L y M,por 𝐿∧𝑀⇒𝑃
+L∧M⇒P, obtenemos P ✅
+Luego, por 𝑃⇒𝑄 ,obtenemos Q ✅
+
+Encadenamiento hacia adelante (EA)
+
+Idea: disparar cualquier regla cuyas premisas son satisfechas en la BC, agregar su conclusión a la BC, hasta que la consulta es encontrada (es lo mismo que hacia atrás pero empezamos desde los hechos).
+
+El encadenamiento hacia adelante es dirigido por los datos (data-driven) y es común en procesamiento inconsciente, automático, e.g., reconocimiento de obje-
+tos, decisiones de rutina.
+
+Puede realizar una cantidad de trabajo irrelevante al objetivo.
+
+🔹 Estado inicial:
+Hechos conocidos: {A, B}
+
+🔹 ¿Qué reglas puedo disparar?
+
+Regla 5: 𝐴∧𝐵⇒𝐿
+
+Tenemos A y B → disparamos y obtenemos L. ✅
+
+Ahora hechos = {A, B, L}
+
+🔹 ¿Qué más puedo disparar?
+
+Regla 3: 𝐵∧𝐿⇒𝑀
+
+Tenemos B y L → disparamos y obtenemos M. ✅
+
+Ahora hechos = {A, B, L, M}
+
+🔹 ¿Qué más puedo disparar?
+
+Regla 2: 𝐿∧𝑀⇒𝑃
+
+Tenemos L y M → disparamos y obtenemos P. ✅
+
+Ahora hechos = {A, B, L, M, P}
+
+🔹 ¿Qué más puedo disparar?
+
+Regla 1: 𝑃⇒𝑄
+
+Tenemos P → disparamos y obtenemos Q. ✅
+
+Ahora hechos = {A, B, L, M, P, Q}
+
+✅ ¡Listo! ¡Llegamos a Q!
+
+
+
+Ingeniería de conocimiento
+
+El proceso general de construcción de la base de conocimiento, es llamado ingeniería del conocimiento. Un ingeniero del conocimiento es alguien que investiga el conocimiento en un dominio particular, aprende qué conceptos son importantes en ese dominio y crea una representación formal de los objetos y relaciones en el dominio. Ilustramos el proceso de ingeniería del conocimiento en un dominio de circuitos electrónicos.
+
+Los proyectos de ingeniería del conocimiento varían ampliamente en contenido, alcance y dificultad, pero todos estos proyectos incluyen los siguientes pasos: 
+
+Identificar la tarea: qué consultas haré a la BC y qué tipos de hechos tendré disponible.
+El ingeniero del conocimiento debe delinear la gama de preguntas que la base de conocimientos admitirá y los tipos de hechos que estarán disponibles para cada instancia de problema específico. Por ejemplo, ¿la base de conocimientos de wumpus debe ser capaz de elegir acciones, o sólo es necesaria para responder a preguntas sobre el contenido del entorno? ¿Los datos del sensor incluirán la ubicación actual? La tarea determinará qué conocimiento debe representarse para conectar las instancias del problema con las respuestas. Este paso es análogo al proceso de PAES para el diseño de agentes.
+
+Adquisición del conocimiento: Entender cómo trabaja el dominio.
+Es posible que el ingeniero del conocimiento ya sea un experto en el dominio, o que necesite trabajar con expertos reales para extraer lo que saben, un proceso llamado adquisición de conocimiento. En esta etapa, el conocimiento no se representa formalmente. La idea es comprender el alcance de la base de conocimientos según lo determinado por la tarea, y comprender cómo funciona realmente el dominio. Para el mundo wumpus, que está definido por un conjunto artificial de reglas, el conocimiento relevante es fácil de identificar. Para dominios reales, la cuestión de la relevancia puede ser bastante difícil, por ejemplo, un sistema para simular diseños VLSI podría o no necesitar tener en cuenta las capacitancias parásitas y los efectos de la piel.
+
+Decidir sobre el vocabulario de predicados, funciones y constantes: Involucra decisiones ontológicas. Resultado: una ontología (vocabulario).
+Es decir, traducir los conceptos importantes de nivel de dominio en nombres de nivel lógico. Esto implica muchas cuestiones de estilo de ingeniería del conocimiento. Al igual que el estilo de programación, esto puede tener un impacto significativo en el éxito final del proyecto. Por ejemplo, ¿los pozos deben ser representados por objetos o por un predicado unario en cuadrados? ¿La orientación del agente debe ser una función o un predicado? ¿La ubicación del wumpus debe depender del tiempo? Una vez que se han hecho las elecciones, el resultado es un vocabulario que se conoce como ontología del dominio. La palabra ontología significa una teoría particular de la naturaleza del ser o de la existencia. La ontología determina qué tipos de cosas existen, pero no determina sus propiedades e interrelaciones específicas.
+
+Codificar conocimiento general sobre el dominio: El ingeniero del conocimiento escribe los axiomas de todos los términos del vocabulario. Esto precisa (en la medida de lo posible) el significado de los términos, lo que permite al experto verificar el contenido. A menudo, este paso revela conceptos erróneos o lagunas en el vocabulario que deben corregirse volviendo al paso 3 e iterando a través del proceso.
+
+Codificar descripción de la instancia del problema específico: Si la ontología está bien pensada, este paso es fácil. Consiste en escribir oraciones atómicas simples sobre instancias de conceptos que ya forman parte de la ontología. Para un agente lógico, las instancias de problemas son suministradas por los sensores, mientras que una base de conocimiento "intangible" recibe oraciones de la misma manera que los programas tradicionales reciben datos de entrada.
+
+Plantear consultas al procedimiento de inferencia y obtener respuestas: Aquí es donde está la recompensa: podemos dejar que el procedimiento de inferencia opere sobre los axiomas y los hechos específicos del problema para derivar los hechos que nos interesa conocer. Por lo tanto, evitamos la necesidad de escribir un algoritmo de solución específico de la aplicación.
+
+Depurar y evaluar la base de conocimientos. Por desgracia, las respuestas a las preguntas rara vez serán correctas en el primer intento. Más precisamente, las respuestas serán correctas para la base de conocimientos tal como está escrita, suponiendo que el procedimiento de inferencia sea sólido, pero no serán las que el usuario espera. Por ejemplo, si falta un axioma, algunas consultas no se podrán responder desde la base de conocimientos. Podría producirse un proceso de depuración considerable. Los axiomas faltantes o los axiomas que son demasiado débiles se pueden identificar fácilmente al notar los lugares donde la cadena de razonamiento se detiene inesperadamente. 
+Por ejemplo Si la BC incluye una regla diagnóstica para encontrar al
+Wumpus: ∀ s HayOlor(s) =⇒ Adyacente(Home(Wumpus), s) en vez de un ⇐⇒ , el agente nunca será capaz de probar la ausencia de un Wumpus.
+
+En la sección 8.4.2 hay un ejemplo de cómo aplicar esto, no lo pongo porque el resumen se haría muy largo (más de los que ya está)
+
+
+Teoría 7 - Ontologías y Grafos de Conocimiento
+ 
+
+Ontologías y Sistemas basados en Conocimiento
+
+Para construir, de manera flexible, bases de conocimientos que pueden interoperar semánticamente, hay estándares sobre cómo formalizar las relaciones: prop(Individuo, Propiedad, Valor), es la representación individuo-propiedad-valor o representación de tri-upla.
+
+Cuando se tiene una sola relación, prop, ésta puede ser omitida sin pérdida de información:
+
+Se puede formar, mediante esto, redes semánticas, donde realizamos un grafo de conocimiento relacionando nodos iniciales (los cuales son los objetos o individuos) con nodos destino (los cuales son los valores) mediante transiciones rotuladas con la propiedad.
+
+Turtle
+
+Es un lenguaje utilizado para construir tri-uplas con una sintaxis entendible para la máquina. Ésta sintaxis está dada por: Sujeto Verbo Objeto.
+
+Para agrupar objetos con el mismo sujeto y verbo, se utiliza la coma ‘,’, es decir S V O1,O2 es una abreviatura de S V O1 y S V O2.
+
+Para agrupar pares verbo-objeto para el mismo sujeto, se utiliza el punto y coma ‘;’, es decir S V1 O1; V2 O2 es una abreviatura de S V1 O1 y S V2 O2.
+
+Los corchetes se pueden usar para definir un individuo sin un identificador. Se puede usar como el objeto de una tri-upla.
+
+
+
+Propiedades primitivas versus derivadas
+
+Un conocimiento primitivo es el definido explícitamente por hechos. Son hechos básicos que se almacenan directamente en la base de conocimientos. 
+
+Un conocimiento derivado es el definido por reglas. Son hechos que no se almacenan directamente, sino que se calculan o infieren a partir de primitivas y reglas lógicas. Se obtienen mediante inferencia automática.
+
+Una clase es un conjunto de individuos que son agrupados ya que tienen propiedades similares. Para definir una clase, asociamos propiedades a la misma, de modo que los individuos pueden ser una instancia de esa clase. Son características calculadas o deducidas a partir de otras propiedades básicas mediante reglas o inferencia lógica.
+
+Se permite, además, una propiedad type entre el individuo y una clase. Se puede usar una propiedad especial subClassOf entre dos clases que permiten la herencia de la propiedad.
+
+La lógica de una propiedad
+
+
+
+
+Herencia múltiple
+
+Un individuo es usualmente un miembro de más de una clase, por lo que puede heredar las propiedades de todas las clases de las que es miembro. A su vez, hay que evitar que el individuo herede valores por defecto en conflicto desde las distintas clases, ya que tendríamos un problema de herencia múltiple.
+
+
+Elección de propiedades primitivas y derivadas
+
+Se puede asociar un valor de propiedad con la clase más general con ese valor de propiedad. No se deben asociar propiedades ocasionales de una clase con la clase. Por ejemplo, si todas las computadoras actuales dan la casualidad que son marrones.
+
+
+
+
+
+
+
+Represente en el formato universal (prop), mediante un programa Prolog, el siguiente conocimiento
+Todas las computadoras Lemon tienen un ícono de limón como logotipo y tienen color amarillo y verde.
+
+prop(Obj, has_logo, lemon_icon) :- prop(Obj, type, lemon_computer).
+prop(Obj, has_color, yellow) :- prop(Obj, type, lemon_computer).
+prop(Obj, has_color, green) :- prop(Obj, type, lemon_computer).
+
+Todas las laptops Lemon 10000 tienen un peso de 1,1 kg.
+
+prop(Obj,weight_kg,1.1) :- prop(Obj,type,lemon_laptop_10000)
+
+Las laptops Lemon 10000 son una subclase de las computadoras Lemon.
+
+prop(Obj, subClassOf, lemon_computer) :- prop(Obj,type,lemon_laptop_10000)
+
+La computadora comp_2347 es una laptop Lemon 10000
+
+prop(comp_2347, type, lemon_laptop_10000).
+Compruebe cómo el logo, los colores y el peso de comp_2347 pueden ser derivados de este programa. ¿Qué sucede con cualquier otra computadora del tipo laptop Lemon 10000 que sea incorporada en el futuro?
+
+prop(lemon_laptop_10000, subClassOf, lemon_computer).
+prop(Obj, type, lemon_computer) :- prop(Obj, type, lemon_laptop_10000), prop(lemon_laptop_10000, subClassOf, lemon_computer).
+prop(comp_2347, type, lemon_laptop_10000).
+
+
+En base al programa desarrollado en el Ejemplo 2 completo, obtenga una representación equivalente de todos los hechos del programa en el formato prop(Individuo,Propiedad,Valor) y grafique la red semántica correspondiente.
+
+prop(donia_tota, madre, diego).
+prop(don_diego, padre, diego).
+prop(diego, padre, dalma).
+prop(diego, profesión, futbolista).
+prop(ayrton, profesión, automovilista).
+prop(ayrton, nacimiento, brasil).
+prop(lionel, nacimiento, argentina).
+prop(diego, nacimiento, argentina).
+prop(david, adopción, francia).
+prop(diego, es, campeón_mundial).
+prop(ayrton, es, campeón_mundial).
+
+prop(Obj, abuelo, Obj2) :- prop(Obj, padre, Obj1), prop(Obj1, padre, Obj2).
+prop(Obj, abuelo, Obj2) :- prop(Obj, madre, Obj1), prop(Obj1, padre, Obj2).
+prop(Obj, más_joven, Obj1) :- prop(Obj1, abuelo, Obj).
+prop(Obj, trabaja, deportista) :- prop(Obj, profesión, futbolista).
+prop(Obj, trabaja, deportista) :- prop(Obj, profesión, automovilista).
+prop(Obj, nacionalidad, X) :- prop(Obj, nacimiento, X).
+prop(Obj, nacionalidad, X) :- prop(Obj, adopción, X).
+prop(Obj, idolo, X) :- prop(Obj, nacionalidad, X), prop(Obj, trabaja, deportista), prop(Obj, es, campeón_mundial).
+
+
+
+
+
+
+
+Teoría 8 - Grafos de Conocimiento, Web Semántica y los Grandes Modelos de Lenguaje (LLM)
+
+
+Las computadoras sólo procesan símbolos. Debido a esto debemos establecer mapping entre símbolos, es decir conceptualizaciones donde realizamos correspondencias entre símbolos usados en la computadora con los individuos y relaciones del mundo. Estas conceptualizaciones se hacen explícitas mediante ontologías formales. 
+
+A menudo, el conocimiento proviene de varias fuentes, por lo que debe ser integrado. Cada fuente tiene su propia terminología y divide el mundo según necesidades (y evolucionan con el tiempo), por lo tanto los diseñadores de KBS (Sistemas de Base de Conocimiento) deberían coincidir en cómo el mundo está dividido. Para ello es importante desarrollar un vocabulario común y un significado acordado para ese vocabulario, además de que se deben desarrollar ontologías, es decir especificaciones de los significados de los símbolos en un sistema de información, para especificar qué tipos de individuos son modelados, qué propiedades son usadas y para dar axiomas que restringen el uso de este vocabulario.
+
+
+Ontologías, grafos de conocimiento y Web Semántica
+
+
+Web Semántica
+
+El objetivo era proveer soporte en la web para la navegación, visualización de los sitios y establecer descripciones formales y semántica de los datos, permitiendo automatizar el acceso a estos datos y la interoperabilidad de los sistemas.
+
+Comenzando los 2000, la W3C comienza a plantear iniciativas (estándares, protocolos, lenguajes, etc) tendientes a permitir que el conocimiento interpretable por la máquina se distribuya en la World Wide Web. 
+
+Se introdujeron conceptos claves como el RDF (Resource Description Framework), el cual es un estándar recomendado por la W3C para describir entidades o recursos, es decir que proporciona un modelo de datos estándar para un grafo de conocimiento. Un recurso puede ser cualquier cosa que podamos identificar, como una persona, una homepage, etc. En RDF, los recursos se describen con tri-uplas, también conocidas como sentencias, y tienen un formato [sujeto predicado objeto]. Un grafo RDF consiste de un conjunto de tri-uplas:
+
+
+
+También, para serializar RDFs hay varias sintaxis para almacenar e intercambiar RDFs. Una de ellas son Turtle, RDF/XML, RDFa, N-Triples, JSON-LD, etc.
+
+
+URIs e IRIs
+
+Para referenciar a las entidades y relaciones en las tuplas necesitamos una identificación unívoca de las mismas. 
+Un URI (Uniform Resource Identifier) representa y direcciona los elementos fundamentales de los grafos de conocimiento, aunque también suelen ser desreferenciables como URLs HTTP.
+Un IRI (Internationalised Resource Identifier) también son strings o cadenas que identifican unívocamente un recurso y son una generalización de los URI (permiten una gama más amplia de caracteres).
+
+Mediante estos URIs se realizan grafos que son traducidos por la máquina para establecer relaciones (aquí se utilizan lenguajes para serializar, como turtle):
+
+
+
+
+Lenguajes de Ontologías
+
+Para definir, en símbolos, representaciones de individuos y relaciones necesitamos, además de grafos de conocimiento, definiciones de taxonomías, es decir clases, subclases, propiedades y subpropiedades y restricciones que las clases deben cumplir.
+
+Para definir taxonomías se requieren modelos de datos, aunque los lenguajes de ontología/esquemas como RDFS y OWL son más potentes, ya que brindan estructuras de administración de conocimiento más completas y consistentes.
+
+Las ontologías dan más dimensionalidad a un grafo de conocimiento permitiendo clasificar cosas y definir relaciones y atributos más específicos. Las entidades pueden clasificarse específicamente y convertirse en instancias de una o más clases. Además, se pueden expresar restricciones para desarrollar un modelo de conocimiento más consistente. Con esto, se facilita la integración de datos, se controlan inconsistencias y se brinda información semántica clave a los mecanismos de inferencia.
+
+
+RDFS
+
+Proporciona un lenguaje de esquema simple para RDF y permite declarar clases y propiedades, usando las clases predefinidas a nivel de lenguaje rdfs:Class y rdfs:Property. Las clases van con mayúsculas y las propiedades no.
+
+
+OWL
+
+Se basa en una familia de representaciones de conocimiento formal, llamadas lógicas de descripción (LDs). Este lenguaje de ontología/esquemas ha sido recomendado por la W3C como el estándar de hecho para ontologías de la Web. Sintácticamente se puede considerar como una extensión de RDFS con vocabulario adicional, predefinido por el esquema OWL.
+
+Este vocabulario de esquema sirve para construir ontologías y/o anotar sus datos, como restricción de cardinalidad calificada, propiedad de cadena, autorrestricción, etc.
+
+
+Tipos de Grafos de Conocimiento (KG)
+
+Grafos de Conocimiento del Mundo: no se centran en un único campo de conocimiento, sino que intentan recopilar y estructurar todo el conocimiento del mundo. Representan conocimiento general, extensivo, impreciso y conectado.
+
+Algunos ejemplos son Google Knowledge Graph, BFO, entre otros. Algunos se basan en los principios de Datos Abiertos Vinculados (Linked Open Data).
+
+Grafos de Conocimiento del Dominio: grafos de conocimiento o al menos ontologías y taxonomías para los más variados campos de interés (negocios, salud, geográficos, etc.). Representan conocimiento específico, profundo, formal y con reglas claras.
+
+Algunos ejemplos son LOV o BARTOC, y se pueden encontrar más fácilmente con motores de búsqueda específicos.
+Linked Open Data (LOD)
+
+El objetivo es pasar de una Web de páginas (documentos) interconectadas (hipertextos) a una Web de Datos (datos vinculados) que conecta datos abiertos de distintas fuentes. Los datos abiertos están disponibles para su uso por cualquier aplicación, los cuales se crean usando estándares abiertos como RDF para describir metadatos de forma accesible y estructurada (es decir, los datos abiertos no solo requieren apertura legal como licencias, sino también apertura técnica, como formatos y estándares que permitan su libre uso e interpretación automática, para que las máquinas los puedan entender).
+
+Antes del 2006, la idea de vincular datos abiertos estaba restringida por la ausencia de una red conectada de datos en la web. Es por ello que DBpedia, un proyecto, comenzó extrayendo automáticamente datos estructurados de Wikipedia, los convirtieron en tri-uplas RDF y, con cada cosa o entidad resultante, les otorgaron una URI única para poder ser vinculada a otros datos. Esto provocó la conexión de millones de datos de forma abierta, permitiendo que otros proyectos también se conectaran a esos datos, y así formando lo que se conoce como LOD Cloud, un cloud de datasets (conjunto de datos) abiertos interconectados mediante URIs y accesibles mediante protocolos estándar.
+
+La adopción masiva de estándares abiertos como URI, URL, HTTP, HTML, RDF, RDF-Turtle y el lenguaje de consulta SPARQL, termina afianzando la idea de Linked Open Data con miles de grafos de conocimiento conectados.
+
+
+Modelos de Lenguajes
+
+El objetivo es predecir cuál es la palabra que viene a continuación. Más formalmente, dada una secuencia de palabras x(1), x(2), …, x(t), determinar la distribución de probabilidad de la siguiente palabra x(t+1): 
+
+
+Un sistema que lleva a cabo ésto es un modelo de lenguaje.
+
+
+Tipos generales de modelos
+
+Modelos discriminativos
+
+Tratan de aprender patrones que permiten diferenciar objetos de una clase de los de otras clases. El énfasis se pone en encontrar los límites de decisión que determinan cuándo un objeto debería ser asignado a una u otra clase. Modelos usuales del aprendizaje supervisado clásico usado en problemas de clasificación.
+
+Un modelo discriminativo aprende directamente el límite de decisión entre clases, es decir que, dadas entradas de ejemplo, un modelo discriminativo generará una categoría de salida, pero no se puede usar un modelo de estos para generar palabras aleatorias que sean representativas de una categoría. La regresión logística, los árboles de decisión y las máquinas de vectores son modelos discriminativos.
+
+Los modelos discriminativos ponen su énfasis en definir el límite de decisión, es decir, en realizar la tarea de clasificación que se les pidió, tienden a tener un mejor rendimiento en el límite, con una cantidad arbitraria de datos de entrenamiento (si puede ser mayor, mejor, y pueden superar a los generativos, ya que estos funcionan mejor con pocos datos que los discriminativos).
+
+
+
+Modelos generativos
+
+Aprenden modelos (probabilísticos) que describen cómo los datos de entrenamiento fueron generados. Estos modelos permiten caracterizar los límites de las clases y generar (por muestreo) nuevas instancias de las clases. En ese sentido, un generador es lo inverso a un clasificador.
+
+Un modelo generativo modela la distribución de probabilidad de cada clase. Dado un modelo separado para cada posible categoría de texto, donde incluye la probabilidad previa de la categoría (P(Categoría=Clima), ejemplo), así como la probabilidad condicional (P(Entradas|Categoría=Clima)), el modelo puede calcular la probabilidad conjunta (P(Entradas,Categoría=Clima)) y podemos generar una selección aleatoria de palabras que sea representativa de los textos de la categoría (Clima).
+
+Los modelos generativos funcionan con una cantidad limitada de datos, pero específica, donde primero contienen los Datos de entrenamiento, luego por entrenamiento el modelo generativo aplica ruido aleatorio, y realiza un muestreo generativo, ejemplo:
+
+
+
+Para crear un modelo generativo necesitamos muchos datos, pero para ajustar un modelo generativo existente, podemos usar pocos datos muy específicos. Para ajustar un modelo existente, realizamos técnicas como fine-tuning o few-shot learning, donde podemos usar pocos datos muy específicos pero con calidad, o a veces con cientos o miles de ejemplos bien elegidos.
+Importante: en un modelo generativo auto-regresivo, se puede generar texto por muestreo repetido. La salida de un muestreo, es la entrada del próximo paso.
+
+
+La explosión de la IA generativa
+
+Variational Autoencoders (VAEs)
+Generative Adversarial Networks (GANs)
+Difussion models 
+Transformers 
+Neural Radiance Fields (NeRFs)
+
+
+Transformers
+
+
+
+
+Características distintivas de ChatGPT
+
+Permite interactuar con los usuarios en una forma conversacional (mediante una interfaz de diálogo). Para ello, es pre-entrenado con un corpus ajustado a las
+instrucciones (usado en InstructGPT) convertido en formato conversacional. También usa un enfoque RLHF (Reinforcement Learning with Human Feedback) que le permite alinearse más adecuadamente con las preferencias humanas a la hora de generar texto.
+
+Agentes inteligentes basados en LLMs
+
+
+Algunas limitaciones de los LLMs son:
+
+Conocimiento implícito.
+Alucinaciones.
+Son estocásticos/probabilísticos.
+Caja negra.
+Carencia de datos específicos del dominio / nuevo conocimiento.
+Son muy grandes.
+No tienen memoria.
+
+Algunas ventajas de los LLMs:
+
+Conocimiento general.
+Procesamiento del lenguaje.
+Generalización.
+
+Algunas desventajas de los grafos de conocimiento (KGs):
+
+Incompletitud.
+Falta de comprensión de lenguaje.
+Hechos invisibles.
+
+Algunas ventajas de los grafos de conocimiento (KGs):
+
+Conocimiento estructurado.
+Precisión.
+Decisión.
+Interpretabilidad.
+Conocimiento específico del dominio.
+Conocimiento en evolución.
+
+
+Integración de los LLMs y los KGs
+
+
+
+Esta integración basa su aprendizaje por contexto, donde se utiliza la Generación Aumentada por la Recuperación (Retrieval Augmented Generation (RAG)). 
+
+Aprendizaje en contexto (ICL)
+
+El objetivo es aprender por analogías, es decir que se basa en un aprendizaje efímero: el agente razona sobre los ejemplos que tiene a mano, sin cambiar su memoria permanente. Es lo contrario a modificar explícitamente la representación interna del agente.
+In-Context Learning es un modelo que aprende a partir del contexto proporcionado en la entrada, sin necesidad de ajustar sus parámetros internos.
+
+Los pasos en la decisión de un LLM con ICL son:
+ICL requiere algunos ejemplos para formar un contexto de demostración.
+ICL concatena una pregunta de consulta y el contexto de demostración para formar un mensaje/comando (prompt).
+El prompt es introducido en el modelo de lenguaje para su predicción.
+
+Difiere del aprendizaje supervisado ya que no hay actualizaciones de parámetros, predice directamente con el modelo pre-entrenado y el contexto provisto.
+
+
+RAG
+
+
+
+Una aplicación RAG típica tiene dos componentes principales: 
+Indexación: un “pipeline” para ingerir datos de una fuente e indexarlos. Esto suele realizarse “off-line”.
+Load (cargar el documento). Aquí se ingieren documentos de distintas fuentes.
+Split (Separar el documento). Se dividen los documentos en chunks o trozos más pequeños. Mejora la precisión al recuperar partes relevantes en lugar de documentos enteros.
+Realiza vectores embeddings. Cada fragmento se transforma en un vector embedding usando un modelo de lenguaje pre entrenado. Captura el significado semántico.
+Store (Guardar vectores y embeddings). Los vectores se guardan en un vector database, y también se almacenan los metadatos asociados.
+Recuperación y generación: la cadena RAG real, que toma la consulta del usuario en tiempo de ejecución y recupera los datos relevantes del índice, luego los pasa al modelo:
+Question.
+Retrieve. El sistema convierte la pregunta en un vector de embeddings y se realiza una búsqueda vectorial en el índice para encontrar los fragmentos de textos más relevantes.
+Prompt. Aquí está la pregunta original y los fragmentos recuperados.
+Generate (ChatModel/LLM).
+Answer.
+
+
+
+Teoría 9 - Procesos de decisiones Markov (MDP)
+
+
+La IA ha considerado tradicionalmente que en el proceso de selección de acciones, cumple un rol fundamental el concepto de búsqueda y la utilización de conocimiento específico del dominio. Como ejemplo, en la resolución de problemas mediante búsqueda heurística y problemas de planificación (planning) clásico. Estas técnicas producen una solución a un problema que consiste en una secuencia de acciones que permite conducir el sistema desde un estado inicial a uno de los estados objetivos.
+
+Este esquema tradicional para la resolución de problemas se basa en el supuesto de que las acciones son determinísticas, que se puede definir como:
+
+f : S × A → S
+
+Conociendo la función de transición y los costos asociados con las acciones, es posible obtener una solución (en algunos casos óptima) observando simplemente el estado inicial y posteriormente armando un plan que conduzca a un estado objetivo, garantizando que siempre se llega a ese estado (por ser determinístico). Por ejemplo 8-puzzle, cubo de Rubik, etc.
+
+Existen situaciones sin embargo, donde el agente no tiene certeza del efecto de sus acciones. Por ejemplo en las acciones de un robot real, al existir componentes mecánicas involucrados, existe la posibilidad de que una acción determinada no se ejecute correctamente. 
+En estos casos, la incertidumbre sobre el efecto de las acciones suele implicar la necesidad de combinar la observación del ambiente con la ejecución de las acciones, y constituyen el tipo de problemas que pueden ser referenciados como problemas de contingencia.
+
+Al hablar de incertidumbre en las acciones, no estamos queriendo significar que el agente no tenga ningún tipo de información sobre sus efectos, sino simplemente resaltar que no son determinísticas en cuanto al estado resultante. 
+
+

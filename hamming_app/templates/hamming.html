@@ -7,21 +7,24 @@
     <title>Hamming</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Pixelify+Sans:wght@414&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body class="bg-body-secondary">
-    <div class="container-fluid bg-body-tertiary min-vh-100 contenedor">
-        <h2 class="text-center pt-4">Hamming</h2>
-        <p class="text-center pb-4 ">by Ezequiel Bernaldez, Ezequiel Nodar</p>
+    <div class="container-fluid min-vh-100">
+        <h1 class="font-size4rem text-center pt-4 pixelify-sans-pixel">Hamming</h1>
+        <p class="text-center pb-4 doto-pixel2">by Ezequiel Bernaldez, Ezequiel Nodar</p>
         <div class="container m-auto">
-            <div class="row g-3">
+            <div class="row g-3 doto-pixel2">
                 <form method="POST" action="{% url 'hamming_response' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3 pb-2">
-                        <label for="archivo" class="formFile pb-2">Ingrese el archivo a hamminizar</label>
+                        <label for="archivo" class="formFile pb-2 pixelify-sans-pixel">Ingrese el archivo a hamminizar</label>
                         <input id="archivo" name="archivo" required="" type="file" accept=".txt" class="form-control">
                     </div>
                     <div class="mb-3 pb-2">
-                        <label for="Hamming" class="pb-2">Ingrese el algoritmo hamming que desee</label>
+                        <label for="Hamming" class="pb-2 pixelify-sans-pixel">Ingrese el algoritmo hamming que desee</label>
                         <select name="Hamming" id="Hamming" class="form-select">
                             <option selected value="ha1">Hamming-8</option>
                             <option value="ha2">Hamming-256</option>
@@ -29,29 +32,45 @@
                         </select>
                     </div>
                     <div class="mb-3 pb-2">
-                        <label for="error" class="pb-2">Desea introducirle errores al archivo?</label>
+                        <label for="error" class="pb-2 pixelify-sans-pixel">Desea introducirle errores al archivo?</label>
                         <select name="error" id="error" class="form-select">
-                            <option value="1">Sí</option>
                             <option value="0">No</option>
+                            <option value="1">Sí</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="fix_module" class="pb-2">Desea arreglar el archivo?</label>
+                    <div class="mb-3 ocultar" id="fix_hidden">
+                        <label for="fix_module" class="pb-2 pixelify-sans-pixel">Desea arreglar el archivo?</label>
                         <select name="fix_module" id="fix_module" class="form-select">
                             <option value="1">Sí</option>
                             <option value="0">No</option>
                         </select>
                     </div>
+                    <script>
+                        const select = document.getElementById('error'); //Tomo el select con id error
+                        const block1 = document.getElementById('fix_hidden'); //Tomo el bloque id fix_hidden
+
+                        select.addEventListener('change', function() {
+                        const selectedValue = select.value; //saco el valor de value del option
+
+                        block1.classList.add('ocultar'); //aca le coloco ocultar a bloque para que se oculte
+
+                        switch (selectedValue) {
+                            case '1':
+                            block1.classList.remove('ocultar'); //aca le saco ocultar a bloque para que se muestrre
+                            break;
+                        }
+                        });
+                    </script>
                     <div class="container m-auto">
                         <div class="row g-3">
                             <div class="col-6">
                                 <div class="pt-1">
-                                    <a href="/" class="buttom_procesar">Volver</a>
+                                    <a href="/" class="buttom_procesar pixelify-sans-pixel">Volver</a>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="d-flex justify-content-end">
-                                    <button type="submit" class="buttom_procesar">Procesar</button>
+                                    <button type="submit" class="buttom_procesar pixelify-sans-pixel">Procesar</button>
                                 </div>
                             </div>
                         </div>
@@ -61,6 +80,56 @@
         </div>
         
     </div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+            <defs>
+                <linearGradient id="bg">
+                    <stop offset="0%" style="stop-color:rgba(130, 158, 249, 0.06)"></stop>
+                    <stop offset="50%" style="stop-color:rgba(76, 190, 255, 0.6)"></stop>
+                    <stop offset="100%" style="stop-color:rgba(115, 209, 72, 0.2)"></stop>
+                </linearGradient>
+                <path id="wave" fill="url(#bg)" d="M-363.852,502.589c0,0,236.988-41.997,505.475,0
+        s371.981,38.998,575.971,0s293.985-39.278,505.474,5.859s493.475,48.368,716.963-4.995v560.106H-363.852V502.589z" />
+            </defs>
+            <g>
+                <use xlink:href='#wave' opacity=".3">
+                    <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="translate"
+            dur="10s"
+            calcMode="spline"
+            values="270 230; -334 180; 270 230"
+            keyTimes="0; .5; 1"
+            keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
+            repeatCount="indefinite" />
+                </use>
+                <use xlink:href='#wave' opacity=".6">
+                    <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="translate"
+            dur="8s"
+            calcMode="spline"
+            values="-270 230;243 220;-270 230"
+            keyTimes="0; .6; 1"
+            keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
+            repeatCount="indefinite" />
+                </use>
+                <use xlink:href='#wave' opacty=".9">
+                    <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="translate"
+            dur="6s"
+            calcMode="spline"
+            values="0 230;-140 200;0 230"
+            keyTimes="0; .4; 1"
+            keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
+            repeatCount="indefinite" />
+                </use>
+            </g>
+        </svg>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
 </body>
