@@ -1,5 +1,6 @@
 import heapq
 from collections import Counter
+import os
 
 '''-----------------------------------------------------Tabla de frecuencias-------------------------------------------------------------------'''
 
@@ -171,6 +172,14 @@ def descompactacion_archivo(file_read,file_write):
 '''-----------------------------------------------------Ver estadística-------------------------------------------------------------------'''
 
 
-def ver_estadistica(file_original,file_compactado,file_descompactado):
-    pass
+def ver_estadistica(file_original,file_compactado):
+    tamaño_original = os.path.getsize(file_original)
+    tamaño_compactado = os.path.getsize(file_compactado)
+
+    dic={}
+    dic["original"]=tamaño_original
+    dic["compactado"]=tamaño_compactado
+    dic["porcentaje"] = (((tamaño_compactado - tamaño_original) / tamaño_original) * 100)
+    
+    return dic
 

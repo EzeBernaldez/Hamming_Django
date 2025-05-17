@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from .algoritmos import hamming_8,hamming_256,hamming_4096, huffman
-from .algoritmos.huffman import compactacion_archivo, descompactacion_archivo
+from .algoritmos.huffman import compactacion_archivo, descompactacion_archivo,ver_estadistica
 import os
 from django.http import HttpResponse
 from django.conf import settings
@@ -200,17 +200,18 @@ def huffman_response(request):
 
 
             compresion_path = os.path.join(ruta, 'compresion.huf')
-            descompresion_path = os.path.join(ruta,'descompresion.dhu')
             compactacion_archivo(texto_path,compresion_path)
-            descompactacion_archivo(compresion_path,descompresion_path)
 
             with open(compresion_path, 'rb') as f:
                 bloque = base64.b64encode(f.read()).decode('utf-8')  # ✅ seguro para mostrar
                 context['texto_comprimido'] = bloque
 
-            with open(descompresion_path, 'r', encoding='utf-8') as f:
-                bloque = f.read()
-                context['texto_descomprimido'] = bloque
+    
+    tam=ver_estadistica(texto_path,compresion_path)
+    
+    context["tamaño_original"]=tam["original"] /1000
+    context["tamaño_compactado"]=tam["compactado"] /1000
+    context["porcentaje"]=tam["porcentaje"]
     
     context['MEDIA_URL'] = settings.MEDIA_URL
     return render(request, 'huffman_response.html', context)
@@ -219,7 +220,6 @@ def huffman_response(request):
 
 def huffman_response_descomprimir(request):
     context = {}
-    print("entra")
     if request.method == 'POST':
         archivo = request.FILES.get('archivo')
 
@@ -237,7 +237,7 @@ def huffman_response_descomprimir(request):
             descompactacion_archivo(compresion_path, descompresion_path)
             
             with open(descompresion_path,'rb') as f:
-                bloque = f.read().decode('latin-1')
+                bloque = f.read().decode('utf-8')
                 context['texto_descomprimido'] = bloque
 
     context['MEDIA_URL'] = settings.MEDIA_URL

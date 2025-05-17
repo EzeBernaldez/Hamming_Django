@@ -5,46 +5,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Respuesta</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="../static/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Pixelify+Sans:wght@414&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 </head>
-<body class="contenedor">
+<body>
     <div class="container-fluid min-vh-100">
         <h2 class="text-center pt-2 pb-2 pixelify-sans-pixel">Huffman</h2>
         <div class="container m-auto">
             <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
-            <div class="row">
-                <div class="col-12">
+            <div class="row pt-4 pb-4">
+                <fieldset class="fieldset-custom">
+                    <legend class="pixelify-sans-pixel" style="float: none;width: auto;padding: 0 10px;font-size: 2rem;color: white;text-align: left;margin-bottom: 0;">Estadisticas de las Compactacion</legend>
+                    <p class="doto-pixel2 ps-3">Tamaño del archivo orignal: {{ tamaño_original }} bytes</p>
+                    <p class="doto-pixel2 ps-3">Tamaño del archivo compactado: {{ tamaño_compactado }} bytes</p>
+                    {% if porcentaje <= 0 %}
+                    <p class="doto-pixel2 ps-3">El archivo original se redujo en un: {{ porcentaje|floatformat:2 }}%</p>
+                    {% endif %}
+                    {% if porcentaje > 0 %}
+                    <p class="doto-pixel2 ps-3">El archivo original aumento en un: {{ porcentaje|floatformat:2 }}%</p>
+                    {% endif %}
+                </fieldset>
+            </div>
+            <div class="row pt-5">
+                <div class="col-6">
                     {% if texto_plano %}
                     <div class="mb-4">
                         <h4 class="pixelify-sans-pixel">Texto original:</h4>
-                            <textarea class="p-3 rounded" readonly>{{ texto_plano }}</textarea>
+                        <br/>
+                        <textarea class="p-3 rounded" readonly rows="20">{{ texto_plano }}</textarea>
                     </div>
                     {% endif %}
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
+                <div class="col-6">
                     {% if texto_plano %}
                     <div class="mb-4">
                         <h4 class="pixelify-sans-pixel">Texto Comprimido</h4>
                         <a href="{{ MEDIA_URL }}huff/compresion.huf" download="compresion.huf" class="descargar doto-pixel2">Descargar archivo comprimido</a>
-                            <textarea class="p-3 rounded" readonly>{{ texto_comprimido }}</textarea>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    {% if texto_plano %}
-                    <div class="mb-4">
-                        <h4 class="pixelify-sans-pixel">Texto Descomprimido</h4>
-                        <a href="{{ MEDIA_URL }}huff/descompresion.dhu" download="descompresion.dhu" class="descargar doto-pixel2">Descargar archivo descomprimido</a>
-                            <textarea class="p-3 rounded" readonly>{{ texto_descomprimido }}</textarea>
+                            <textarea class="p-3 rounded" readonly rows="20">{{ texto_comprimido }}</textarea>
                     </div>
                     {% endif %}
                 </div>

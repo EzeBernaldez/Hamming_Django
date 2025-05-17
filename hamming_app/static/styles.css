@@ -70,10 +70,8 @@ textarea{
     box-shadow: 0 0 5px 1px #fffd;
     width: 100%;
     min-height: 120px;
-}
-
-.deco{
-    min-height: 352px;
+    transition: 0.4s;
+    background: linear-gradient(rgba(255, 255, 255, 0.100),rgba(255,255,255,0.100));
 }
 
 
@@ -91,12 +89,23 @@ textarea{
     border-radius: 3px;       /* roundness of the scroll thumb */
   }
 
-fieldset {
+.fieldset-custom {
     border: 2px solid rgba(255, 255, 255, 0.195);
     border-radius: 8px;
     padding: 1.5rem;
     position: relative;
-    background: linear-gradient(rgba(255, 255, 255, 0.151),rgba(255,255,255,0.151));
+    background: linear-gradient(rgba(255, 255, 255, 0.100),rgba(255,255,255,0.100));
+    transition: 0.4s;
+}
+
+.fieldset-custom:hover{
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.195);
+    transition: 0.4s;
+}
+
+textarea:hover{
+    box-shadow: 0 0 20px #fffd;
+    transition: 0.4s;
 }
 
 legend {

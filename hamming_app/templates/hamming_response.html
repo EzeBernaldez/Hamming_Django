@@ -17,64 +17,56 @@
         <h2 class="text-center pt-2 pb-2 pixelify-sans-pixel">Hamming</h2>
         <div class="container m-auto">
                 <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
-                <div class="row">
-                    <div class="col">
+                <div class="row pt-5">
+                    <div class="col-6">
                         {% if texto_plano %}
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto original:</h4>
-                            <textarea class="p-3 rounded" readonly>{{ texto_plano }}</textarea>
+                            <br/>
+                            <textarea class="p-3 rounded" readonly rows="20">{{ texto_plano }}</textarea>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-6">
+                        {% if texto_decodificado_con_error %}
+                        <div class="mb-4">
+                            <h4 class="pixelify-sans-pixel">Texto decodificado con errores:</h4>
+                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_con_error.{{ fix|upper }}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2">Descargar archivo decodificado con errores</a>
+                            <textarea class="p-3 border rounded" readonly rows="20">{{ texto_decodificado_con_error }}</textarea>
+                        </div>
+                        {% endif %}
+                        {% if texto_decodificado_sin_error %}
+                        <div class="mb-4">
+                            <h4 class="pixelify-sans-pixel">Texto decodificado sin errores:</h4>
+                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_sin_error.{{ fix|upper }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2">Descargar archivo decodificado sin errores</a>
+                            <textarea class="p-3 rounded" readonly rows="20">{{ texto_decodificado_sin_error }}</textarea>
+                        </div>
+                        {% endif %}
+                        {% if error == '0' %}
+                        <div class="mb-4">
+                            <h4 class="pixelify-sans-pixel">Texto decodificado:</h4>
+                            <br/>
+                            <textarea class="p-3 border rounded" readonly rows="20">{{ texto_decodificado }}</textarea>
                         </div>
                         {% endif %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <div class="container-fluid mt-0">
-                            <div class="row">
-                                <div class="col mt-3">
-                                    {% if texto_codificado %}
-                                    <div class="mb-4">
-                                        <h4 class="pixelify-sans-pixel">Texto codificado:</h4>
-                                        <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion.{{ algoritmo|upper }}" download="codificacion.{{ algoritmo|upper }}" class="descargar doto-pixel2">Descargar archivo codificado</a>
-                                        <textarea class="p-3 rounded mt-2" style="height: auto;" readonly>{{ texto_codificado }}</textarea>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col mt-3">
-                                    {% if texto_codificado_error %}
-                                    <div class="mb-4">
-                                        <h4 class="pixelify-sans-pixel">Texto codificado con error:</h4>
-                                        <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion_error.{{ errores|upper }}" download="codificacion_error.{{ errores|upper }}" class="descargar doto-pixel2">Descargar archivo codificado con errores</a>
-                                        <textarea class="p-3 rounded mt-2" style="height: auto;" readonly>{{ texto_codificado_error }}</textarea>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            </div>
+                        {% if texto_codificado %}
+                        <h4 class="pixelify-sans-pixel">Texto codificado:</h4>
+                        <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion.{{ algoritmo|upper }}" download="codificacion.{{ algoritmo|upper }}" class="descargar doto-pixel2">Descargar archivo codificado</a>
+                        <textarea class="p-3 rounded mt-2" rows="20" readonly>{{ texto_codificado }}</textarea>
+                        {% endif %}
                     </div>
-                    <div class="col-6 h-100">
-                            {% if texto_decodificado_con_error %}
-                            <div class="mb-4 mt-3">
-                                <h4 class="pixelify-sans-pixel">Texto decodificado con errores:</h4>
-                                <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_con_error.{{ fix|upper }}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2">Descargar archivo decodificado con errores</a>
-                                <textarea class="p-3 border rounded mt-2 deco" readonly>{{ texto_decodificado_con_error }}</textarea>
+                    <div class="col-6">
+                        {% if texto_codificado_error %}
+                            <div class="mb-4">
+                                <h4 class="pixelify-sans-pixel">Texto codificado con error:</h4>
+                                <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion_error.{{ errores|upper }}" download="codificacion_error.{{ errores|upper }}" class="descargar doto-pixel2">Descargar archivo codificado con errores</a>
+                                <textarea class="p-3 rounded mt-2" readonly rows="20">{{ texto_codificado_error }}</textarea>
                             </div>
-                            {% endif %}
-                            {% if texto_decodificado_sin_error %}
-                            <div class="mb-4 mt-3">
-                                <h4 class="pixelify-sans-pixel">Texto decodificado sin errores:</h4>
-                                <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_sin_error.{{ fix|upper }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2">Descargar archivo decodificado sin errores</a>
-                                <textarea class="p-3 rounded mt-2 deco" readonly>{{ texto_decodificado_sin_error }}</textarea>
-                            </div>
-                            {% endif %}
-                            {% if error == '0' %}
-                            <div class="mb-4 mt-3">
-                                <h4 class="pixelify-sans-pixel">Texto decodificado:</h4>
-                                <textarea class="p-3 border rounded mt-2 deco" readonly>{{ texto_decodificado }}</textarea>
-                            </div>
-                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>  
                 <div class="row">

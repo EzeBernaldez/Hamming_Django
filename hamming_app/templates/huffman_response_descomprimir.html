@@ -17,13 +17,16 @@
         <h2 class="text-center pt-2 pb-2 pixelify-sans-pixel">Huffman</h2>
         <div class="container m-auto">
             <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
-            <div class="row">
+            <div class="row pt-3">
                 <div class="col-12">
                     {% if texto_descomprimido %}
                     <div class="mb-4">
                         <h4 class="pixelify-sans-pixel">Texto original:</h4>
                         <a href="{{ MEDIA_URL }}huff/resultado_descomprimido.dhu" download="resultado_descomprimido.dhu" class="descargar doto-pixel2">Descargar archivo descomprimido</a>
-                            <textarea class="p-3 rounded" readonly>{{ texto_descomprimido }}</textarea>
+                        <br/>
+                        <br/>
+
+                        <textarea class="p-3 rounded" readonly rows="15">{{ texto_descomprimido }}</textarea>
                     </div>
                     {% endif %}
                 </div>

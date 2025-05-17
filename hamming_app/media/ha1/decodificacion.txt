@@ -1,7 +1,176 @@
-ññññEs decir, La racionalidad de un agente depende de la medida de performance, su 
-conocimiento previo del ambiente, y los sensores y efectores que tenga 
-Esto conduce a una definición de un agente racional: 
-Para cada secuencia de percepciones posibles, un agente racional debería 
-seleccionar aquella acción que se espera que maximice su medida de performance, 
-dada la evidencia provista por la secuencia de percepciones y cualquier 
-conocimiento previo que el agente tenga. 
+////////////////////////////CONEXION CON BD////////////////////////////////////////
+package Conexion;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Conexion {
+
+    private static Conexion instanciaUnica;
+
+    private Connection conexion;
+
+    //A la hora de querer hacer una consulta a la base se tiene que hacer:  
+    //Connection conexion = Conexion.getInstancia().getConexion();
+    //A la hora de cerrar la conexion se hace:
+    //Conexion.getInstancia().cerrarConexion();
+    Conexion() throws ClassNotFoundException {
+        String url = Credenciales.getUrl();
+        String usuario = Credenciales.getUsuario();
+        String  contraseña= Credenciales.getContraseña();
+        
+
+        try {
+            Class.forName(Credenciales.getDRIVERS());
+            conexion = DriverManager.getConnection(url, usuario, contraseña);
+            System.out.println("Conexión Exitosa a BD Lopez_Repuestos.");
+            System.out.println(conexion);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Conexion getInstancia() throws ClassNotFoundException {
+        if (instanciaUnica == null) {
+            instanciaUnica = new Conexion();
+        }
+        return instanciaUnica;
+    }
+
+    public Connection getConexion() {
+        return conexion;
+    }
+
+    public void closeConexion() {
+        if (conexion != null) {
+            try {
+                conexion.close();
+                System.out.println("Conexión cerrada.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
+
+////////////////////////////CREDENCIALES BD////////////////////////////////////////
+package Conexion;
+
+public abstract class Credenciales {
+
+    // Atributos estáticos
+    private static final String Url = "jdbc:mysql://localhost:3306/lopez_repuestos";
+    private static final String Usuario = "root";
+    private static final String Contraseña = "24103";
+    private static final String DRIVERS = "com.mysql.cj.jdbc.Driver"; // Agregar el driver adecuado
+
+    // Métodos para obtener las credenciales
+    public static String getUrl() {
+        return Url;
+    }
+
+    public static String getUsuario() {
+        return Usuario;
+    }
+
+    public static String getContraseña() {
+        return Contraseña;
+    }
+
+    public static String getDRIVERS() {
+        return DRIVERS;
+    }
+}
+
+
+
+
+////////////////////////////CONEXION CON BD DE LOGIN////////////////////////////////////////
+package Conexion;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class ConexionLogin {
+
+    private static ConexionLogin instanciaUnica;
+
+    private Connection conexion;
+
+    //A la hora de querer hacer una consulta a la base se tiene que hacer:
+    //Connection conexion = Conexion.getInstancia().getConexion();
+    //A la hora de cerrar la conexion se hace:
+    //Conexion.getInstancia().cerrarConexion();
+    private ConexionLogin() throws ClassNotFoundException {
+        String url = CredencialesLogin.getUrl();
+        String usuario = CredencialesLogin.getUsuario();
+        String  contraseña= CredencialesLogin.getContraseña();
+
+
+        try {
+            Class.forName(CredencialesLogin.getDRIVERS());
+            conexion = DriverManager.getConnection(url, usuario, contraseña);
+            System.out.println("Conexión Exitosa.");
+            System.out.println(conexion);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ConexionLogin getInstancia() throws ClassNotFoundException {
+        if (instanciaUnica == null) {
+            instanciaUnica = new ConexionLogin();
+        }
+        return instanciaUnica;
+    }
+
+    public Connection getConexion() {
+        return conexion;
+    }
+
+    public void closeConexion() {
+        if (conexion != null) {
+            try {
+                conexion.close();
+                System.out.println("Conexión cerrada.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
+////////////////////////////CREDENCIALES LOGIN////////////////////////////////////////
+package Conexion;
+
+public abstract class CredencialesLogin {
+
+    // Atributos estáticos
+    private static final String Url = "jdbc:mysql://localhost:3306/login";
+    private static final String Usuario = "root";
+    private static final String Contraseña = "24103";
+    private static final String DRIVERS = "com.mysql.cj.jdbc.Driver"; // Agregar el driver adecuado
+
+    // Métodos para obtener las credenciales
+    public static String getUrl() {
+        return Url;
+    }
+
+    public static String getUsuario() {
+        return Usuario;
+    }
+
+    public static String getContraseña() {
+        return Contraseña;
+    }
+
+    public static String getDRIVERS() {
+        return DRIVERS;
+    }
+}
+
