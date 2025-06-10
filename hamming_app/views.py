@@ -29,10 +29,10 @@ def hamming_response(request):
             texto_path = os.path.join(ruta,'texto.txt')
 
             with open(texto_path, 'wb') as f:
-                bloque = ""
+                bloque = b''
                 for chunk in archivo.chunks():
                     f.write(chunk)
-                    bloque += chunk.decode('utf-8')
+                    bloque += chunk
                 context["texto_plano"] = bloque
 
             if algoritmo == 'ha1':
@@ -192,18 +192,18 @@ def huffman_response(request):
             texto_path = os.path.join(ruta, 'texto.txt')
             
             with open(texto_path, 'wb') as f:
+                bloque = b''
                 for chunk in archivo.chunks():
                     f.write(chunk)
-
-            with open(texto_path, 'r', encoding='utf-8') as f:
-                context["texto_plano"] = f.read()
-
+                    bloque = base64.b64encode(chunk).decode('utf-8')
+                context['texto_plano'] = bloque
+                    
 
             compresion_path = os.path.join(ruta, 'compresion.huf')
             compactacion_archivo(texto_path,compresion_path)
 
             with open(compresion_path, 'rb') as f:
-                bloque = base64.b64encode(f.read()).decode('utf-8')  # ✅ seguro para mostrar
+                bloque = base64.b64encode(f.read()).decode('utf-8')
                 context['texto_comprimido'] = bloque
 
     
@@ -226,12 +226,10 @@ def huffman_response_descomprimir(request):
         if archivo:
             ruta = os.path.join(settings.MEDIA_ROOT, 'huff')
             compresion_path = os.path.join(ruta, 'descomprimir.huf')
+            
             with open(compresion_path, 'wb') as f:
-                bloque = ""
                 for chunk in archivo.chunks():
                     f.write(chunk)
-                    bloque += chunk.decode('latin-1')
-                context["texto_plano"] = bloque
 
             descompresion_path = os.path.join(ruta, 'resultado_descomprimido.dhu')
             descompactacion_archivo(compresion_path, descompresion_path)

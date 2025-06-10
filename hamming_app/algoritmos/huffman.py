@@ -8,7 +8,7 @@ import os
 def tabla_frecuencia(content) -> dict:
     total = len(content)
     frecuencias = Counter(content)
-    return dict(sorted({char: freq / total for char, freq in frecuencias.items()}.items(), key=lambda x: x[1], reverse=True))
+    return dict(sorted({byte: freq / total for byte, freq in frecuencias.items()}.items(), key=lambda x: x[1], reverse=True))
 
 
 
@@ -17,8 +17,8 @@ def tabla_frecuencia(content) -> dict:
 
 class Nodo:
 
-    def __init__(self,caracter='',frecuencia=None,derivaciones=0):
-        self.caracter = caracter
+    def __init__(self,byte=b'0',frecuencia=None,derivaciones=0):
+        self.byte = byte
         self.frecuencia = frecuencia 
         self.left = None
         self.rigth = None
@@ -36,20 +36,20 @@ def compactacion_archivo(file_read,file_write):
     codificacion = {}
 
     try:
-        with open(file_read, 'r', encoding='utf-8') as f:
+        with open(file_read, 'rb') as f:
             content = f.read()
         
             frecuencias_dict = tabla_frecuencia(content)
-            frecuencias_heap = [Nodo(caracter,frecuencia) for caracter, frecuencia in frecuencias_dict.items()]
+            frecuencias_heap = [Nodo(byte,frecuencia) for byte, frecuencia in frecuencias_dict.items()]
             heapq.heapify(frecuencias_heap)
 
             if len(frecuencias_dict) == 1:
-                codificacion = {k:'1' for k,v in frecuencias_dict.items()}
+                codificacion = {k:b'1' for k,v in frecuencias_dict.items()}
             else:
                 while len(frecuencias_heap) > 1:
                     minimo_minimo = heapq.heappop(frecuencias_heap)
                     minimo_maximo = heapq.heappop(frecuencias_heap)
-                    tupla = Nodo(frecuencia=minimo_maximo.frecuencia + minimo_minimo.frecuencia,derivaciones= max(minimo_maximo.derivaciones,minimo_minimo.derivaciones)+1,caracter=[minimo_maximo.caracter,minimo_minimo.caracter])
+                    tupla = Nodo(frecuencia=minimo_maximo.frecuencia + minimo_minimo.frecuencia,derivaciones= max(minimo_maximo.derivaciones,minimo_minimo.derivaciones)+1,byte=[minimo_maximo.byte,minimo_minimo.byte])
 
                     tupla.left = minimo_minimo  # izquierdo = menos frecuente
                     tupla.rigth = minimo_maximo
@@ -63,15 +63,16 @@ def compactacion_archivo(file_read,file_write):
 
             with open(file_write,'wb') as wr:
 
-                codificacion_bytes = ''.join(codificacion[caracteres] for caracteres in content)
+                codificacion_bytes = ''.join(codificacion[byte] for byte in content)
 
-                codificacion_dict = format(len(codificacion),'08b') #Cuantos caracteres hay en la codificacion.
-                longitud_dict = 1
+                codificacion_dict = format(len(codificacion),'016b')
+                #Cuantos bytes hay en la codificacion.
+                longitud_dict = 2
 
                 for key,value in codificacion.items():
                     longitud = len(value)
-                    codificacion_dict += format((ord(key)),'08b').zfill(16) + format(longitud,'08b') + value.zfill(8 * ((longitud + 7) // 8)) #por cada caracter, guardar el número de bits que utiliza la codificacion y la codificación propiamente dicha
-                    longitud_dict += 3 + ((longitud + 7) // 8)
+                    codificacion_dict += format(key,'08b') + format(longitud,'08b') + (value.zfill(8 * ((longitud + 7) // 8))) #por cada byte, guardar el número de bits que utiliza la codificacion y la codificación propiamente dicha
+                    longitud_dict += 2 + ((longitud + 7) // 8)
 
 
                 cantidad_ceros = (8 - (len(codificacion_bytes) % 8)) % 8
@@ -82,21 +83,23 @@ def compactacion_archivo(file_read,file_write):
 
                 codificacion_dict = int(codificacion_dict,2)
                 
-
+                print(f'La cantidad de bytes ocupados es: {len(codificacion_bytes.to_bytes(longitud,'big'))}')
+                
                 codificacion_bytes = codificacion_dict.to_bytes(longitud_dict,'big')  + cantidad_ceros.to_bytes(1,'big') + codificacion_bytes.to_bytes(longitud,'big')
+                
 
-
+                
                 wr.write(codificacion_bytes)
 
-    except:
-        print('Algo ocurrió')
+    except Exception as e:
+        print('Error en la codificación', e)
 
 
 def generar_codigos(nodo, codigo_actual, codificacion, shift):
     if nodo is None:
         return
     if nodo.left is None and nodo.rigth is None:
-        codificacion[nodo.caracter] = format(codigo_actual, f'0{shift}b')
+        codificacion[nodo.byte] = format(codigo_actual, f'0{shift}b')
         return 
     generar_codigos(nodo.left,  (codigo_actual << 1), codificacion, shift+1)
     generar_codigos(nodo.rigth, (codigo_actual << 1) | 1, codificacion, shift+1)
@@ -121,28 +124,29 @@ def descompactacion_archivo(file_read,file_write):
             #Extraemos el diccionario de codificaciones
             codificacion_dict = {}
 
-            cantidad_caracteres_codificacion = content_bytes[0:8]
+            cantidad_caracteres_codificacion = content_bytes[0:16]
+            
 
             cantidad_caracteres_codificacion = int(cantidad_caracteres_codificacion,2)
 
-            content_bytes = content_bytes[8:]
+            content_bytes = content_bytes[16:]
 
             for i in range(0,cantidad_caracteres_codificacion):
-                caracter = content_bytes[0:16]
-                caracter = chr(int(caracter,2))
+                byte = content_bytes[0:8]
 
-                longitud_codificacion = content_bytes[16:24]
+                longitud_codificacion = content_bytes[8:16]
                 longitud_codificacion = int(longitud_codificacion,2)
 
                 longitud = 8 * ((longitud_codificacion + 7 ) // 8)
 
-                codificacion = content_bytes[24: 24 + longitud]
+                codificacion = content_bytes[16: 16 + longitud]
                 codificacion = codificacion[longitud-longitud_codificacion:]
 
 
-                codificacion_dict[caracter] = codificacion
+                codificacion_dict[byte] = codificacion
+                print(codificacion_dict[byte])
                 
-                content_bytes = content_bytes[24 + longitud:]
+                content_bytes = content_bytes[16 + longitud:]
             
             #Contamos cuantos 0's hay de relleno
 
@@ -162,11 +166,16 @@ def descompactacion_archivo(file_read,file_write):
                     mensaje += codificacion_dict_reverse[bits_seleccionados]
                     bits_seleccionados = ''
 
+            longitud_mensaje = (len(mensaje) + 7) // 8
+            
+            mensaje_bytes = int(mensaje,2)
+            
+            mensaje_bytes = mensaje_bytes.to_bytes(longitud_mensaje,'big')
 
-            with open(file_write, 'w', encoding='utf-8', newline='\n') as wr:
-                wr.write(mensaje)
+            with open(file_write, 'wb') as wr:
+                wr.write(mensaje_bytes)
     except Exception as e:
-        print(e)
+        print(f'Error en la descompactación{e}')
 
 
 '''-----------------------------------------------------Ver estadística-------------------------------------------------------------------'''
