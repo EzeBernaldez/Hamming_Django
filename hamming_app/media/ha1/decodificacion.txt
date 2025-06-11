@@ -38,3 +38,4 @@ Para descargar herramientas de depuración de django, utilizo pipenv install dja
 Siguiente a la instalación está la implementación. En urls.py del proyecto vamos a registrar un path con '__debug__', include('debug_toolbar.urls')
 
 En settings.py, hay que poner dentro de middleware debug_toolbar.middleware.DebugToolbarMiddleware. Luego hay que crear un atributo llamado INTERNAL_IPS = ['127.0.0.1']
+0

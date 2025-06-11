@@ -18,11 +18,13 @@ def codificacion_hamming(p):
 
 def deshamminizacion(p,q,fix_module):
     decodificacion = control_hamming(p)
+    doble_error = 0
     if control_bit_paridad(p) == 0:
         if not decodificacion:
-            result= {'primer': decodificacion_hamming(p)}
+            result = {'primer': decodificacion_hamming(p)}
         else:
-            return -1 #Hay dos errores
+            doble_error = 1
+            result = {'primer': decodificacion_hamming(p)}
     else:
         if not decodificacion:
             #Hay error en el bit de paridad
@@ -40,13 +42,13 @@ def deshamminizacion(p,q,fix_module):
             else:
                 result= {'primer': decodificacion_hamming(p)}
 
-
     decodificacion = control_hamming(q)
     if control_bit_paridad(q) == 0:
         if not decodificacion:
             result['segundo']= decodificacion_hamming(q)
         else:
-            return -1 #Hay dos errores
+            doble_error = 1
+            result['segundo']= decodificacion_hamming(q)
     else:
         if not decodificacion:
             #Hay error en el bit de paridad
@@ -63,7 +65,7 @@ def deshamminizacion(p,q,fix_module):
                 result ['segundo'] =  decodificacion_hamming(q)
             else:
                 result ['segundo'] =  decodificacion_hamming(q)
-    return (result['primer'] << 4) + (result['segundo'])
+    return [doble_error, (result['primer'] << 4) + (result['segundo'])]
 
 
 def control_hamming(p):
@@ -114,20 +116,24 @@ def decodificar_archivo(file_name_read, file_name_write, arreglar_archivo):
                 return
             contenido = int.from_bytes(contenido,byteorder='big')
             with open(file_name_write, 'w', encoding="utf-8", newline='\n') as wr:
+                doble_error_general = 0
                 for i in range(1,longitud,2):
                     primer = (contenido >> (8 * (longitud-i))) & 0xFF
                     segundo = (contenido >> (8 * (longitud-(i+1)))) & 0xFF
-                    if(deshamminizacion(primer,segundo,arreglar_archivo) == "\n"):
+                    ddeshamminizacion = deshamminizacion(primer,segundo,arreglar_archivo)
+                    doble_error_general = max(ddeshamminizacion[0],doble_error_general)
+                    if(ddeshamminizacion == "\n"):
                         pass
                     else:
-                        wr.write(f"{chr(deshamminizacion(primer,segundo,arreglar_archivo))}")
+                        wr.write(f"{chr(ddeshamminizacion[1])}")
+                wr.write(f'{doble_error_general}')
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
         print("Error al decodificar archivo: ", e)
 
 
-def ingresar_error(file_name_read,file_name_write):
+def ingresar_error(file_name_read,file_name_write,errores):
     try:
         with open(file_name_read, 'rb') as f, open(file_name_write, 'wb') as wr:
             while True:
@@ -135,10 +141,11 @@ def ingresar_error(file_name_read,file_name_write):
                 bloque_bytes = int.from_bytes(bloque,byteorder='big')
                 if(len(bloque)==0):
                     break
-                if random.randint(0,1) == 1:
-                    error = random.randint(0,7)
-                    mask = 1 << error
-                    bloque_bytes^= mask
+                for i in range(0,errores):
+                    if random.randint(0,1) == 1:
+                        error = random.randint(0,7)
+                        mask = 1 << error
+                        bloque_bytes^= mask
                 wr.write(bloque_bytes.to_bytes(1,byteorder='big'))
         
     except Exception as e:

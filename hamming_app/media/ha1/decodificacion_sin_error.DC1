@@ -1,176 +1,41 @@
-////////////////////////////CONEXION CON BD////////////////////////////////////////
-package Conexion;
+DJANGO
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+'''Para instalar mi proyecto utilizando pipenv en vez de un entorno virtual manual como venv tenemos que: 
+1. Tener instalado en el ordenador pipenv, se hace poniendo pip install pipenv. Si ya lo tengo instalado, puedo verificar haciendo pipenv --version.
+2. Ir a la carpeta donde quiero que esté mi proyecto django.
+3. Hacer pipenv install django (esto creará mis archivos pipfile y pipfile.lock, sino tenemos que hacer pipenv install).
+4. Entrar al entorno virtual haciendo pipenv shell.
+5. Crear el proyecto haciendo django-admin startproject -nombre_proyecto- . (el punto es necesario para pipenv, ya que siempre se encuentra en el directorio raiz del proyecto, es una práctica usual)'''
+6. Para utilizar el intérprete del entorno virtual tengo que, en seleccioanr intérprete, introducir donde está el entorno virtual.
 
-public class Conexion {
-
-    private static Conexion instanciaUnica;
-
-    private Connection conexion;
-
-    //A la hora de querer hacer una consulta a la base se tiene que hacer:  
-    //Connection conexion = Conexion.getInstancia().getConexion();
-    //A la hora de cerrar la conexion se hace:
-    //Conexion.getInstancia().cerrarConexion();
-    Conexion() throws ClassNotFoundException {
-        String url = Credenciales.getUrl();
-        String usuario = Credenciales.getUsuario();
-        String  contraseña= Credenciales.getContraseña();
-        
-
-        try {
-            Class.forName(Credenciales.getDRIVERS());
-            conexion = DriverManager.getConnection(url, usuario, contraseña);
-            System.out.println("Conexión Exitosa a BD Lopez_Repuestos.");
-            System.out.println(conexion);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Conexion getInstancia() throws ClassNotFoundException {
-        if (instanciaUnica == null) {
-            instanciaUnica = new Conexion();
-        }
-        return instanciaUnica;
-    }
-
-    public Connection getConexion() {
-        return conexion;
-    }
-
-    public void closeConexion() {
-        if (conexion != null) {
-            try {
-                conexion.close();
-                System.out.println("Conexión cerrada.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-}
+'''Si quiero eliminar mi proyecto del ordenador también tengo qyue eliminar el entorno virtual, por lo tanto voy a C:\Users\ezebe\.virtualenvs y lo elimino manualmente. También, desde mi directorio raiz donde esta pipfile, puedo hacer pipenv --rm, el cual va a eliminar mi entorno virtual asociado a este proyecto'''
 
 
+GITIGNORE
 
-////////////////////////////CREDENCIALES BD////////////////////////////////////////
-package Conexion;
+'''Si quiero subir el proyecto a github tengo que incluir los archivos de pipenv dentro del .gitignore, por lo tanto cuando haga git init . , en mi directorio raiz tengo que hacer un archivo de texto nombrado .gitignore
+Dentro de .gitignore, 
+.venv/
+__pycache__/
+*.pyc
+*.pyd
+*.sqlite3
+db.sqlite3
+media/  # Si planeas no subir los archivos multimedia que se suban localmente
+static/ # Si planeas que los archivos estáticos se recopilen en el servidor
+*.log
+*.swp       # Archivos de swap de Vim (si usas Vim)
+.DS_Store   # Archivos de macOS Desktop Services Store (si usas macOS)
+Thumbs.db   # Archivos de caché de miniaturas de Windows (si usas Windows)
 
-public abstract class Credenciales {
-
-    // Atributos estáticos
-    private static final String Url = "jdbc:mysql://localhost:3306/lopez_repuestos";
-    private static final String Usuario = "root";
-    private static final String Contraseña = "24103";
-    private static final String DRIVERS = "com.mysql.cj.jdbc.Driver"; // Agregar el driver adecuado
-
-    // Métodos para obtener las credenciales
-    public static String getUrl() {
-        return Url;
-    }
-
-    public static String getUsuario() {
-        return Usuario;
-    }
-
-    public static String getContraseña() {
-        return Contraseña;
-    }
-
-    public static String getDRIVERS() {
-        return DRIVERS;
-    }
-}
+.venv/ tengo que reemplazarlo por lo que me dé pipenv --venv'''
 
 
+DEBUG (Sirve mucho para las pruebas de rendimiento y eficiencia, por ejemplo, la sección de SQL sirve para ver si hay más consultas de las necesarias ante determinadas solicitudes
 
+Para descargar herramientas de depuración de django, utilizo pipenv install django-debug-toolbar. Luego la registro en settings.py con installed_apps como debug_toolbar.
 
-////////////////////////////CONEXION CON BD DE LOGIN////////////////////////////////////////
-package Conexion;
+Siguiente a la instalación está la implementación. En urls.py del proyecto vamos a registrar un path con '__debug__', include('debug_toolbar.urls')
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-public class ConexionLogin {
-
-    private static ConexionLogin instanciaUnica;
-
-    private Connection conexion;
-
-    //A la hora de querer hacer una consulta a la base se tiene que hacer:
-    //Connection conexion = Conexion.getInstancia().getConexion();
-    //A la hora de cerrar la conexion se hace:
-    //Conexion.getInstancia().cerrarConexion();
-    private ConexionLogin() throws ClassNotFoundException {
-        String url = CredencialesLogin.getUrl();
-        String usuario = CredencialesLogin.getUsuario();
-        String  contraseña= CredencialesLogin.getContraseña();
-
-
-        try {
-            Class.forName(CredencialesLogin.getDRIVERS());
-            conexion = DriverManager.getConnection(url, usuario, contraseña);
-            System.out.println("Conexión Exitosa.");
-            System.out.println(conexion);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static ConexionLogin getInstancia() throws ClassNotFoundException {
-        if (instanciaUnica == null) {
-            instanciaUnica = new ConexionLogin();
-        }
-        return instanciaUnica;
-    }
-
-    public Connection getConexion() {
-        return conexion;
-    }
-
-    public void closeConexion() {
-        if (conexion != null) {
-            try {
-                conexion.close();
-                System.out.println("Conexión cerrada.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-}
-
-
-////////////////////////////CREDENCIALES LOGIN////////////////////////////////////////
-package Conexion;
-
-public abstract class CredencialesLogin {
-
-    // Atributos estáticos
-    private static final String Url = "jdbc:mysql://localhost:3306/login";
-    private static final String Usuario = "root";
-    private static final String Contraseña = "24103";
-    private static final String DRIVERS = "com.mysql.cj.jdbc.Driver"; // Agregar el driver adecuado
-
-    // Métodos para obtener las credenciales
-    public static String getUrl() {
-        return Url;
-    }
-
-    public static String getUsuario() {
-        return Usuario;
-    }
-
-    public static String getContraseña() {
-        return Contraseña;
-    }
-
-    public static String getDRIVERS() {
-        return DRIVERS;
-    }
-}
-
+En settings.py, hay que poner dentro de middleware debug_toolbar.middleware.DebugToolbarMiddleware. Luego hay que crear un atributo llamado INTERNAL_IPS = ['127.0.0.1']
+0

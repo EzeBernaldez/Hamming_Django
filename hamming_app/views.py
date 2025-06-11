@@ -29,10 +29,10 @@ def hamming_response(request):
             texto_path = os.path.join(ruta,'texto.txt')
 
             with open(texto_path, 'wb') as f:
-                bloque = b''
+                bloque = ''
                 for chunk in archivo.chunks():
                     f.write(chunk)
-                    bloque += chunk
+                    bloque += chunk.decode('utf-8')
                 context["texto_plano"] = bloque
 
             if algoritmo == 'ha1':
@@ -49,14 +49,14 @@ def hamming_response(request):
                     bloque = f.read().decode('utf-8')
                     context['texto_decodificado'] = bloque
 
-                if error == '1':
+                if error == '1' or error == '2':
                     context['errores'] = "HE1"
                     if fix_module==1:
                         context['fix'] = "DC1"
                         
                         codificacion_error_path = os.path.join(ruta,'codificacion_error.HE1')
                         decodificacion_error_path = os.path.join(ruta,'decodificacion_sin_error.DC1')
-                        hamming_8.ingresar_error(codificacion_path,codificacion_error_path)
+                        hamming_8.ingresar_error(codificacion_path,codificacion_error_path,int(error))
                         hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
@@ -65,12 +65,17 @@ def hamming_response(request):
                     
                         with open(decodificacion_error_path,'rb') as f:
                             bloque = f.read().decode('utf-8')
-                            context['texto_decodificado_sin_error'] = bloque
+                            doble_error = bloque[-1]
+                            
+                            context['doble_error'] = doble_error
+                            
+                            context['texto_decodificado_sin_error'] = bloque[:-1]
+                            
                     else:
                         context['fix'] = "DE1"
                         codificacion_error_path = os.path.join(ruta,'codificacion_error.HE1')
                         decodificacion_error_path = os.path.join(ruta,'decodificacion_con_error.DE1')
-                        hamming_8.ingresar_error(codificacion_path,codificacion_error_path)
+                        hamming_8.ingresar_error(codificacion_path,codificacion_error_path,int(error))
                         hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
@@ -79,7 +84,11 @@ def hamming_response(request):
                     
                         with open(decodificacion_error_path,'rb') as f:
                             bloque = f.read().decode('utf-8')
-                            context['texto_decodificado_con_error'] = bloque
+                            doble_error = bloque[-1:]
+                            
+                            context['doble_error'] = doble_error
+                            
+                            context['texto_decodificado_con_error'] = bloque[:-1]
             
             elif algoritmo == 'ha2':
                 codificacion_path = os.path.join(ruta, 'codificacion.HA2')
@@ -95,13 +104,13 @@ def hamming_response(request):
                     bloque = f.read().decode('utf-8')
                     context['texto_decodificado'] = bloque
 
-                if error == '1':
+                if error == '1' or error == '2':
                     context['errores'] = "HE2"
                     if fix_module==1:
                         context['fix'] = "DC2"
                         codificacion_error_path = os.path.join(ruta,'codificacion_error.HE2')
                         decodificacion_error_path = os.path.join(ruta,'decodificacion_sin_error.DC2')
-                        hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path)
+                        hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path, int(error))
                         hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
@@ -110,12 +119,17 @@ def hamming_response(request):
                     
                         with open(decodificacion_error_path,'rb') as f:
                             bloque = f.read().decode('utf-8')
-                            context['texto_decodificado_sin_error'] = bloque
+                            
+                            doble_error = bloque[-1]
+                            
+                            context['doble_error'] = doble_error
+                            
+                            context['texto_decodificado_sin_error'] = bloque[:-1]
                     else:
                         context['fix'] = "DE2"
                         codificacion_error_path = os.path.join(ruta,'codificacion_error.HE2')
                         decodificacion_error_path = os.path.join(ruta,'decodificacion_con_error.DE2')
-                        hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path)
+                        hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path, int(error))
                         hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
@@ -124,7 +138,11 @@ def hamming_response(request):
                     
                         with open(decodificacion_error_path,'rb') as f:
                             bloque = f.read().decode('utf-8')
-                            context['texto_decodificado_con_error'] = bloque
+                            doble_error = bloque[-1]
+                            
+                            context['doble_error'] = doble_error
+                            
+                            context['texto_decodificado_sin_error'] = bloque[:-1]
 
             else:
                 codificacion_path = os.path.join(ruta, 'codificacion.HA3')
@@ -140,13 +158,13 @@ def hamming_response(request):
                     bloque = f.read().decode('utf-8')
                     context['texto_decodificado'] = bloque
 
-                if error == '1':
+                if error == '1' or error == '2':
                     context['errores'] = "HE3"
                     if fix_module==1:
                         context['fix'] = "DC3"
                         codificacion_error_path = os.path.join(ruta,'codificacion_error.HE3')
                         decodificacion_error_path = os.path.join(ruta,'decodificacion_sin_error.DC3')
-                        hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path)
+                        hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path, int(error))
                         hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
@@ -155,12 +173,16 @@ def hamming_response(request):
                     
                         with open(decodificacion_error_path,'rb') as f:
                             bloque = f.read().decode('utf-8')
-                            context['texto_decodificado_sin_error'] = bloque
+                            doble_error = bloque[-1]
+                            
+                            context['doble_error'] = doble_error
+                            
+                            context['texto_decodificado_sin_error'] = bloque[:-1]
                     else:
                         context['fix'] = "DE3"
                         codificacion_error_path = os.path.join(ruta,'codificacion_error.HE3')
                         decodificacion_error_path = os.path.join(ruta,'decodificacion_con_error.DE3')
-                        hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path)
+                        hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path, int(error))
                         hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
 
                         with open(codificacion_error_path,'rb') as f:
@@ -169,7 +191,11 @@ def hamming_response(request):
                     
                         with open(decodificacion_error_path,'rb') as f:
                             bloque = f.read().decode('utf-8')
-                            context['texto_decodificado_con_error'] = bloque
+                            doble_error = bloque[-1]
+                            
+                            context['doble_error'] = doble_error
+                            
+                            context['texto_decodificado_sin_error'] = bloque[:-1]
 
 
         context['MEDIA_URL'] = settings.MEDIA_URL
@@ -220,6 +246,12 @@ def hamming_response_decodificar(request):
             bloque = ''
             with open(decodificar_path, 'rb') as f:
                 bloque += f.read().decode('utf-8')
+            
+            doble_error = bloque[-1:]
+            
+            context['doble_error'] = doble_error
+            
+            bloque = bloque[:-1]
                 
             if fix_module == 0:
                 context['texto_decodificado_con_error'] = bloque

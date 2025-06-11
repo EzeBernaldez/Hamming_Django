@@ -72,24 +72,24 @@ def deshamminizacion_4096(p,fix_module):
     num =  (decodificacion["s11"] << 11) + (decodificacion["s10"] << 10) + (decodificacion["s9"] << 9) + (decodificacion["s8"] << 8) + (decodificacion["s7"] << 7) + (decodificacion["s6"] << 6) + (decodificacion["s5"] << 5) + (decodificacion["s4"] << 4) + (decodificacion["s3"] << 3) +(decodificacion["s2"] << 2) + (decodificacion["s1"] << 1) + (decodificacion["s0"] )
     if decodificacion["paridad"] == 0:
         if num==0:
-            return decodificacion_hamming_4096(p)
+            return [0,decodificacion_hamming_4096(p)]
         else:
-            return -1 #Hay dos errores
+            return [1,decodificacion_hamming_4096(p)]
     else:
         if num==0:
             #Hay error en el bit de paridad
             if fix_module == 1:
                 p = corregir_error_4096(p,4095) 
-                return decodificacion_hamming_4096(p)
+                return [0,decodificacion_hamming_4096(p)]
             else:
-                return decodificacion_hamming_4096(p)
+                return [0,decodificacion_hamming_4096(p)]
         else:
             #Hay error en una posición que no es el bit de paridad
             if fix_module == 1:
                 p = corregir_error_4096(p,num) 
-                return decodificacion_hamming_4096(p)
+                return [0,decodificacion_hamming_4096(p)]
             else:
-                return decodificacion_hamming_4096(p)
+                return [0,decodificacion_hamming_4096(p)]
 
 
 
@@ -149,7 +149,9 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
                     break
                 
                 bloque_bytes = int.from_bytes(bloque, byteorder="big")
-                num = deshamminizacion_4096(bloque_bytes,arreglar_archivo)
+                doble_error,num = deshamminizacion_4096(bloque_bytes,arreglar_archivo)
+                
+                doble_error_general = max(doble_error,0)
                 
                 for i in range(510):
                     shift = 4072 - (8 * i)
@@ -158,6 +160,7 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
                 
             texto = total_decodificado[:original_len].decode("utf-8", errors="ignore")
             wr.write(texto)
+            wr.write(f'{doble_error_general}')
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
@@ -166,7 +169,7 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
 
 '''----------------------------------------------------------------------------------------------------------------'''
 
-def ingresar_error_4096(file_name_read,file_name_write):
+def ingresar_error_4096(file_name_read,file_name_write, errores):
     try:
         with open(file_name_read, 'rb') as f, open(file_name_write, 'wb') as wr:
             header = f.read(5)
@@ -176,10 +179,11 @@ def ingresar_error_4096(file_name_read,file_name_write):
                 bloque_bytes = int.from_bytes(bloque,byteorder='big')
                 if(len(bloque)==0):
                     break
-                if random.randint(0,1) == 1:
-                    error = random.randint(0,4095)
-                    mask = 1 << error
-                    bloque_bytes^= mask
+                for i in range(1,errores):
+                    if random.randint(0,1) == 1:
+                        error = random.randint(0,4095)
+                        mask = 1 << error
+                        bloque_bytes^= mask
                 wr.write(bloque_bytes.to_bytes(512,byteorder='big'))
         
     except Exception as e:

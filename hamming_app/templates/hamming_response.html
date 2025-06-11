@@ -37,6 +37,11 @@
                             <h4 class="pixelify-sans-pixel">Texto decodificado con errores:</h4>
                             <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_con_error.{{ fix|upper }}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado con errores</a>
                             <textarea class="p-3 border rounded mt-2" readonly rows="20">{{ texto_decodificado_con_error }}</textarea>
+                            {% if doble_error == '1' %}
+                            <div class="alert alert-secondary pixelify-sans-pixel" role="alert">
+                                El texto expresado contiene módulos con doble error
+                            </div>
+                            {% endif %}
                         </div>
                         {% endif %}
                         {% if texto_decodificado_sin_error %}
@@ -44,6 +49,11 @@
                             <h4 class="pixelify-sans-pixel">Texto decodificado sin errores:</h4>
                             <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_sin_error.{{ fix|upper }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado sin errores</a>
                             <textarea class="p-3 rounded mt-2" readonly rows="20">{{ texto_decodificado_sin_error }}</textarea>
+                            {% if doble_error == '1' %}
+                            <div class="alert alert-secondary pixelify-sans-pixel" role="alert">
+                                El texto expresado contiene módulos con doble error
+                            </div>
+                            {% endif %}
                         </div>
                         {% endif %}
                         {% block error_ingresado %}
@@ -76,7 +86,8 @@
                         {% endif %}
                     </div>
                 </div>
-                {% endblock %}  
+                {% endblock %}
+                {% block doble_error_bloque %}{% endblock %}
                 <div class="row">
                     <div class="pb-5 text-end">
                         <a href="{% url 'hamming' %}" class="buttom_procesar pixelify-sans-pixel">Volver</a>

@@ -13,13 +13,8 @@
 </head>
 <body class="bg-body-secondary">
     <div class="container-fluid min-vh-100">
-        <div class="row doto-pixel2">
-            <div class="col-12">
-                <a href="/" class="buttom_procesar pixelify-sans-pixel position-absolute mt-5">Volver</a>
-                <h1 class="font-size4rem text-center pt-4 pixelify-sans-pixel">Hamming</h1>
-                <p class="text-center doto-pixel2">by Ezequiel Bernaldez, Ezequiel Nodar</p>
-            </div>
-        </div>
+        <h1 class="font-size4rem text-center pt-4 pixelify-sans-pixel"><a href="/" class="navbar-brand">Hamming</a></h1>
+        <p class="text-center doto-pixel2">by Ezequiel Bernaldez, Ezequiel Nodar</p>
         <div class="container m-auto">
             <div class="row g-3 doto-pixel2">
                 <fieldset class="fieldset-custom">
@@ -42,7 +37,8 @@
                                 <label for="error" class="pb-2 pixelify-sans-pixel">Desea introducirle errores al archivo?</label>
                                 <select name="error" id="error" class="form-select">
                                     <option value="0">No</option>
-                                    <option value="1">Sí</option>
+                                    <option value="1">Sí, un error</option>
+                                    <option value="2">Sí, doble error</option>
                                 </select>
                             </div>
                             <div class="mb-3 ocultar" id="fix_hidden">
@@ -102,6 +98,11 @@
                             </div>
                     </form>
                 </fieldset>
+            </div>
+            <div class="row mt-1 me-1 g-3 doto-pixel2">
+                <div class="col-12 text-end">
+                    <a href="/" class="buttom_procesar pixelify-sans-pixel mt-5 text-end">Volver</a>
+                </div>
             </div>
         </div>
         
