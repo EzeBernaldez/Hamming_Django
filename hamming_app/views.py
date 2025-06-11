@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView
-from .algoritmos import hamming_8,hamming_256,hamming_4096, huffman
+from .algoritmos import hamming_8,hamming_256,hamming_4096
 from .algoritmos.huffman import compactacion_archivo, descompactacion_archivo,ver_estadistica
 import os
 from django.http import HttpResponse
@@ -177,6 +177,57 @@ def hamming_response(request):
         return render(request,'hamming_response.html',context)
 
     return HttpResponse("Error: No se ha enviado un archivo o algoritmo no válido.")
+
+def hamming_response_decodificar(request):
+    
+    context = {}
+    
+    if request.method=='POST':
+        archivo = request.FILES.get('archivo')
+        fix_module = request.POST.get('fix_module_decodificar')
+        
+        if archivo and fix_module:
+            
+            fix_module = int(fix_module)
+            
+            name_archivo = os.path.basename(archivo.name)
+            
+            extension = os.path.splitext(name_archivo)[1][1:].lower()
+            
+            ruta = os.path.join(settings.MEDIA_ROOT, f'ha{extension[2:]}')
+            
+            if extension == f'ha{extension[2:]}':
+                codificacion_path = os.path.join(ruta, f'codificacion.{extension}')
+            else:
+                codificacion_path = os.path.join(ruta, f'codificacion_error.{extension.upper()}')
+            
+            with open(codificacion_path,'wb') as f:
+                for chunk in archivo.chunks():
+                    f.write(chunk)
+
+            if fix_module == 1:
+                decodificar_path = os.path.join(ruta, f'resultado_decodificado.DC{extension[2:]}')
+            else:
+                decodificar_path = os.path.join(ruta, f'resultado_decodificado.DE{extension[2:]}')
+            
+            if extension[2:] == '1':
+                hamming_8.decodificar_archivo(codificacion_path,decodificar_path,fix_module)
+            elif extension[2:] == '2':
+                hamming_256.decodificar_archivo_256(codificacion_path, decodificar_path,fix_module)
+            else:
+                hamming_4096.decodificar_archivo_4096(codificacion_path, decodificar_path,fix_module)
+                
+            bloque = ''
+            with open(decodificar_path, 'rb') as f:
+                bloque += f.read().decode('utf-8')
+                
+            if fix_module == 0:
+                context['texto_decodificado_con_error'] = bloque
+            else:
+                context['texto_decodificado_sin_error'] = bloque
+            
+        return render(request, 'hamming_response_decodificar.html', context)
+
 
 def huffman(request):
     return render(request,'huffman.html')

@@ -17,7 +17,7 @@
         <p class="text-center pb-4 pixelify-sans-pixel">by Ezequiel Bernaldez, Ezequiel Nodar</p>
         <div class="container m-auto">
             <div class="row g-3 doto-pixel2">
-                <form method="POST" action="{% url 'huffman_response' %}" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'huffman-comprimir' %}" enctype="multipart/form-data">
                     <fieldset class="fieldset-custom">
                         <legend class="pixelify-sans-pixel">Comprimir</legend>
                         {% csrf_token %}
@@ -30,7 +30,7 @@
                         </div>
                     </fieldset>
                 </form>
-                <form method="POST" action="{% url 'huffman_response_descomprimir' %}" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'huffman-descomprimir' %}" enctype="multipart/form-data">
                     <fieldset class="fieldset-custom">
                         <legend class="pixelify-sans-pixel">Descomprimir</legend>
                         {% csrf_token %}

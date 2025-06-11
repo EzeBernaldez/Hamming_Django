@@ -14,10 +14,11 @@
 </head>
 <body class="contenedor">
     <div class="container-fluid min-vh-100">
-        <h2 class="text-center pt-2 pb-2 pixelify-sans-pixel">Hamming</h2>
+        <h2 class="text-center pb-2 pixelify-sans-pixel">Hamming</h2>
         <div class="container m-auto">
                 <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
                 <div class="row pt-5">
+                    {% block texto_original %}
                     <div class="col-6">
                         {% if texto_plano %}
                         <div class="mb-4">
@@ -27,21 +28,25 @@
                         </div>
                         {% endif %}
                     </div>
+                    {% endblock %}
+                    {% block columna %}
                     <div class="col-6">
+                    {% endblock %}
                         {% if texto_decodificado_con_error %}
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto decodificado con errores:</h4>
-                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_con_error.{{ fix|upper }}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2">Descargar archivo decodificado con errores</a>
-                            <textarea class="p-3 border rounded" readonly rows="20">{{ texto_decodificado_con_error }}</textarea>
+                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_con_error.{{ fix|upper }}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado con errores</a>
+                            <textarea class="p-3 border rounded mt-2" readonly rows="20">{{ texto_decodificado_con_error }}</textarea>
                         </div>
                         {% endif %}
                         {% if texto_decodificado_sin_error %}
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto decodificado sin errores:</h4>
-                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_sin_error.{{ fix|upper }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2">Descargar archivo decodificado sin errores</a>
-                            <textarea class="p-3 rounded" readonly rows="20">{{ texto_decodificado_sin_error }}</textarea>
+                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_sin_error.{{ fix|upper }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado sin errores</a>
+                            <textarea class="p-3 rounded mt-2" readonly rows="20">{{ texto_decodificado_sin_error }}</textarea>
                         </div>
                         {% endif %}
+                        {% block error_ingresado %}
                         {% if error == '0' %}
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto decodificado:</h4>
@@ -49,8 +54,10 @@
                             <textarea class="p-3 border rounded" readonly rows="20">{{ texto_decodificado }}</textarea>
                         </div>
                         {% endif %}
+                        {% endblock %}
                     </div>
                 </div>
+                {% block codificacion %}
                 <div class="row">
                     <div class="col-6">
                         {% if texto_codificado %}
@@ -68,7 +75,8 @@
                             </div>
                         {% endif %}
                     </div>
-                </div>  
+                </div>
+                {% endblock %}  
                 <div class="row">
                     <div class="pb-5 text-end">
                         <a href="{% url 'hamming' %}" class="buttom_procesar pixelify-sans-pixel">Volver</a>

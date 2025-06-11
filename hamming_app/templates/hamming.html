@@ -13,69 +13,95 @@
 </head>
 <body class="bg-body-secondary">
     <div class="container-fluid min-vh-100">
-        <h1 class="font-size4rem text-center pt-4 pixelify-sans-pixel">Hamming</h1>
-        <p class="text-center pb-4 doto-pixel2">by Ezequiel Bernaldez, Ezequiel Nodar</p>
+        <div class="row doto-pixel2">
+            <div class="col-12">
+                <a href="/" class="buttom_procesar pixelify-sans-pixel position-absolute mt-5">Volver</a>
+                <h1 class="font-size4rem text-center pt-4 pixelify-sans-pixel">Hamming</h1>
+                <p class="text-center doto-pixel2">by Ezequiel Bernaldez, Ezequiel Nodar</p>
+            </div>
+        </div>
         <div class="container m-auto">
             <div class="row g-3 doto-pixel2">
-                <form method="POST" action="{% url 'hamming_response' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="mb-3 pb-2">
-                        <label for="archivo" class="formFile pb-2 pixelify-sans-pixel">Ingrese el archivo a hamminizar</label>
-                        <input id="archivo" name="archivo" required="" type="file" class="form-control">
-                    </div>
-                    <div class="mb-3 pb-2">
-                        <label for="Hamming" class="pb-2 pixelify-sans-pixel">Ingrese el algoritmo hamming que desee</label>
-                        <select name="Hamming" id="Hamming" class="form-select">
-                            <option selected value="ha1">Hamming-8</option>
-                            <option value="ha2">Hamming-256</option>
-                            <option value="ha3">Hamming-4096</option>
-                        </select>
-                    </div>
-                    <div class="mb-3 pb-2">
-                        <label for="error" class="pb-2 pixelify-sans-pixel">Desea introducirle errores al archivo?</label>
-                        <select name="error" id="error" class="form-select">
-                            <option value="0">No</option>
-                            <option value="1">Sí</option>
-                        </select>
-                    </div>
-                    <div class="mb-3 ocultar" id="fix_hidden">
-                        <label for="fix_module" class="pb-2 pixelify-sans-pixel">Desea arreglar el archivo?</label>
-                        <select name="fix_module" id="fix_module" class="form-select">
-                            <option value="1">Sí</option>
-                            <option value="0">No</option>
-                        </select>
-                    </div>
-                    <script>
-                        const select = document.getElementById('error'); //Tomo el select con id error
-                        const block1 = document.getElementById('fix_hidden'); //Tomo el bloque id fix_hidden
+                <fieldset class="fieldset-custom">
+                        <legend class="pixelify-sans-pixel">Codificar</legend>
+                        <form method="POST" action="{% url 'hamming-codificar' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3 pb-2">
+                                <label for="archivo" class="formFile pb-2 pixelify-sans-pixel">Ingrese el archivo a hamminizar</label>
+                                <input id="archivo" name="archivo" required="" type="file" class="form-control">
+                            </div>
+                            <div class="mb-3 pb-2">
+                                <label for="Hamming" class="pb-2 pixelify-sans-pixel">Ingrese el algoritmo hamming que desee</label>
+                                <select name="Hamming" id="Hamming" class="form-select">
+                                    <option selected value="ha1">Hamming-8</option>
+                                    <option value="ha2">Hamming-256</option>
+                                    <option value="ha3">Hamming-4096</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 pb-2">
+                                <label for="error" class="pb-2 pixelify-sans-pixel">Desea introducirle errores al archivo?</label>
+                                <select name="error" id="error" class="form-select">
+                                    <option value="0">No</option>
+                                    <option value="1">Sí</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 ocultar" id="fix_hidden">
+                                <label for="fix_module" class="pb-2 pixelify-sans-pixel">Desea arreglar el archivo?</label>
+                                <select name="fix_module" id="fix_module" class="form-select">
+                                    <option value="1">Sí</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                            <script>
+                                const select = document.getElementById('error'); //Tomo el select con id error
+                                const block1 = document.getElementById('fix_hidden'); //Tomo el bloque id fix_hidden
 
-                        select.addEventListener('change', function() {
-                        const selectedValue = select.value; //saco el valor de value del option
+                                select.addEventListener('change', function() {
+                                const selectedValue = select.value; //saco el valor de value del option
 
-                        block1.classList.add('ocultar'); //aca le coloco ocultar a bloque para que se oculte
+                                block1.classList.add('ocultar'); //aca le coloco ocultar a bloque para que se oculte
 
-                        switch (selectedValue) {
-                            case '1':
-                            block1.classList.remove('ocultar'); //aca le saco ocultar a bloque para que se muestrre
-                            break;
-                        }
-                        });
-                    </script>
-                    <div class="container m-auto">
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <div class="pt-1">
-                                    <a href="/" class="buttom_procesar pixelify-sans-pixel">Volver</a>
+                                switch (selectedValue) {
+                                    case '1':
+                                    block1.classList.remove('ocultar'); //aca le saco ocultar a bloque para que se muestrre
+                                    break;
+                                }
+                                });
+                            </script>
+                            <div class="row text-end">
+                                <div class="col-12">
+                                    <div>
+                                        <button type="submit" class="buttom_procesar pixelify-sans-pixel">Procesar</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" class="buttom_procesar pixelify-sans-pixel">Procesar</button>
+                        </form>
+                </fieldset>
+            </div>
+            <div class="row g-3 doto-pixel2">
+                <fieldset class="fieldset-custom">
+                    <legend class="pixelify-sans-pixel">Decodificar</legend>
+                    <form method="POST" action="{% url 'hamming-decodificar' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3 pb-2">
+                                <label for="archivo" class="formFile pb-2 pixelify-sans-pixel">Ingrese el archivo a hamminizar</label>
+                                <input id="archivo" name="archivo" required="" type="file" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="fix_module_decodificar" class="pb-2 pixelify-sans-pixel">Desea arreglar el archivo?</label>
+                                <select name="fix_module_decodificar" id="fix_module_decodificar" class="form-select">
+                                    <option value="1" selected>Sí</option>
+                                    <option value="0">No</option>
+                                </select>
+                            <div class="row text-end mt-3 mb-0">
+                                <div class="col-12">
+                                    <div>
+                                        <button type="submit" class="buttom_procesar pixelify-sans-pixel">Procesar</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </fieldset>
             </div>
         </div>
         
