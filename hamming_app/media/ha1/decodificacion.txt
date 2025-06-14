@@ -1,17 +1,0 @@
-Resúmen de Fundamentos de la Inteligencia Artificial
-
-
-A modo de resúmen, además de los apuntes que tenemos de clases y de los resúmenes que vayamos haciendo, realizaremos los ejercicios teóricos de los prácticos.
-
-
-Teoría 2 - Introducción a los Agentes Inteligentes
-
-Un agente inteligente es un sistema situado en un ambiente al que percibe
-mediante sus sensores y sobre el que actúa mediante sus
-actuadores/efectores [Russell y Norvig]
-
-
-Otra definición un poco más precisa sería:
-Un agente inteligente es un sistema (o entidad) físico o virtual, situado en algún ambiente, que es capaz de actuar de manera autónoma y flexible en este ambiente a los fines de lograr los objetivos que le han sido delegados [Wooldridge, 2009]
-
-0

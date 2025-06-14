@@ -1,8 +1,8 @@
 import random
 
 def hamminizacion(p):
-    primer=codificacion_hamming(int((ord(p)))>>4)
-    segundo=codificacion_hamming(int((ord(p))% 16))
+    primer=codificacion_hamming(p>>4)
+    segundo=codificacion_hamming(p % 16)
     return {"primer" : primer , "segundo" : segundo}
 
 
@@ -95,12 +95,12 @@ def corregir_error(p, error):
 def codificar_archivo(file_name_read, file_name_write):
     try:
         with open(file_name_read, "rb") as f:
-            contenido = f.read().decode('utf-8')
+            contenido = f.read()
             with open(file_name_write, 'wb') as wr:
-                for i in range(0,len(contenido)):
-                    hamming = hamminizacion(contenido[i])
-                    hamming = int.to_bytes(hamming['primer'],1,byteorder='big') + int.to_bytes(hamming['segundo'],1,byteorder='big')
-                    wr.write(hamming)
+                for byte in contenido:
+                    hamming = hamminizacion(byte)
+                    hamming_bytes = int.to_bytes(hamming['primer'], 1, byteorder='big') + int.to_bytes(hamming['segundo'], 1, byteorder='big')
+                    wr.write(hamming_bytes)
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
@@ -109,24 +109,26 @@ def codificar_archivo(file_name_read, file_name_write):
 
 def decodificar_archivo(file_name_read, file_name_write, arreglar_archivo):
     try:
-        with open(file_name_read, "rb") as f:
+        with open(file_name_read, "rb") as f, open(file_name_write,'wb') as wr:
             contenido = f.read()
             longitud = len(contenido)
             if not contenido:
                 return
             contenido = int.from_bytes(contenido,byteorder='big')
-            with open(file_name_write, 'w', encoding="utf-8", newline='\n') as wr:
-                doble_error_general = 0
-                for i in range(1,longitud,2):
-                    primer = (contenido >> (8 * (longitud-i))) & 0xFF
-                    segundo = (contenido >> (8 * (longitud-(i+1)))) & 0xFF
-                    ddeshamminizacion = deshamminizacion(primer,segundo,arreglar_archivo)
-                    doble_error_general = max(ddeshamminizacion[0],doble_error_general)
-                    if(ddeshamminizacion == "\n"):
-                        pass
-                    else:
-                        wr.write(f"{chr(ddeshamminizacion[1])}")
-                wr.write(f'{doble_error_general}')
+            
+            total_decodificado = bytearray()
+            
+            doble_error_general = 0
+            for i in range(1,longitud,2):
+                primer = (contenido >> (8 * (longitud-i))) & 0xFF
+                segundo = (contenido >> (8 * (longitud-(i+1)))) & 0xFF
+                ddeshamminizacion = deshamminizacion(primer,segundo,arreglar_archivo)
+                doble_error_general = max(ddeshamminizacion[0],doble_error_general)
+                total_decodificado.append(ddeshamminizacion[1])
+                
+            total_decodificado.append(doble_error_general)
+            
+            wr.write(total_decodificado)
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:

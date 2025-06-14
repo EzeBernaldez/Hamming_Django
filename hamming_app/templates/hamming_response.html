@@ -24,8 +24,7 @@
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto original:</h4>
                             <br/>
-                            <p>{{ texto_plano }}</p>
-                            <object data="{% static 'ha1/texto.txt' %}" type="text/plain" width="320" height="240"></object>
+                            <object data="{{ texto_plano.url }}" type="{{ texto_plano.mime }}" width="320" height="240"></object>
                         </div>
                         {% endif %}
                     </div>
@@ -36,8 +35,8 @@
                         {% if texto_decodificado_con_error %}
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto decodificado con errores:</h4>
-                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_con_error.{{ fix|upper }}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado con errores</a>
-                            <textarea class="p-3 border rounded mt-2" readonly rows="20">{{ texto_decodificado_con_error }}</textarea>
+                            <a href="{{ texto_decodificado_con_error.url}}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado con errores</a>
+                            <object data="{{ texto_decodificado_con_error.url }}" type="{{ texto_decodificado_con_error.mime }}" width="320" height="240"></object>
                             {% if doble_error == '1' %}
                             <div class="alert alert-secondary pixelify-sans-pixel" role="alert">
                                 El texto expresado contiene módulos con doble error
@@ -48,8 +47,8 @@
                         {% if texto_decodificado_sin_error %}
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto decodificado sin errores:</h4>
-                            <a href="{{ MEDIA_URL }}{{ algoritmo }}/decodificacion_sin_error.{{ fix|upper }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado sin errores</a>
-                            <textarea class="p-3 rounded mt-2" readonly rows="20">{{ texto_decodificado_sin_error }}</textarea>
+                            <a href="{{ texto_decodificado_sin_error.url }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado sin errores</a>
+                            <object data="{{ texto_decodificado_sin_error.url }}" type="{{ texto_decodificado_sin_error.mime }}" width="320" height="240"></object>
                             {% if doble_error == '1' %}
                             <div class="alert alert-secondary pixelify-sans-pixel" role="alert">
                                 El texto expresado contiene módulos con doble error
@@ -62,7 +61,7 @@
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto decodificado:</h4>
                             <br/>
-                            <textarea class="p-3 border rounded" readonly rows="20">{{ texto_decodificado }}</textarea>
+                            <object data="{{ texto_decodificado.url }}" type="{{ texto_decodificado.mime }}" width="320" height="240"></object>
                         </div>
                         {% endif %}
                         {% endblock %}
