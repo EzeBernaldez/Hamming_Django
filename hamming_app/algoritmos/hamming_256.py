@@ -72,24 +72,24 @@ def deshamminizacion_256(p,fix_module):
     num = (decodificacion["s7"] << 7) + (decodificacion["s6"] << 6) + (decodificacion["s5"] << 5) + (decodificacion["s4"] << 4) + (decodificacion["s3"] << 3) +(decodificacion["s2"] << 2) + (decodificacion["s1"] << 1) + (decodificacion["s0"] )
     if decodificacion["paridad"] == 0:
         if num==0:
-            return [0,decodificacion_hamming_256(p)]
+            return decodificacion_hamming_256(p)
         else:
-            return [1,decodificacion_hamming_256(p)]
+            return -1 #Hay dos errores
     else:
         if num==0:
             #Hay error en el bit de paridad
             if fix_module == 1:
                 p = corregir_error_256(p,255) 
-                return [0,decodificacion_hamming_256(p)]
+                return decodificacion_hamming_256(p)
             else:
-                return [0,decodificacion_hamming_256(p)]
+                return decodificacion_hamming_256(p)
         else:
             #Hay error en una posición que no es el bit de paridad
             if fix_module == 1:
                 p = corregir_error_256(p,num) 
-                return [0,decodificacion_hamming_256(p)]
+                return decodificacion_hamming_256(p)
             else:
-                return [0,decodificacion_hamming_256(p)]
+                return decodificacion_hamming_256(p)
 
 
 
@@ -135,8 +135,8 @@ def decodificacion_hamming_256(p):
 
 def decodificar_archivo_256(file_name_read, file_name_write, arreglar_archivo):
     try:
-        with open(file_name_read, "rb") as f, open(file_name_write, "w", encoding="utf-8", newline='\n') as wr:
-            # Leer los primeros 4 bytes (tamaño original en bytes)
+        with open(file_name_read, "rb") as f, open(file_name_write, "wb") as wr:
+            # Leer los primeros 5 bytes (tamaño original en bytes)
             original_len_bytes = f.read(5)
             if len(original_len_bytes) < 5:
                 raise ValueError("El archivo codificado está corrupto o incompleto.")
@@ -149,16 +149,15 @@ def decodificar_archivo_256(file_name_read, file_name_write, arreglar_archivo):
                 if len(bloque) == 0:
                     break
                 bloque_bytes = int.from_bytes(bloque, byteorder="big")
-                doble_error,num = deshamminizacion_256(bloque_bytes, arreglar_archivo)
-                doble_error_general = max(doble_error,0)
+                num = deshamminizacion_256(bloque_bytes, arreglar_archivo)
+
                 for i in range(30):
                     shift = 232 - (8 * i)
                     byte = (num >> shift) & 0xFF
                     total_decodificado.append(byte)
 
-            texto = total_decodificado[:original_len].decode("utf-8", errors="ignore")
-            wr.write(texto)
-            wr.write(f'{doble_error_general}')
+            # Cortar a longitud original y escribir como binario
+            wr.write(total_decodificado[:original_len])
 
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
@@ -166,10 +165,11 @@ def decodificar_archivo_256(file_name_read, file_name_write, arreglar_archivo):
         print("Error: ", e)
 
 
+#Estamos leyendo mal el archivo
 
 '''----------------------------------------------------------------------------------------------------------------'''
 
-def ingresar_error_256(file_name_read, file_name_write, errores):
+def ingresar_error_256(file_name_read, file_name_write):
     try:
         with open(file_name_read, 'rb') as f, open(file_name_write, 'wb') as wr:
             #Se sacan los primer 4 bytes por el tamaño
@@ -180,11 +180,10 @@ def ingresar_error_256(file_name_read, file_name_write, errores):
                 if len(bloque) == 0:
                     break
                 bloque_bytes = int.from_bytes(bloque, byteorder='big')
-                for i in range(1,errores):
-                    if random.randint(0, 1) == 1:
-                        error = random.randint(0, 255)
-                        mask = 1 << (255 - error)
-                        bloque_bytes ^= mask
+                if random.randint(0, 1) == 1:
+                    error = random.randint(0, 255)
+                    mask = 1 << (255 - error)
+                    bloque_bytes ^= mask
                 wr.write(bloque_bytes.to_bytes(32, byteorder='big'))
 
     except Exception as e:

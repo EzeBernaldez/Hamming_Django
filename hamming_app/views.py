@@ -29,11 +29,11 @@ def hamming_response(request):
             texto_path = os.path.join(ruta,'texto.txt')
 
             with open(texto_path, 'wb') as f:
-                bloque = ''
+                bloque = b''
                 for chunk in archivo.chunks():
                     f.write(chunk)
-                    bloque += chunk.decode('utf-8')
-                context["texto_plano"] = bloque
+                    bloque += chunk
+                context["texto_plano"] = True
 
             if algoritmo == 'ha1':
                 codificacion_path = os.path.join(ruta, 'codificacion.HA1')
@@ -101,7 +101,7 @@ def hamming_response(request):
                     context['texto_codificado'] = bloque
                 
                 with open(decodificacion_path,'rb') as f:
-                    bloque = f.read().decode('utf-8')
+                    bloque = f.read()
                     context['texto_decodificado'] = bloque
 
                 if error == '1' or error == '2':
@@ -243,9 +243,9 @@ def hamming_response_decodificar(request):
             else:
                 hamming_4096.decodificar_archivo_4096(codificacion_path, decodificar_path,fix_module)
                 
-            bloque = ''
+            bloque = b''
             with open(decodificar_path, 'rb') as f:
-                bloque += f.read().decode('utf-8')
+                bloque += f.read()
             
             doble_error = bloque[-1:]
             

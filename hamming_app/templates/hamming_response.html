@@ -24,7 +24,8 @@
                         <div class="mb-4">
                             <h4 class="pixelify-sans-pixel">Texto original:</h4>
                             <br/>
-                            <textarea class="p-3 rounded" readonly rows="20">{{ texto_plano }}</textarea>
+                            <p>{{ texto_plano }}</p>
+                            <object data="{% static 'ha1/texto.txt' %}" type="text/plain" width="320" height="240"></object>
                         </div>
                         {% endif %}
                     </div>

@@ -125,6 +125,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'hamming_app', 'static'),
+    os.path.join(MEDIA_ROOT),
 ]
 
 # Default primary key field type
