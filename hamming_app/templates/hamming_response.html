@@ -42,7 +42,7 @@
                         {% if texto_decodificado_con_error %}
                         <div class="h-100 mb-4" style="overflow: hidden;">
                             <h4 class="pixelify-sans-pixel">Texto decodificado con errores:</h4>
-                            <a href="{{ texto_decodificado_con_error.url}}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado con errores</a>
+                            <a href="{% url 'descargar_archivo' %}?ruta={{ texto_decodificado_con_error.url }}&extension={{ fix|upper }}" class="descargar doto-pixel2">Descargar archivo decodificado con errores</a>
                             {% if texto_decodificado_con_error.mime == 'text/plain' %}
                             <textarea class="p-3 rounded" readonly rows="15">{{ texto_decodificado_con_error.contenido }}</textarea>
                             {% else %}
@@ -60,7 +60,7 @@
                         {% if texto_decodificado_sin_error %}
                         <div class="h-100 mb-4" style="overflow: hidden;">
                             <h4 class="pixelify-sans-pixel">Texto decodificado sin errores:</h4>
-                            <a href="{{ texto_decodificado_sin_error.url }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado sin errores</a>
+                            <a href="{% url 'descargar_archivo' %}?ruta={{ texto_decodificado_sin_error.url }}&extension={{ fix|upper }}" class="descargar doto-pixel2">Descargar archivo decodificado sin errores</a>
                             
                             {% if texto_decodificado_sin_error.mime == 'text/plain' %}
                                 <textarea class="p-3 rounded" readonly rows="15">{{ texto_decodificado_sin_error.contenido }}</textarea>

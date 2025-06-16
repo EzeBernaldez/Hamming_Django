@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from .algoritmos import hamming_8,hamming_256,hamming_4096
 from .algoritmos.huffman import compactacion_archivo, descompactacion_archivo,ver_estadistica
 import os
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse, Http404
 from django.conf import settings
 from django.shortcuts import render
 import mimetypes
@@ -586,3 +586,24 @@ def huffman_response_descomprimir(request):
 
     context['MEDIA_URL'] = settings.MEDIA_URL
     return render(request, 'huffman_response_descomprimir.html', context)
+
+
+def descargar_archivo(request):
+    ruta_url = request.GET.get('ruta')
+    extension = request.GET.get('extension')
+
+    if not ruta_url:
+        raise Http404("Ruta no especificada")
+
+    ruta_relativa = ruta_url.replace('/static/', '', 1)
+
+    ruta_absoluta = os.path.join(settings.MEDIA_ROOT, ruta_relativa)
+
+    if not os.path.exists(ruta_absoluta):
+        raise Http404(f"Archivo no encontrado en: {ruta_absoluta}")
+
+    nombre_archivo = os.path.basename(ruta_absoluta)
+    nombre_sin_extension = os.path.splitext(nombre_archivo)[0]
+    nombre_descarga = f"{nombre_sin_extension}.{extension}"
+
+    return FileResponse(open(ruta_absoluta, 'rb'), as_attachment=True, filename=nombre_descarga)

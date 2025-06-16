@@ -9,4 +9,5 @@ urlpatterns = [
     path('huffman/', views.huffman, name='huffman'), 
     path('huffman/huffman-comprimir', views.huffman_response, name='huffman-comprimir'), 
     path('huffman/huffman-descomprimir', views.huffman_response_descomprimir, name='huffman-descomprimir'), 
+    path('descargar_archivo', views.descargar_archivo, name='descargar_archivo'),
 ]
