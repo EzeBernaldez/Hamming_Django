@@ -1,4 +1,5 @@
 import random
+import os
 
 def hamminizacion(p):
     primer=codificacion_hamming(p>>4)
@@ -96,7 +97,9 @@ def codificar_archivo(file_name_read, file_name_write):
     try:
         with open(file_name_read, "rb") as f:
             contenido = f.read()
+            original_len = os.path.getsize(file_name_read)
             with open(file_name_write, 'wb') as wr:
+                wr.write(original_len.to_bytes(5, byteorder='big'))
                 for byte in contenido:
                     hamming = hamminizacion(byte)
                     hamming_bytes = int.to_bytes(hamming['primer'], 1, byteorder='big') + int.to_bytes(hamming['segundo'], 1, byteorder='big')
@@ -111,11 +114,15 @@ def decodificar_archivo(file_name_read, file_name_write, arreglar_archivo):
     try:
         with open(file_name_read, "rb") as f, open(file_name_write,'wb') as wr:
             contenido = f.read()
+            original_byte= contenido[0:5]
+
+            contenido=contenido[5:]
+            
             longitud = len(contenido)
             if not contenido:
                 return
             contenido = int.from_bytes(contenido,byteorder='big')
-            
+            original_len = int.from_bytes(original_byte, byteorder='big')
             total_decodificado = bytearray()
             
             doble_error_general = 0
@@ -128,7 +135,7 @@ def decodificar_archivo(file_name_read, file_name_write, arreglar_archivo):
                 
             total_decodificado.append(doble_error_general)
             
-            wr.write(total_decodificado)
+            wr.write(total_decodificado[:original_len])
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
@@ -138,6 +145,8 @@ def decodificar_archivo(file_name_read, file_name_write, arreglar_archivo):
 def ingresar_error(file_name_read,file_name_write,errores):
     try:
         with open(file_name_read, 'rb') as f, open(file_name_write, 'wb') as wr:
+            tamaño = f.read(5)
+            wr.write(tamaño)
             while True:
                 bloque = f.read(1)
                 bloque_bytes = int.from_bytes(bloque,byteorder='big')

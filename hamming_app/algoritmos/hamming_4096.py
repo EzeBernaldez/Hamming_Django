@@ -160,7 +160,7 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
                 
             texto = total_decodificado[:original_len]
             
-            texto.append(doble_error_general.to_bytes(1,'big'))
+            texto.append(doble_error_general)
             
             wr.write(texto)
     except FileNotFoundError as e:

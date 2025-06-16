@@ -67,38 +67,37 @@ def hamming_response(request):
 
             if algoritmo == 'ha1':
                 codificacion_path = os.path.join(ruta, 'codificacion.HA1')
-                decodificacion_path = os.path.join(ruta,f'decodificacion{mimetypes.guess_extension(mime)}')
-                
-                with open(decodificacion_path,'w') as f:
-                    pass
-                
                 hamming_8.codificar_archivo(texto_path,codificacion_path)
-                hamming_8.decodificar_archivo(codificacion_path,decodificacion_path,0)
-
                 with open(codificacion_path,'rb') as f:
                     bloque = f.read().decode('latin-1')
                     context['texto_codificado'] = bloque
-                
-                try:
-                    if mime == 'text/plain':
+                if error == '0':
+                    decodificacion_path = os.path.join(ruta,f'decodificacion{mimetypes.guess_extension(mime)}')
+                    
+                    with open(decodificacion_path,'w') as f:
+                        pass
+                    
+                    hamming_8.decodificar_archivo(codificacion_path,decodificacion_path,0)
+                    try:
+                        if mime == 'text/plain':
+                            with open(decodificacion_path,'rb') as f:
+                                bloque = f.read().decode()
+                            
+                            context["texto_decodificado"] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
+
+                        else:
+                            context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                        
+                    except:
+                        
                         with open(decodificacion_path,'rb') as f:
-                            bloque = f.read().decode()
+                            bloque = base64.b64encode(f.read())
                         
                         context["texto_decodificado"] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
-
-                    else:
-                        context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
-                    
-                except:
-                    
-                    with open(decodificacion_path,'rb') as f:
-                        bloque = base64.b64encode(f.read())
-                    
-                    context["texto_decodificado"] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
                 
 
 
-                if error == '1' or error == '2':
+                elif error == '1' or error == '2':
                     context['errores'] = "HE1"
                     
                     if fix_module==1:
@@ -278,7 +277,7 @@ def hamming_response(request):
                     pass
                 
                 hamming_4096.codificar_archivo_4096(texto_path,codificacion_path)
-                hamming_4096.decodificar_archivo_4096(codificacion_path,decodificacion_path,0)
+                hamming_4096.decodificar_archivo_4096(codificacion_path,decodificacion_error_path,0)
         
                 with open(codificacion_path,'rb') as f:
                     bloque = f.read().decode('latin-1')
