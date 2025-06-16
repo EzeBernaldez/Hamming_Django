@@ -441,8 +441,12 @@ def hamming_response_decodificar(request):
 
             if fix_module == 1:
                 decodificar_path = os.path.join(ruta, f'resultado_decodificado.{extension}')
+                context['fix'] = f'DC{extension[2:]}'
+                
             else:
                 decodificar_path = os.path.join(ruta, f'resultado_decodificado.{extension}')
+                context['fix'] = f'DE{extension[2:]}'
+                
             
             with open(decodificar_path,'w'):
                 pass
@@ -470,7 +474,6 @@ def hamming_response_decodificar(request):
                 context['texto_decodificado_con_error'] = {'mime': 'text/plain','url': static(f'ha{extension[2:]}/resultado_decodificado.{extension}'), 'contenido': bloque}
             else:
                 context['texto_decodificado_sin_error'] = {'mime': 'text/plain','url': static(f'ha{extension[2:]}/resultado_decodificado.{extension}'), 'contenido': bloque}
-            
             
         return render(request, 'hamming_response_decodificar.html', context)
 
