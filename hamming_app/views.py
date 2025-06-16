@@ -44,13 +44,26 @@ def hamming_response(request):
                     f.write(chunk)
                 mime,_ = mimetypes.guess_type(texto_path)
 
-                if mime is not None:
-                    mime = mimetypes.guess_extension(mime)
-                else:
-                    # valor por defecto si no se pudo determinar el MIME
-                    mime = 'application/octet-stream'
+                if mime is None:
+                    mime = 'text/plain'
                     
-                context["texto_plano"] = {'mime': mime,'url': static(f'{algoritmo}/{file_name}')}
+            try:
+                if mime == 'text/plain':
+                    bloque = ''
+                    with open(texto_path,'rb') as f:
+                        bloque = f.read().decode('utf-8')
+                    context["texto_plano"] = {'mime': mime,'url': static(f'{algoritmo}/{file_name}'), 'contenido': bloque}
+                    
+                else:
+                    context["texto_plano"] = {'mime': mime,'url': static(f'{algoritmo}/{file_name}')}
+
+            except Exception as e:
+                
+                with open(texto_path,'rb') as f:
+                    bloque = base64.b64encode(f.read())
+                
+                context["texto_plano"] = {'mime': mime,'url': static(f'{algoritmo}/{file_name}'), 'contenido': bloque}
+                    
 
             if algoritmo == 'ha1':
                 codificacion_path = os.path.join(ruta, 'codificacion.HA1')
@@ -66,7 +79,24 @@ def hamming_response(request):
                     bloque = f.read().decode('latin-1')
                     context['texto_codificado'] = bloque
                 
-                context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                try:
+                    if mime == 'text/plain':
+                        with open(decodificacion_path,'rb') as f:
+                            bloque = f.read().decode()
+                        
+                        context["texto_decodificado"] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
+
+                    else:
+                        context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                    
+                except:
+                    
+                    with open(decodificacion_path,'rb') as f:
+                        bloque = base64.b64encode(f.read())
+                    
+                    context["texto_decodificado"] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
+                
+
 
                 if error == '1' or error == '2':
                     context['errores'] = "HE1"
@@ -86,8 +116,24 @@ def hamming_response(request):
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
                             context['texto_codificado_error'] = bloque
+                        
+                        
+                        try:
+                            if mime == 'text/plain':
+                                with open(decodificacion_error_path,'rb') as f:
+                                    bloque = f.read().decode()
+                                
+                                context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
+
+                            else:
+                                context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}')}
                             
-                        context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}')}
+                        except:
+                            
+                            with open(decodificacion_error_path,'rb') as f:
+                                bloque = base64.b64encode(f.read())
+                            
+                            context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
                         
 
                     else:
@@ -105,14 +151,30 @@ def hamming_response(request):
                             bloque = f.read().decode('latin-1')
                             context['texto_codificado_error'] = bloque
 
-                        context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}')}
+                        try:
+                            if mime == 'text/plain':
+                                with open(decodificacion_error_path,'rb') as f:
+                                    bloque = f.read().decode()
+                                
+                                context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
+
+                            else:
+                                context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}')}
+                            
+                        except:
+                            
+                            with open(decodificacion_error_path,'rb') as f:
+                                bloque = base64.b64encode(f.read())
+                            
+                            context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}'),'contenido': bloque}
+                            
 
             
             elif algoritmo == 'ha2':
                 codificacion_path = os.path.join(ruta, 'codificacion.HA2')
                 decodificacion_path = os.path.join(ruta,f'decodificacion{mimetypes.guess_extension(mime)}')
                         
-                with open(decodificacion_error_path,'w') as f:
+                with open(decodificacion_path,'w') as f:
                             pass
                         
                 hamming_256.codificar_archivo_256(texto_path,codificacion_path)
@@ -122,7 +184,22 @@ def hamming_response(request):
                     bloque = f.read().decode('latin-1')
                     context['texto_codificado'] = bloque
                     
-                context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                try:
+                    if mime == 'text/plain':
+                        with open(decodificacion_path,'rb') as f:
+                            bloque = f.read().decode()
+                        
+                        context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
+
+                    else:
+                        context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                    
+                except:
+                    
+                    with open(decodificacion_path,'rb') as f:
+                        bloque = base64.b64encode(f.read())
+                    
+                    context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
                 
 
                 if error == '1' or error == '2':
@@ -141,8 +218,23 @@ def hamming_response(request):
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
                             context['texto_codificado_error'] = bloque
-                        
-                        context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}')}
+                            
+                        try:
+                            if mime == 'text/plain':
+                                with open(decodificacion_error_path,'rb') as f:
+                                    bloque = f.read().decode()
+                                
+                                context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}'),'contenido': bloque}
+
+                            else:
+                                context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}')}
+                            
+                        except:
+                            
+                            with open(decodificacion_error_path,'rb') as f:
+                                bloque = base64.b64encode(f.read())
+                            
+                            context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
                         
                     
                     else:
@@ -159,8 +251,23 @@ def hamming_response(request):
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
                             context['texto_codificado_error'] = bloque
-                    
-                        context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}')}
+                            
+                        try:
+                            if mime == 'text/plain':
+                                with open(decodificacion_error_path,'rb') as f:
+                                    bloque = f.read().decode()
+                                
+                                context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
+
+                            else:
+                                context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}')}
+                            
+                        except:
+                            
+                            with open(decodificacion_error_path,'rb') as f:
+                                bloque = base64.b64encode(f.read())
+                            
+                            context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}'),'contenido': bloque}
                         
 
             else:
@@ -176,8 +283,24 @@ def hamming_response(request):
                 with open(codificacion_path,'rb') as f:
                     bloque = f.read().decode('latin-1')
                     context['texto_codificado'] = bloque
+                    
+                try:
+                    if mime == 'text/plain':
+                        with open(decodificacion_error_path,'rb') as f:
+                            bloque = f.read().decode()
+                        
+                        context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'),'contenido': bloque}
 
-                context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                    else:
+                        context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                    
+                except:
+                    
+                    with open(decodificacion_error_path,'rb') as f:
+                        bloque = base64.b64encode(f.read())
+                    
+                    context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'),'contenido': bloque}
+
 
                 if error == '1' or error == '2':
                     context['errores'] = "HE3"
@@ -196,7 +319,22 @@ def hamming_response(request):
                             bloque = f.read().decode('latin-1')
                             context['texto_codificado_error'] = bloque
                             
-                        context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}')}
+                        try:
+                            if mime == 'text/plain':
+                                with open(decodificacion_error_path,'rb') as f:
+                                    bloque = f.read().decode()
+                                
+                                context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}'),'contenido': bloque}
+
+                            else:
+                                context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}')}
+                            
+                        except:
+                            
+                            with open(decodificacion_error_path,'rb') as f:
+                                bloque = base64.b64encode(f.read())
+                            
+                            context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_sin_error{mimetypes.guess_extension(mime)}'),'contenido': bloque}
                         
                     
                     else:
@@ -214,8 +352,22 @@ def hamming_response(request):
                             bloque = f.read().decode('latin-1')
                             context['texto_codificado_error'] = bloque
                             
-                        context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}')}
-                        
+                        try:
+                            if mime == 'text/plain':
+                                with open(decodificacion_error_path,'rb') as f:
+                                    bloque = f.read().decode()
+                                
+                                context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}'),'contenido': bloque}
+
+                            else:
+                                context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}')}
+                            
+                        except:
+                            
+                            with open(decodificacion_error_path,'rb') as f:
+                                bloque = base64.b64encode(f.read())
+                            
+                            context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion_con_error{mimetypes.guess_extension(mime)}'),'contenido': bloque}
 
 
         context['MEDIA_URL'] = settings.MEDIA_URL
@@ -223,6 +375,7 @@ def hamming_response(request):
         return render(request,'hamming_response.html',context)
 
     return HttpResponse("Error: No se ha enviado un archivo o algoritmo no válido.")
+
 
 def hamming_response_decodificar(request):
     
@@ -257,6 +410,9 @@ def hamming_response_decodificar(request):
             else:
                 decodificar_path = os.path.join(ruta, f'resultado_decodificado.{extension}')
             
+            with open(decodificar_path,'w'):
+                pass
+            
             if extension[2:] == '1':
                 hamming_8.decodificar_archivo(codificacion_path,decodificar_path,fix_module)
             elif extension[2:] == '2':
@@ -264,23 +420,21 @@ def hamming_response_decodificar(request):
             else:
                 hamming_4096.decodificar_archivo_4096(codificacion_path, decodificar_path,fix_module)
                 
-            with open(decodificar_path,'w'):
-                pass
-            
-            mime,_ = mimetypes.guess_type(decodificar_path)
-            
-            mime, _ = mimetypes.guess_type(archivo_path)
+            try:
+        
+                with open(decodificar_path,'rb') as f:
+                    bloque = f.read().decode('utf-8')
+                
+            except Exception as e:
+                
+                with open(decodificar_path,'rb') as f:
+                    bloque = base64.b64encode(f.read())
 
-            if mime is not None:
-                mime = mimetypes.guess_extension(mime)
-            else:
-                # valor por defecto si no se pudo determinar el MIME
-                mime = 'application/octet-stream'
-            
             if fix_module == 0:
-                context['texto_decodificado_con_error'] = {'mime': mime,'url': static(f'ha{extension[2:]}/resultado_decodificado{mimetypes.guess_extension(mime)}')}
+                context['texto_decodificado_con_error'] = {'mime': 'text/plain','url': static(f'ha{extension[2:]}/resultado_decodificado.{extension}'), 'contenido': bloque}
             else:
-                context['texto_decodificado_sin_error'] = {'mime': mime,'url': static(f'ha{extension[2:]}/resultado_decodificado{mimetypes.guess_extension(mime)}')}
+                context['texto_decodificado_sin_error'] = {'mime': 'text/plain','url': static(f'ha{extension[2:]}/resultado_decodificado.{extension}'), 'contenido': bloque}
+            
             
         return render(request, 'hamming_response_decodificar.html', context)
 
@@ -293,25 +447,66 @@ def huffman_response(request):
     context = {}
     if request.method == 'POST':
         archivo = request.FILES.get('archivo')
-
+                
         if archivo:
-            ruta = os.path.join(settings.MEDIA_ROOT, 'huff')         
-            texto_path = os.path.join(ruta, 'texto.txt')
             
+            ruta = os.path.join(settings.MEDIA_ROOT, 'huff')  
+            
+            for nombre_archivo in os.listdir(ruta):
+                ruta_completa = os.path.join(ruta,nombre_archivo)
+                if os.path.isfile(ruta_completa):
+                    os.remove(ruta_completa)
+
+            file_name = archivo.name
+            texto_path = os.path.join(ruta,file_name)
+
             with open(texto_path, 'wb') as f:
-                bloque = b''
                 for chunk in archivo.chunks():
                     f.write(chunk)
-                    bloque = base64.b64encode(chunk).decode('utf-8')
-                context['texto_plano'] = bloque
-                    
+                mime,_ = mimetypes.guess_type(texto_path)
 
+                if mime is None:
+                    mime = 'text/plain'
+                    
+            try:
+                
+                if mime == 'text/plain':
+                    with open(texto_path,'rb') as f:
+                        bloque = f.read().decode('utf-8')
+                    
+                    context['texto_plano'] = {'mime': mime, 'url': static(f'huff/{file_name}'), 'contenido': bloque}
+                else:
+                    
+                    context['texto_plano'] = {'mime': mime, 'url': static(f'huff/{file_name}')}
+                    
+            except:
+                
+                with open(texto_path,'rb') as f:
+                    bloque = base64.b64encode(f.read())
+                
+                context['texto_plano'] = {'mime': mime, 'url': static(f'huff/{file_name}'), 'contenido': bloque}
+
+            texto_path = os.path.join(ruta,'texto.txt')
+            with open(texto_path, 'wb') as f:
+                for chunk in archivo.chunks():
+                    f.write(chunk)
+            
             compresion_path = os.path.join(ruta, 'compresion.huf')
             compactacion_archivo(texto_path,compresion_path)
 
-            with open(compresion_path, 'rb') as f:
-                bloque = base64.b64encode(f.read()).decode('utf-8')
-                context['texto_comprimido'] = bloque
+            try:
+                bloque = ''
+                with open(compresion_path,'rb') as f:
+                    contenido = f.read().decode('utf-8')
+                    bloque += contenido
+                
+                context['texto_comprimido'] = {'mime': 'text/plain', 'contenido': bloque, 'url': static('huff/compresion.huf')}
+                
+            except Exception as e:
+                with open(compresion_path,'rb') as f:
+                    bloque = base64.b64encode(f.read())
+                
+                context['texto_comprimido'] = {'mime': 'text/plain','contenido': bloque, 'url': static('huff/compresion.huf')}
 
     
     tam=ver_estadistica(texto_path,compresion_path)
@@ -341,9 +536,17 @@ def huffman_response_descomprimir(request):
             descompresion_path = os.path.join(ruta, 'resultado_descomprimido.dhu')
             descompactacion_archivo(compresion_path, descompresion_path)
             
-            with open(descompresion_path,'rb') as f:
-                bloque = f.read().decode('utf-8')
-                context['texto_descomprimido'] = bloque
+            try:
+                bloque = ''
+                with open(descompresion_path,'rb') as f:
+                    contenido = f.read().decode('utf-8')
+                    bloque += contenido
+                
+                context['texto_descomprimido'] = {'mime': 'text/plain', 'contenido': bloque, 'url': static('huff/resultado_descomprimido.dhu')}
+            except Exception as e:
+                with open(descompresion_path,'rb') as f:
+                    bloque = base64.b64encode(f.read())
+                context['texto_descomprimido'] = {'mime': 'text/plain','contenido': bloque, 'url': static('huff/resultado_descomprimido.dhu')}
 
     context['MEDIA_URL'] = settings.MEDIA_URL
     return render(request, 'huffman_response_descomprimir.html', context)

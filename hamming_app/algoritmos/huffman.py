@@ -144,7 +144,6 @@ def descompactacion_archivo(file_read,file_write):
 
 
                 codificacion_dict[byte] = codificacion
-                print(codificacion_dict[byte])
                 
                 content_bytes = content_bytes[16 + longitud:]
             

@@ -169,7 +169,7 @@ def decodificar_archivo_256(file_name_read, file_name_write, arreglar_archivo):
 
 '''----------------------------------------------------------------------------------------------------------------'''
 
-def ingresar_error_256(file_name_read, file_name_write):
+def ingresar_error_256(file_name_read, file_name_write,errores):
     try:
         with open(file_name_read, 'rb') as f, open(file_name_write, 'wb') as wr:
             #Se sacan los primer 4 bytes por el tamaño
@@ -180,10 +180,11 @@ def ingresar_error_256(file_name_read, file_name_write):
                 if len(bloque) == 0:
                     break
                 bloque_bytes = int.from_bytes(bloque, byteorder='big')
-                if random.randint(0, 1) == 1:
-                    error = random.randint(0, 255)
-                    mask = 1 << (255 - error)
-                    bloque_bytes ^= mask
+                for i in range(1,errores):
+                    if random.randint(0, 1) == 1:
+                        error = random.randint(0, 255)
+                        mask = 1 << (255 - error)
+                        bloque_bytes ^= mask
                 wr.write(bloque_bytes.to_bytes(32, byteorder='big'))
 
     except Exception as e:

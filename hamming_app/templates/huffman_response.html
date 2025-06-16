@@ -33,19 +33,23 @@
             <div class="row pt-5">
                 <div class="col-6">
                     {% if texto_plano %}
-                    <div class="mb-4">
+                    <div class="h-100" style="overflow:hidden">
                         <h4 class="pixelify-sans-pixel">Texto original:</h4>
                         <br/>
-                        <textarea class="p-3 rounded" readonly rows="20">{{ texto_plano }}</textarea>
+                        {% if texto_plano.mime == 'text/plain' %}
+                        <textarea class="p-3 rounded" readonly rows="15">{{ texto_plano.contenido }}</textarea>
+                        {% else %}
+                        <object data="{{ texto_plano.url }}" type="{{ texto_plano.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                        {% endif %}
                     </div>
                     {% endif %}
                 </div>
                 <div class="col-6">
-                    {% if texto_plano %}
+                    {% if texto_comprimido %}
                     <div class="mb-4">
                         <h4 class="pixelify-sans-pixel">Texto Comprimido</h4>
-                        <a href="{{ MEDIA_URL }}huff/compresion.huf" download="compresion.huf" class="descargar doto-pixel2">Descargar archivo comprimido</a>
-                            <textarea class="p-3 rounded" readonly rows="20">{{ texto_comprimido }}</textarea>
+                        <a href="{{ texto_comprimido.url }}" download="compresion.huf" class="descargar doto-pixel2">Descargar archivo comprimido</a>
+                        <textarea class="p-3 rounded" readonly rows="15">{{ texto_comprimido.contenido }}</textarea>
                     </div>
                     {% endif %}
                 </div>

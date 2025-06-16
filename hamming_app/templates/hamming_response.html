@@ -21,10 +21,14 @@
                     {% block texto_original %}
                     <div class="col-6">
                         {% if texto_plano %}
-                        <div class="mb-4">
+                        <div class="h-100 mb-4" style="overflow: hidden;">
                             <h4 class="pixelify-sans-pixel">Texto original:</h4>
                             <br/>
-                            <object data="{{ texto_plano.url }}" type="{{ texto_plano.mime }}" width="320" height="240"></object>
+                            {% if texto_plano.mime == 'text/plain' %}
+                            <textarea class="p-3 rounded" readonly rows="15">{{ texto_plano.contenido }}</textarea>
+                            {% else %}
+                            <object data="{{ texto_plano.url }}" type="{{ texto_plano.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            {% endif %}
                         </div>
                         {% endif %}
                     </div>
@@ -33,10 +37,14 @@
                     <div class="col-6">
                     {% endblock %}
                         {% if texto_decodificado_con_error %}
-                        <div class="mb-4">
+                        <div class="h-100 mb-4" style="overflow: hidden;">
                             <h4 class="pixelify-sans-pixel">Texto decodificado con errores:</h4>
                             <a href="{{ texto_decodificado_con_error.url}}" download="decodificacion_con_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado con errores</a>
-                            <object data="{{ texto_decodificado_con_error.url }}" type="{{ texto_decodificado_con_error.mime }}" width="320" height="240"></object>
+                            {% if texto_decodificado_con_error.mime == 'text/plain' %}
+                            <textarea class="p-3 rounded" readonly rows="15">{{ texto_decodificado_con_error.contenido }}</textarea>
+                            {% else %}
+                            <object data="{{ texto_decodificado_con_error.url }}" type="{{ texto_decodificado_con_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            {% endif %}
                             {% if doble_error == '1' %}
                             <div class="alert alert-secondary pixelify-sans-pixel" role="alert">
                                 El texto expresado contiene módulos con doble error
@@ -45,10 +53,17 @@
                         </div>
                         {% endif %}
                         {% if texto_decodificado_sin_error %}
-                        <div class="mb-4">
+                        <div class="h-100 mb-4" style="overflow: hidden;">
                             <h4 class="pixelify-sans-pixel">Texto decodificado sin errores:</h4>
                             <a href="{{ texto_decodificado_sin_error.url }}" download="decodificacion_sin_error.{{ fix|upper }}" class="descargar doto-pixel2 ">Descargar archivo decodificado sin errores</a>
-                            <object data="{{ texto_decodificado_sin_error.url }}" type="{{ texto_decodificado_sin_error.mime }}" width="320" height="240"></object>
+                            
+                            {% if texto_decodificado_sin_error.mime == 'text/plain' %}
+                                <textarea class="p-3 rounded" readonly rows="15">{{ texto_decodificado_sin_error.contenido }}</textarea>
+                            {% else %}
+                            <object data="{{ texto_decodificado_sin_error.url }}" type="{{ texto_decodificado_sin_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            
+                            {% endif %}
+                                
                             {% if doble_error == '1' %}
                             <div class="alert alert-secondary pixelify-sans-pixel" role="alert">
                                 El texto expresado contiene módulos con doble error
@@ -58,10 +73,18 @@
                         {% endif %}
                         {% block error_ingresado %}
                         {% if error == '0' %}
-                        <div class="mb-4">
+                        <div class="h-100 mb-4" style="overflow: hidden;">
                             <h4 class="pixelify-sans-pixel">Texto decodificado:</h4>
                             <br/>
-                            <object data="{{ texto_decodificado.url }}" type="{{ texto_decodificado.mime }}" width="320" height="240"></object>
+                            
+                            {% if texto_decodificado.mime == 'text/plain' %}
+                                <textarea class="p-3 rounded" readonly rows="15">{{ texto_plano.contenido }}</textarea>
+                            
+                            {% else %}
+                            <object data="{{ texto_decodificado.url }}" type="{{ texto_decodificado.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+
+                            {% endif %}
+                                
                         </div>
                         {% endif %}
                         {% endblock %}
