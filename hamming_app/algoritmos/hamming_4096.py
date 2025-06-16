@@ -142,6 +142,8 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
             original_len = int.from_bytes(original_len_bytes, byteorder='big')
 
             total_decodificado = bytearray()
+            
+            doble_error_general = 0
             while True:
                 bloque = f.read(512)
                 
@@ -151,7 +153,7 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
                 bloque_bytes = int.from_bytes(bloque, byteorder="big")
                 doble_error,num = deshamminizacion_4096(bloque_bytes,arreglar_archivo)
                 
-                doble_error_general = max(doble_error,0)
+                doble_error_general = max(doble_error,doble_error_general)
                 
                 for i in range(510):
                     shift = 4072 - (8 * i)
@@ -160,9 +162,9 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
                 
             texto = total_decodificado[:original_len]
             
-            texto.append(doble_error_general)
-            
             wr.write(texto)
+            
+            return doble_error_general
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
@@ -181,7 +183,7 @@ def ingresar_error_4096(file_name_read,file_name_write, errores):
                 bloque_bytes = int.from_bytes(bloque,byteorder='big')
                 if(len(bloque)==0):
                     break
-                for i in range(1,errores):
+                for i in range(0,errores):
                     if random.randint(0,1) == 1:
                         error = random.randint(0,4095)
                         mask = 1 << error

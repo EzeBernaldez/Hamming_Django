@@ -14,7 +14,7 @@
 </head>
 <body class="contenedor">
     <div class="container-fluid min-vh-100">
-        <h2 class="text-center pb-2 pixelify-sans-pixel">Hamming</h2>
+        <h1 class="text-center pb-2 pixelify-sans-pixel"><a href="{% url 'hamming' %}" class="navbar-brand">Hamming</a></h1>
         <div class="container m-auto">
                 <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
                 <div class="row pt-5">
@@ -27,8 +27,11 @@
                             {% if texto_plano.mime == 'text/plain' %}
                             <textarea class="p-3 rounded" readonly rows="15">{{ texto_plano.contenido }}</textarea>
                             {% else %}
-                            <object data="{{ texto_plano.url }}" type="{{ texto_plano.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            <div class="resizable-container">
+                                <object data="{{ texto_plano.url }}" type="{{ texto_plano.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            </div>
                             {% endif %}
+                            
                         </div>
                         {% endif %}
                     </div>
@@ -43,7 +46,9 @@
                             {% if texto_decodificado_con_error.mime == 'text/plain' %}
                             <textarea class="p-3 rounded" readonly rows="15">{{ texto_decodificado_con_error.contenido }}</textarea>
                             {% else %}
-                            <object data="{{ texto_decodificado_con_error.url }}" type="{{ texto_decodificado_con_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            <div class="resizable-container">
+                                <object data="{{ texto_decodificado_con_error.url }}" type="{{ texto_decodificado_con_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            </div>
                             {% endif %}
                             {% if doble_error == '1' %}
                             <div class="alert alert-secondary pixelify-sans-pixel" role="alert">
@@ -60,8 +65,9 @@
                             {% if texto_decodificado_sin_error.mime == 'text/plain' %}
                                 <textarea class="p-3 rounded" readonly rows="15">{{ texto_decodificado_sin_error.contenido }}</textarea>
                             {% else %}
-                            <object data="{{ texto_decodificado_sin_error.url }}" type="{{ texto_decodificado_sin_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
-                            
+                            <div class="resizable-container">
+                                <object data="{{ texto_decodificado_sin_error.url }}" type="{{ texto_decodificado_sin_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            </div>                            
                             {% endif %}
                                 
                             {% if doble_error == '1' %}
@@ -170,6 +176,29 @@
             </g>
         </svg>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <style>
+    .resizable-container {
+        resize: vertical;
+        overflow: auto;
+        border: none;
+        box-shadow: 0 0 5px 1px #fffd;
+        margin: 5px 10px 0 10px;
+        width: 95%;
+        height: 500px;
+        outline: none;
+    }
+
+    .resizable-container object {
+        width: 100%;
+        height: 100%;
+        pointer-events: auto;
+    }
+
+    .resizable-container:hover{
+        box-shadow: 0 0 10px #fffd;
+        transition: 0.4s;
+    }
+    </style>
 
 </body>
 </html>

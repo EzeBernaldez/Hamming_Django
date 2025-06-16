@@ -10,6 +10,10 @@ from django.templatetags.static import static
 import base64
 
 def index(request):
+    os.makedirs(os.path.join(settings.MEDIA_ROOT, 'ha1'), exist_ok=True)
+    os.makedirs(os.path.join(settings.MEDIA_ROOT, 'ha2'), exist_ok=True)
+    os.makedirs(os.path.join(settings.MEDIA_ROOT, 'ha3'), exist_ok=True)
+    os.makedirs(os.path.join(settings.MEDIA_ROOT, 'huff'), exist_ok=True)
     return render(request,'index.html')
 
 def hamming(request):
@@ -71,13 +75,17 @@ def hamming_response(request):
                 with open(codificacion_path,'rb') as f:
                     bloque = f.read().decode('latin-1')
                     context['texto_codificado'] = bloque
+                    
                 if error == '0':
                     decodificacion_path = os.path.join(ruta,f'decodificacion{mimetypes.guess_extension(mime)}')
                     
                     with open(decodificacion_path,'w') as f:
                         pass
                     
-                    hamming_8.decodificar_archivo(codificacion_path,decodificacion_path,0)
+                    doble_error = hamming_8.decodificar_archivo(codificacion_path,decodificacion_path,0)
+                    
+                    context['doble_error'] = f'{doble_error}'
+                    
                     try:
                         if mime == 'text/plain':
                             with open(decodificacion_path,'rb') as f:
@@ -95,8 +103,6 @@ def hamming_response(request):
                         
                         context["texto_decodificado"] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
                 
-
-
                 elif error == '1' or error == '2':
                     context['errores'] = "HE1"
                     
@@ -110,7 +116,9 @@ def hamming_response(request):
                             pass
                         
                         hamming_8.ingresar_error(codificacion_path,codificacion_error_path,int(error))
-                        hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
+                        doble_error = hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
+                        
+                        context['doble_error'] = f'{doble_error}'
 
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
@@ -144,7 +152,9 @@ def hamming_response(request):
                             pass
                         
                         hamming_8.ingresar_error(codificacion_path,codificacion_error_path,int(error))
-                        hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
+                        doble_error = hamming_8.decodificar_archivo(codificacion_error_path,decodificacion_error_path,fix_module)
+                        
+                        context['doble_error'] = f'{doble_error}'
 
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
@@ -171,39 +181,47 @@ def hamming_response(request):
             
             elif algoritmo == 'ha2':
                 codificacion_path = os.path.join(ruta, 'codificacion.HA2')
-                decodificacion_path = os.path.join(ruta,f'decodificacion{mimetypes.guess_extension(mime)}')
-                        
-                with open(decodificacion_path,'w') as f:
-                            pass
-                        
+                
                 hamming_256.codificar_archivo_256(texto_path,codificacion_path)
-                hamming_256.decodificar_archivo_256(codificacion_path,decodificacion_path,0)
-
+                
                 with open(codificacion_path,'rb') as f:
                     bloque = f.read().decode('latin-1')
                     context['texto_codificado'] = bloque
+                
+                if error == '0':
                     
-                try:
-                    if mime == 'text/plain':
+                    decodificacion_path = os.path.join(ruta,f'decodificacion{mimetypes.guess_extension(mime)}')
+                        
+                    with open(decodificacion_path,'w') as f:
+                        pass
+                        
+                    doble_error = hamming_256.decodificar_archivo_256(codificacion_path,decodificacion_path,0)
+                
+                    context['doble_error'] = f'{doble_error}'
+                    
+                    try:
+                        if mime == 'text/plain':
+                            with open(decodificacion_path,'rb') as f:
+                                bloque = f.read().decode()
+                            
+                            context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
+
+                        else:
+                            context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                        
+                    except:
+                        
                         with open(decodificacion_path,'rb') as f:
-                            bloque = f.read().decode()
+                            bloque = base64.b64encode(f.read())
                         
                         context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
 
-                    else:
-                        context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+                elif error == '1' or error == '2':
                     
-                except:
-                    
-                    with open(decodificacion_path,'rb') as f:
-                        bloque = base64.b64encode(f.read())
-                    
-                    context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'), 'contenido': bloque}
-                
-
-                if error == '1' or error == '2':
                     context['errores'] = "HE2"
+                    
                     if fix_module==1:
+                        
                         context['fix'] = "DC2"
                         codificacion_error_path = os.path.join(ruta,'codificacion_error.HE2')
                         decodificacion_error_path = os.path.join(ruta,f'decodificacion_sin_error{mimetypes.guess_extension(mime)}')
@@ -212,7 +230,9 @@ def hamming_response(request):
                             pass
                             
                         hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path, int(error))
-                        hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
+                        doble_error = hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
+                        
+                        context['doble_error'] = f'{doble_error}'
 
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
@@ -237,6 +257,7 @@ def hamming_response(request):
                         
                     
                     else:
+                        
                         context['fix'] = "DE2"
                         codificacion_error_path = os.path.join(ruta,'codificacion_error.HE2')
                         decodificacion_error_path = os.path.join(ruta,f'decodificacion_con_error{mimetypes.guess_extension(mime)}')
@@ -245,7 +266,9 @@ def hamming_response(request):
                             pass
                         
                         hamming_256.ingresar_error_256(codificacion_path,codificacion_error_path, int(error))
-                        hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
+                        doble_error = hamming_256.decodificar_archivo_256(codificacion_error_path,decodificacion_error_path,fix_module)
+                        
+                        context['doble_error'] = f'{doble_error}'
 
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
@@ -270,38 +293,46 @@ def hamming_response(request):
                         
 
             else:
+                
                 codificacion_path = os.path.join(ruta, 'codificacion.HA3')
-                decodificacion_error_path = os.path.join(ruta,f'decodificacion{mimetypes.guess_extension(mime)}')
-                        
-                with open(decodificacion_error_path,'w') as f:
-                    pass
                 
                 hamming_4096.codificar_archivo_4096(texto_path,codificacion_path)
-                hamming_4096.decodificar_archivo_4096(codificacion_path,decodificacion_error_path,0)
-        
+                
                 with open(codificacion_path,'rb') as f:
                     bloque = f.read().decode('latin-1')
                     context['texto_codificado'] = bloque
+                
+                if error == '0':
+                
+                    decodificacion_error_path = os.path.join(ruta,f'decodificacion{mimetypes.guess_extension(mime)}')
+
+                    with open(decodificacion_error_path,'w') as f:
+                        pass
                     
-                try:
-                    if mime == 'text/plain':
+                    doble_error = hamming_4096.decodificar_archivo_4096(codificacion_path,decodificacion_error_path,0)
+                    
+                    context['doble_error'] = f'{doble_error}'
+                    
+                    try:
+                        if mime == 'text/plain':
+                            with open(decodificacion_error_path,'rb') as f:
+                                bloque = f.read().decode()
+
+                            context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'),'contenido': bloque}
+
+                        else:
+                            context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
+
+                    except:
+
                         with open(decodificacion_error_path,'rb') as f:
-                            bloque = f.read().decode()
-                        
+                            bloque = base64.b64encode(f.read())
+
                         context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'),'contenido': bloque}
 
-                    else:
-                        context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}')}
-                    
-                except:
-                    
-                    with open(decodificacion_error_path,'rb') as f:
-                        bloque = base64.b64encode(f.read())
-                    
-                    context['texto_decodificado'] = {'mime': mime,'url': static(f'{algoritmo}/decodificacion{mimetypes.guess_extension(mime)}'),'contenido': bloque}
 
-
-                if error == '1' or error == '2':
+                elif error == '1' or error == '2':
+                    
                     context['errores'] = "HE3"
                     if fix_module==1:
                         context['fix'] = "DC3"
@@ -312,8 +343,10 @@ def hamming_response(request):
                             pass
                         
                         hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path, int(error))
-                        hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
+                        doble_error = hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
 
+                        context['doble_error'] = f'{doble_error}'
+                        
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
                             context['texto_codificado_error'] = bloque
@@ -345,8 +378,10 @@ def hamming_response(request):
                             pass
                         
                         hamming_4096.ingresar_error_4096(codificacion_path,codificacion_error_path, int(error))
-                        hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
+                        doble_error = hamming_4096.decodificar_archivo_4096(codificacion_error_path,decodificacion_error_path,fix_module)
 
+                        context['doble_error'] = f'{doble_error}'
+                        
                         with open(codificacion_error_path,'rb') as f:
                             bloque = f.read().decode('latin-1')
                             context['texto_codificado_error'] = bloque
@@ -413,12 +448,14 @@ def hamming_response_decodificar(request):
                 pass
             
             if extension[2:] == '1':
-                hamming_8.decodificar_archivo(codificacion_path,decodificar_path,fix_module)
+                doble_error = hamming_8.decodificar_archivo(codificacion_path,decodificar_path,fix_module)
             elif extension[2:] == '2':
-                hamming_256.decodificar_archivo_256(codificacion_path, decodificar_path,fix_module)
+                doble_error = hamming_256.decodificar_archivo_256(codificacion_path, decodificar_path,fix_module)
             else:
-                hamming_4096.decodificar_archivo_4096(codificacion_path, decodificar_path,fix_module)
+                doble_error = hamming_4096.decodificar_archivo_4096(codificacion_path, decodificar_path,fix_module)
                 
+            context['doble_error'] = f'{doble_error}'
+            
             try:
         
                 with open(decodificar_path,'rb') as f:

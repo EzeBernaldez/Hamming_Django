@@ -133,9 +133,8 @@ def decodificar_archivo(file_name_read, file_name_write, arreglar_archivo):
                 doble_error_general = max(ddeshamminizacion[0],doble_error_general)
                 total_decodificado.append(ddeshamminizacion[1])
                 
-            total_decodificado.append(doble_error_general)
-            
             wr.write(total_decodificado[:original_len])
+            return doble_error_general
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
