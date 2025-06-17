@@ -19,14 +19,14 @@
             <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
             <div class="row pt-4 pb-4">
                 <fieldset class="fieldset-custom">
-                    <legend class="pixelify-sans-pixel" style="float: none;width: auto;padding: 0 10px;font-size: 2rem;color: white;text-align: left;margin-bottom: 0;">Estadisticas de las Compactacion</legend>
+                    <legend class="pixelify-sans-pixel" style="float: none;width: auto;padding: 0 10px;font-size: 2rem;color: white;text-align: left;margin-bottom: 0;">Estadísticas de la Compactación</legend>
                     <p class="doto-pixel2 ps-3">Tamaño del archivo orignal: {{ tamaño_original }} bytes</p>
                     <p class="doto-pixel2 ps-3">Tamaño del archivo compactado: {{ tamaño_compactado }} bytes</p>
                     {% if porcentaje <= 0 %}
-                    <p class="doto-pixel2 ps-3">El archivo original se redujo en un: {{ porcentaje|floatformat:2 }}%</p>
+                    <p class="doto-pixel2 ps-3">El archivo original se redujo en un: {{ porcentaje|floatformat:2|cut:'-' }}%</p>
                     {% endif %}
                     {% if porcentaje > 0 %}
-                    <p class="doto-pixel2 ps-3">El archivo original aumento en un: {{ porcentaje|floatformat:2 }}%</p>
+                    <p class="doto-pixel2 ps-3">El archivo original aumentó en un: {{ porcentaje|floatformat:2 }}%</p>
                     {% endif %}
                 </fieldset>
             </div>

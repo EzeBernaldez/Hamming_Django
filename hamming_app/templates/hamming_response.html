@@ -28,7 +28,7 @@
                             <textarea class="p-3 rounded" readonly rows="15">{{ texto_plano.contenido }}</textarea>
                             {% else %}
                             <div class="resizable-container">
-                                <object data="{{ texto_plano.url }}" type="{{ texto_plano.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                                <object data="{{ texto_plano.url }}" type="{{ texto_plano.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;" loading="lazy"></object>
                             </div>
                             {% endif %}
                             
@@ -47,7 +47,7 @@
                             <textarea class="p-3 rounded" readonly rows="15">{{ texto_decodificado_con_error.contenido }}</textarea>
                             {% else %}
                             <div class="resizable-container">
-                                <object data="{{ texto_decodificado_con_error.url }}" type="{{ texto_decodificado_con_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                                <object data="{{ texto_decodificado_con_error.url }}" type="{{ texto_decodificado_con_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;" loading="lazy"></object>
                             </div>
                             {% endif %}
                             {% if doble_error == '1' %}
@@ -66,7 +66,7 @@
                                 <textarea class="p-3 rounded" readonly rows="15">{{ texto_decodificado_sin_error.contenido }}</textarea>
                             {% else %}
                             <div class="resizable-container">
-                                <object data="{{ texto_decodificado_sin_error.url }}" type="{{ texto_decodificado_sin_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                                <object data="{{ texto_decodificado_sin_error.url }}" type="{{ texto_decodificado_sin_error.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;" loading="lazy"></object>
                             </div>                            
                             {% endif %}
                                 
@@ -87,7 +87,9 @@
                                 <textarea class="p-3 rounded" readonly rows="15">{{ texto_plano.contenido }}</textarea>
                             
                             {% else %}
-                            <object data="{{ texto_decodificado.url }}" type="{{ texto_decodificado.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;"></object>
+                            <div class="resizable-container">
+                                <object data="{{ texto_decodificado.url }}" type="{{ texto_decodificado.mime }}" style="border-radius: 0.25rem;width: 100%;min-height: 85%;display:block;overflow: hidden;" loading="lazy"></object>
+                            </div>
 
                             {% endif %}
                                 
