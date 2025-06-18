@@ -106,7 +106,7 @@ def corregir_error(p, error):
     return (p ^ (256 >> error))
 
 
-# Éste método maneja la decodificación del archivo, el cual extrae mediante el path pasado en file_name_read, realiza correcciones de errores si arreglar_archivo es 1, y lo escribe en un archivo cuyo path se envía en file_name_write. Es importante aclarar que se extraen los primeros 5 bytes del archivo para escribir la misma cantidad de bytes del archivo que fue codificado. Si hay doble error en el archivo se returna un 1, de lo contrario un 0.
+# Éste método maneja la decodificación del archivo, el cual extrae mediante el path pasado en file_name_read, realiza correcciones de errores si arreglar_archivo es 1, y lo escribe en un archivo cuyo path se envía en file_name_write. Es importante aclarar que se extraen los primeros 5 bytes del archivo para escribir la misma cantidad de bytes del archivo que fue codificado. Si hay doble error en el archivo se retorna un 1, de lo contrario un 0.
 def decodificar_archivo(file_name_read, file_name_write, arreglar_archivo):
     try:
         with open(file_name_read, "rb") as f, open(file_name_write,'wb') as wr:

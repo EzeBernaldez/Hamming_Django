@@ -1,6 +1,8 @@
 import random
 import os
 
+
+# Éste método se utiliza para crear un número de 4096 bits reservando las posiciones donde se colocarán los bits de control, es decir en cada posición potencia de 2 (1, 2, 4, ..., 2048). Luego, se llama a la función de codificación (codificacion_hamming_4096) para setear los bits de control en las posiciones reservadas.
 def crear_numero_4096(p):
     # p contiene 240 bits de datos
     j = 0
@@ -18,6 +20,7 @@ def crear_numero_4096(p):
     return codificacion_hamming_4096(res)
 
 
+# Éste método se utiliza como un módulo que engloba el seteo de los bits de control de hamming con el parity check, donde se llama al método calcular_bit_control con las posiciones potencias de 2 y el número a codificar, y luego se llama al método de calcular_bit_paridad para setear el bit de paridad.
 def codificacion_hamming_4096(p):
     for bit_pos in [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]:
         control = calcular_bit_control(p, bit_pos)
@@ -26,7 +29,7 @@ def codificacion_hamming_4096(p):
     return p
 
 
-
+# Éste método se utiliza para calcular los bits de control mediante un for anidado, donde en el primero colocaremos los marcadores desde el cual se debe ir controlando cada bit consecutivo (es decir, para el bit en la posición 16, que controle los primeros 16 bits contando el marcador, y los segundos 16 no, y así sucesivamente), y en el segundo se vaya haciendo un xor con cada bit consecutivo a controlar, para realizar un control de paridad y colocarlo en el bit de control correspondiente.
 def calcular_bit_control(p:int, pos:int) -> int:
     control = 0
     for i in range(pos, 4096, pos * 2):
@@ -35,7 +38,7 @@ def calcular_bit_control(p:int, pos:int) -> int:
     return control
 
 
-
+# Éste método se utiliza para calcular el parity check de todo el bloque codificado.
 def calcular_bit_paridad(p):
     paridad=0
     for i in range (1,4096):
@@ -44,7 +47,7 @@ def calcular_bit_paridad(p):
     return p
 
 
-
+# Éste método maneja la codificación de un archivo cuyo path se pasó como parámetro de entrada file_name_read y lo almacena en el archivo file_name_write. Ambos archivos los abrimos en binario para manejar los bytes crudos. Es importante alcarar que se reservan los primeros 5 bytes para poder almacenar el tamaño del archivo a codificar, y si el archivo no alcanza a los 510 bytes necesarios, se rellena con 0s el bloque.
 def codificar_archivo_4096(file_name_read, file_name_write):
     try:
         with open(file_name_read, "rb") as f, open(file_name_write, "wb") as wr:
@@ -66,7 +69,7 @@ def codificar_archivo_4096(file_name_read, file_name_write):
 
 
 
-
+# Éste método se utiliza para manejar los errores y decodificar, llama a módulos para controlar el bit de paridad y para calcular el síndrome (control_hamming_4096), para corregir el error en caso de que se lo necesite (corregir_error_4096) y para decodificar el byte (decodificacion_hamming_4096). El bloque de información obtenido puede no tener errores o tener 1 o 2 errores (en el caso de 2 errores, la primer posición del array devuelto se setea en 1).
 def deshamminizacion_4096(p,fix_module):
     decodificacion = control_hamming_4096(p)
     num =  (decodificacion["s11"] << 11) + (decodificacion["s10"] << 10) + (decodificacion["s9"] << 9) + (decodificacion["s8"] << 8) + (decodificacion["s7"] << 7) + (decodificacion["s6"] << 6) + (decodificacion["s5"] << 5) + (decodificacion["s4"] << 4) + (decodificacion["s3"] << 3) +(decodificacion["s2"] << 2) + (decodificacion["s1"] << 1) + (decodificacion["s0"] )
@@ -92,15 +95,11 @@ def deshamminizacion_4096(p,fix_module):
                 return [0,decodificacion_hamming_4096(p)]
 
 
-
-def corregir_error_4096(p,error):
-    return (p ^ (2**4096 >> (error))) 
-
-
+# Éste método calcula el síndrome y el bit de paridad para ser evaluados en deshamminizacion_4096. Llama a un método calcular_bit_contro_deshamminizacion para calcular cada bit de control de hamming, que se colocan en posiciones potencias de 2.
 def control_hamming_4096(p):
     res={}
     for i,bit_pos in enumerate([1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]):
-        control = calcular_bit_control_deshamminizacion(p, bit_pos)
+        control = calcular_bit_control(p, bit_pos)
         res[f"s{i}"]=control
     paridad=0
     for i in range (1,4097):
@@ -109,15 +108,12 @@ def control_hamming_4096(p):
     return res
 
 
-
-def calcular_bit_control_deshamminizacion(p:int, pos:int) -> int:
-    control = 0
-    for i in range(pos, 4096, pos * 2):
-        for j in range(i, i + pos):
-            control ^= ((p >> (4096 - j)) & 1)
-    return control
+# Éste método se utiliza para corregir un error realizando un xor entre el número codificado y un número con un 1 en la posición error.
+def corregir_error_4096(p,error):
+    return (p ^ (2**4096 >> (error))) 
 
 
+# Éste método se utiliza para extraer los bits de información del bloque codificado y retornar el número decodificado. Aquí se ignoran los bits en las posiciones potencias de 2 y los bits rellenados con 0s para que la codificación se haga efectiva.
 def decodificacion_hamming_4096(p):
     j = 0
     res = 0
@@ -132,6 +128,7 @@ def decodificacion_hamming_4096(p):
     return res
 
 
+# Éste método maneja la decodificación del archivo, el cual extrae mediante el path pasado en file_name_read, realiza correcciones de errores si arreglar_archivo es 1, y lo escribe en un archivo cuyo path se envía en file_name_write. Es importante aclarar que se extraen los primeros 5 bytes del archivo para escribir la misma cantidad de bytes del archivo que fue codificado. Si hay doble error en el archivo se retorna un 1, de lo contrario un 0.
 def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
     try:
         with open(file_name_read, "rb") as f, open(file_name_write, "wb") as wr:
@@ -168,11 +165,10 @@ def decodificar_archivo_4096(file_name_read, file_name_write, arreglar_archivo):
     except FileNotFoundError as e:
         print("Ocurrió un error al abrir los archivos: ", e)
     except Exception as e:
-        print("Error en decoedificar: ", e)
+        print("Error en decodificar: ", e)
 
 
-'''----------------------------------------------------------------------------------------------------------------'''
-
+# Éste método propuesto por la cátedra permite el ingreso de 1 o dos errores por módulo, cuyas probabilidades son equiprobables.
 def ingresar_error_4096(file_name_read,file_name_write, errores):
     try:
         with open(file_name_read, 'rb') as f, open(file_name_write, 'wb') as wr:
