@@ -44,7 +44,7 @@ def compactacion_archivo(file_read,file_write):
             heapq.heapify(frecuencias_heap)
 
             if len(frecuencias_dict) == 1:
-                codificacion = {k:b'1' for k,v in frecuencias_dict.items()}
+                codificacion = {k:format(1,'01b') for k,_ in frecuencias_dict.items()}
             else:
                 while len(frecuencias_heap) > 1:
                     minimo_minimo = heapq.heappop(frecuencias_heap)
