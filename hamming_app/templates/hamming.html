@@ -82,8 +82,37 @@
                             {% csrf_token %}
                             <div class="mb-3 pb-2">
                                 <label for="archivo" class="formFile pb-2 pixelify-sans-pixel">Ingrese el archivo a deshamminizar</label>
-                                <input id="archivo" name="archivo" required="" type="file" class="form-control">
+                                <input id="archivo" name="archivo" required="" type="file" class="form-control archivo-deshamminizar">
                             </div>
+                            <div id="hamming-hidden" class="mb-3 ocultar">
+                                <label for="Hamming" class="pb-2 pixelify-sans-pixel">Ingrese el algoritmo hamming con el que lo codificó</label>
+                                <select name="algoritmo-hamming" id="Hamming" class="form-select">
+                                    <option selected value="ha0" class="ocultar">Seleccione una opción</option>
+                                    <option value="ha1">Hamming-8</option>
+                                    <option value="ha2">Hamming-256</option>
+                                    <option value="ha3">Hamming-4096</option>
+                                </select>
+                            </div>
+
+                                <script>
+                                    const select_hamming = document.getElementById('hamming-hidden');
+                                    document.querySelector('.archivo-deshamminizar').addEventListener('change', function(archivo_ingresado) {
+                                        const archivo = archivo_ingresado.target.files[0];
+                                        if (archivo) {
+                                            const nombreArchivo = archivo.name;
+                                            const extension = nombreArchivo.split('.').pop();
+                                            
+                                            console.log(extension)
+                                            if (extension == 'dhu'){
+                                                select_hamming.classList.remove('ocultar');
+                                            }
+                                            else{
+                                                select_hamming.classList.add('ocultar');
+                                            }
+                                        }
+                                    });
+                                </script>
+
                             <div class="mb-3">
                                 <label for="fix_module_decodificar" class="pb-2 pixelify-sans-pixel">Desea arreglar el archivo?</label>
                                 <select name="fix_module_decodificar" id="fix_module_decodificar" class="form-select">

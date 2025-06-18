@@ -418,20 +418,22 @@ def hamming_response_decodificar(request):
     if request.method=='POST':
         archivo = request.FILES.get('archivo')
         fix_module = request.POST.get('fix_module_decodificar')
+        algoritmo = request.POST.get('algoritmo-hamming')
         
         if archivo and fix_module:
             
             fix_module = int(fix_module)
             
-            name_archivo = os.path.basename(archivo.name)
-            
-            extension = os.path.splitext(name_archivo)[1][1:].lower()
+            if algoritmo != 'ha0':
+                extension = algoritmo
+            else:
+                name_archivo = os.path.basename(archivo.name)
+                extension = os.path.splitext(name_archivo)[1][1:].lower()
             
             ruta = os.path.join(settings.MEDIA_ROOT, f'ha{extension[2:]}')
             
             if extension == f'ha{extension[2:]}':
                 codificacion_path = os.path.join(ruta, f'codificacion.{extension}')
-                
             else:
                 codificacion_path = os.path.join(ruta, f'codificacion_error.{extension.upper()}')
             
