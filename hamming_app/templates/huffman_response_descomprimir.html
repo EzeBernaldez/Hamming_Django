@@ -10,13 +10,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Pixelify+Sans:wght@414&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="{% static 'logo-unsl.ico' %}">
 
 </head>
 <body class="contenedor">
     <div class="container-fluid min-vh-100">
-        <h1 class="text-center pt-2 pb-2 pixelify-sans-pixel"><a href="{% url 'huffman' %}" class="navbar-brand">Huffman</a></h1>
-        <div class="container m-auto">
-            <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
+        <h1 class="text-center pt-2 pb-2 pixelify-sans-pixel aparecer"><a href="{% url 'huffman' %}" class="navbar-brand">Huffman</a></h1>
+        <div class="container m-auto aparecer">
+            <h3 class="text-center doto-pixel2 aparecer">Resultados del procesamiento</h3>
             <div class="row pt-3">
                 <div class="col-12">
                     {% if texto_descomprimido %}

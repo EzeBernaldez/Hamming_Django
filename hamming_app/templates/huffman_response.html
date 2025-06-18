@@ -10,14 +10,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Pixelify+Sans:wght@414&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="{% static 'logo-unsl.ico' %}">
 
 </head>
 <body>
     <div class="container-fluid min-vh-100">
-        <h1 class="text-center pt-2 pb-2 pixelify-sans-pixel "><a href="{% url 'huffman' %}" class="navbar-brand">Huffman</a></h1>
+        <h1 class="text-center pt-2 pb-2 pixelify-sans-pixel aparecer"><a href="{% url 'huffman' %}" class="navbar-brand">Huffman</a></h1>
         <div class="container m-auto">
-            <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
-            <div class="row pt-4 pb-4">
+            <h3 class="text-center doto-pixel2 aparecer">Resultados del procesamiento</h3>
+            <div class="row pt-4 pb-4 aparecer">
                 <fieldset class="fieldset-custom">
                     <legend class="pixelify-sans-pixel" style="float: none;width: auto;padding: 0 10px;font-size: 2rem;color: white;text-align: left;margin-bottom: 0;">Estadísticas de la Compactación</legend>
                     <p class="doto-pixel2 ps-3">Tamaño del archivo orignal: {{ tamaño_original }} bytes</p>
@@ -31,7 +32,7 @@
                 </fieldset>
             </div>
             <div class="row pt-5">
-                <div class="col-6">
+                <div class="col-6 aparecer_botom">
                     {% if texto_plano %}
                     <div class="h-100" style="overflow:hidden">
                         <h4 class="pixelify-sans-pixel">Texto original:</h4>
@@ -46,7 +47,7 @@
                     </div>
                     {% endif %}
                 </div>
-                <div class="col-6">
+                <div class="col-6 aparecer_botom_der">
                     {% if texto_comprimido %}
                     <div class="mb-4">
                         <h4 class="pixelify-sans-pixel">Texto Comprimido</h4>

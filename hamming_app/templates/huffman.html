@@ -10,14 +10,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Pixelify+Sans:wght@414&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="{% static 'logo-unsl.ico' %}">
 </head>
 <body class="bg-body-secondary">
     <div class="container-fluid min-vh-100">
-        <h1 class="text-center pt-4 pixelify-sans-pixel"><a href="/" class="navbar-brand">Huffman</a></h1>
-        <p class="text-center pb-4 pixelify-sans-pixel">by Ezequiel Bernaldez, Ezequiel Nodar</p>
+        <h1 class="text-center pt-4 pixelify-sans-pixel aparecer"><a href="/" class="navbar-brand">Huffman</a></h1>
+        <p class="text-center pb-4 pixelify-sans-pixel aparecer">by Ezequiel Bernaldez, Ezequiel Nodar</p>
         <div class="container m-auto">
             <div class="row g-3 doto-pixel2">
-                <form method="POST" action="{% url 'huffman-comprimir' %}" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'huffman-comprimir' %}" enctype="multipart/form-data" class="aparecer_botom">
                     <fieldset class="fieldset-custom">
                         <legend class="pixelify-sans-pixel">Comprimir</legend>
                         {% csrf_token %}
@@ -30,7 +31,7 @@
                         </div>
                     </fieldset>
                 </form>
-                <form method="POST" action="{% url 'huffman-descomprimir' %}" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'huffman-descomprimir' %}" enctype="multipart/form-data" class="aparecer_botom_der">
                     <fieldset class="fieldset-custom">
                         <legend class="pixelify-sans-pixel">Descomprimir</legend>
                         {% csrf_token %}
@@ -44,7 +45,7 @@
                     </fieldset>
                 </form>
                 <div class="row">
-                    <div class="pt-4">
+                    <div class="pt-4 aparecer">
                         <a href="/" class="buttom_procesar pixelify-sans-pixel">Volver</a>
                     </div>
                 </div>

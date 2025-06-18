@@ -10,18 +10,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Pixelify+Sans:wght@414&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="{% static 'logo-unsl.ico' %}">
 
 </head>
 <body class="contenedor">
     <div class="container-fluid min-vh-100">
-        <h1 class="text-center pb-2 pixelify-sans-pixel"><a href="{% url 'hamming' %}" class="navbar-brand">Hamming</a></h1>
+        <h1 class="text-center pb-2 pixelify-sans-pixel aparecer"><a href="{% url 'hamming' %}" class="navbar-brand">Hamming</a></h1>
         <div class="container m-auto">
-                <h3 class="text-center doto-pixel2">Resultados del procesamiento</h3>
+                <h3 class="text-center doto-pixel2 aparecer">Resultados del procesamiento</h3>
                 <div class="row pt-5">
                     {% block texto_original %}
                     <div class="col-6">
                         {% if texto_plano %}
-                        <div class="h-100 mb-4" style="overflow: hidden;">
+                        <div class="h-100 mb-4 aparecer_botom" style="overflow: hidden;">
                             <h4 class="pixelify-sans-pixel">Texto original:</h4>
                             <br/>
                             {% if texto_plano.mime == 'text/plain' %}
@@ -37,7 +38,7 @@
                     </div>
                     {% endblock %}
                     {% block columna %}
-                    <div class="col-6">
+                    <div class="col-6 aparecer_botom_der">
                     {% endblock %}
                         {% if texto_decodificado_con_error %}
                         <div class="h-100 mb-4" style="overflow: hidden;">
@@ -79,7 +80,7 @@
                         {% endif %}
                         {% block error_ingresado %}
                         {% if error == '0' %}
-                        <div class="h-100 mb-4" style="overflow: hidden;">
+                        <div class="h-100 mb-4 aparecer_botom_der" style="overflow: hidden;">
                             <h4 class="pixelify-sans-pixel">Texto decodificado:</h4>
                             <br/>
                             
@@ -100,14 +101,14 @@
                 </div>
                 {% block codificacion %}
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-6 aparecer_botom">
                         {% if texto_codificado %}
                         <h4 class="pixelify-sans-pixel">Texto codificado:</h4>
                         <a href="{{ MEDIA_URL }}{{ algoritmo }}/codificacion.{{ algoritmo|upper }}" download="codificacion.{{ algoritmo|upper }}" class="descargar doto-pixel2">Descargar archivo codificado</a>
                         <textarea class="p-3 rounded mt-2" rows="20" readonly>{{ texto_codificado }}</textarea>
                         {% endif %}
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 aparecer_botom_der">
                         {% if texto_codificado_error %}
                             <div class="mb-4">
                                 <h4 class="pixelify-sans-pixel">Texto codificado con error:</h4>

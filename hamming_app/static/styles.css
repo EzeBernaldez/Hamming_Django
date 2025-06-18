@@ -143,3 +143,45 @@ svg {
   background-image: linear-gradient(to bottom, rgba(21, 132, 211, 0.86), rgba(62, 170, 248, 0.6));
 }
 
+
+.aparecer {
+  opacity: 0;
+  transform: translateY(-60px);
+  animation: aparecer_key 1.4s forwards;
+
+}
+
+@keyframes aparecer_key {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.aparecer_botom{
+  opacity: 0;
+  transform: translateX(-60px);
+  animation: aparecer_botom_key 1.5s forwards;
+
+}
+
+@keyframes aparecer_botom_key {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.aparecer_botom_der{
+  opacity: 0;
+  transform: translateX(60px);
+  animation: aparecer_botom_der_key 1.5s forwards;
+
+}
+
+@keyframes aparecer_botom_der_key {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
