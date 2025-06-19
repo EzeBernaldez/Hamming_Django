@@ -84,7 +84,6 @@ def compactacion_archivo(file_read,file_write):
 
                 codificacion_dict = int(codificacion_dict,2)
                 
-                print(f'La cantidad de bytes ocupados es: {len(codificacion_bytes.to_bytes(longitud,'big'))}')
                 
                 codificacion_bytes = codificacion_dict.to_bytes(longitud_dict,'big')  + cantidad_ceros.to_bytes(1,'big') + codificacion_bytes.to_bytes(longitud,'big')
                 
