@@ -4,7 +4,7 @@ import os
 
 '''-----------------------------------------------------Tabla de frecuencias-------------------------------------------------------------------'''
 
-
+# Éste método utiliza el módulo Counter para manejar eficientemente (en tiempos) la asignación de frecuencias, es decir que devuelve un diccionario con la probabilidad de ocurrencia de cada uno de los bytes leídos.
 def tabla_frecuencia(content) -> dict:
     total = len(content)
     frecuencias = Counter(content)
@@ -14,7 +14,7 @@ def tabla_frecuencia(content) -> dict:
 
 '''-----------------------------------------------------Compactación-------------------------------------------------------------------'''
 
-
+# Ésta clase se defina para manejar la estructura encargada del proceso de reducción de huffman, es decir que tenemos nodos con atributos como el byte que lo caracteriza (el símbolo), la frecuencia de aparición de ese símbolo, los hijos izquiedos y derechos de tal nodo, y la cantidad de derivaciones de tal nodo (es decir la cantidad de reducciones que se realizó para llegar a la creación de ese nodo). Además del método de inicialización se define el método cuyo objetivo es la comparación de menor, la cual servirá para la implementación de la estructura de datos elegida por el team, es decir el heap o parva de mínimos.
 class Nodo:
 
     def __init__(self,byte=b'0',frecuencia=None,derivaciones=0):
@@ -31,6 +31,7 @@ class Nodo:
             return self.derivaciones < other.derivaciones 
 
 
+# Éste método lee el archivo a compactar cuyo path se pasó como parámetro de entrada file_read, y escribe la compactación en file_write. Tal método llama inicialmente a tabla_frecuencia para obtener la probabilidad de ocurrencia de cada byte, luego inicializa un heap de mínimos cuyos componentes son nodos, dando como resultado un heap con todos nodos hojas, y se va realizando el proceso de reducción para obtener una estructura por la cual se puede realizar el proceso de asignación, es decir asignar a cada byte un código que lo caracterice basándonos en el algoritmo de huffman. Es necesario alcarar que en el archivo compactado se almacena, en 2 bytes, la cantidad de caracteres del diccionario utilizado para codificar, luego se almacena el diccionario con las codificaciones para cada byte, y luego se envía el código compactado con huffman (al principio puede contener 0's debido a que la codificación puede ocupar menor cantidad de bits que no llegan al byte).
 def compactacion_archivo(file_read,file_write):
     
     codificacion = {}
@@ -95,6 +96,7 @@ def compactacion_archivo(file_read,file_write):
         print('Error en la codificación', e)
 
 
+# Éste método consiste en una recursión, la cual está encargada del proceso de asignación de códigos a cada uno de los símbolos (en este caso bytes).
 def generar_codigos(nodo, codigo_actual, codificacion, shift):
     if nodo is None:
         return
@@ -111,6 +113,7 @@ def generar_codigos(nodo, codigo_actual, codificacion, shift):
 '''-----------------------------------------------------Descompactación-------------------------------------------------------------------'''
 
 
+# Éste método se utiliza para descomprimir un archivo cuyo path es enviado como parámetro de entrada file_read y se escribe en file_write. Inicialmente lee todo el contenido del archivo, luego extraemos el diccionario de codificaciones leyendo, primeramente la cantidad de caracteres del diccionario, luego la cantidad de 0's iniciales, y por último el diccionario mismo, que contiene el byte representativo, la longitud de la codificación y la codificación. Por último se realiza la decodificación mediante parsing de los códigos con el texto comprimido y las codificaciones. A medida que vaya parseando, se va asignando en una variable el texto descomprimido y luego se escribe en bytes en el archivo descomprimido.
 def descompactacion_archivo(file_read,file_write):
     try:
         with open(file_read,'rb') as f:
@@ -174,12 +177,13 @@ def descompactacion_archivo(file_read,file_write):
             with open(file_write, 'wb') as wr:
                 wr.write(mensaje_bytes)
     except Exception as e:
-        print(f'Error en la descompactación{e}')
+        print(f'Error en la descompactación: {e}')
 
 
 '''-----------------------------------------------------Ver estadística-------------------------------------------------------------------'''
 
 
+# Éste método es propuesto por la cátedra y consiste en visualizar el porcentaje de compactación de un archivo al ser aplicado huffman. Primeramente recupera el tamaño del archivo original, luego el del archivo compactado, y obtiene el porcentaje de compresión.
 def ver_estadistica(file_original,file_compactado):
     tamaño_original = os.path.getsize(file_original)
     tamaño_compactado = os.path.getsize(file_compactado)

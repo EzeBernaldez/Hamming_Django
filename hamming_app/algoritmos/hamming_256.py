@@ -168,7 +168,7 @@ def ingresar_error_256(file_name_read, file_name_write,errores):
     try:
         print(f'entra con {errores} errores')
         with open(file_name_read, 'rb') as f, open(file_name_write, 'wb') as wr:
-            #Se sacan los primer 4 bytes por el tamaño
+            #Se sacan los primeros 5 bytes por el tamaño
             tamaño = f.read(5)
             wr.write(tamaño)
             while True:
