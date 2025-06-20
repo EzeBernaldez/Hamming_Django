@@ -149,12 +149,15 @@ def ingresar_error(file_name_read,file_name_write,errores):
                 bloque_bytes = int.from_bytes(bloque,byteorder='big')
                 if(len(bloque)==0):
                     break
+                error_elegido = -1
                 for i in range(0,errores):
                     if random.randint(0,1) == 1:
                         error = random.randint(0,7)
-                        mask = 1 << error
-                        bloque_bytes^= mask
+                        if error != error_elegido:
+                            error_elegido = error
+                            mask = 1 << error
+                            bloque_bytes^= mask
                 wr.write(bloque_bytes.to_bytes(1,byteorder='big'))
-        
+
     except Exception as e:
         print(f"Error al ingresar error: {e}")

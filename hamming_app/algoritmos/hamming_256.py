@@ -176,11 +176,14 @@ def ingresar_error_256(file_name_read, file_name_write,errores):
                 if len(bloque) == 0:
                     break
                 bloque_bytes = int.from_bytes(bloque, byteorder='big')
+                error_elegido = -1
                 for i in range(0,errores):
                     if random.randint(0, 1) == 1:
                         error = random.randint(0, 255)
-                        mask = 1 << (255 - error)
-                        bloque_bytes ^= mask
+                        if error != error_elegido:
+                            error_elegido = error
+                            mask = 1 << (255 - error)
+                            bloque_bytes ^= mask
                 wr.write(bloque_bytes.to_bytes(32, byteorder='big'))
 
     except Exception as e:
